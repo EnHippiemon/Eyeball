@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "Eyeball",
+			"Path": "..\\Source\\Eyeball.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "EyeballEditor",
+			"Path": "..\\Source\\EyeballEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\source\\eyeball\\eyeball.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\intermediate\\build\\win64\\x64\\eyeballeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\eyeball\\definitions.eyeball.h",
+            "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\source\\eyeball\\eyeball.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Eyeball.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Eyeball.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\EyeballEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <None Include="..\..\global.json" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\Eyeball">
+      <UniqueIdentifier>{5C9DF1FC-9AA2-3FD6-9E64-A15097D2E5D2}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Eyeball\Eyeball.Build.cs">
+      <Filter>Source\Eyeball</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Eyeball\Eyeball.cpp">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Eyeball.h">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeCharacter.cpp">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeCharacter.h">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeGameMode.cpp">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeGameMode.h">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

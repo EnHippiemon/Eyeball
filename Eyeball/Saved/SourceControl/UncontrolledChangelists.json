@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Levels/Test.umap",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/BP_EyeCharacter.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Statics/BP_Floor.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/BP_EyeGameMode.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Statics/BP_DangerZone.uasset"
+			]
+		}
+	]
+}

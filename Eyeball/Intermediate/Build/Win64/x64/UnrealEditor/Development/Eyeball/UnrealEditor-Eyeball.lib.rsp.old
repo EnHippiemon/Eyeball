@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-Eyeball.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\albin.samuelsson\Desktop\GitHub\Eyeball\Eyeball\Intermediate\Build\Win64\x64\EyeballEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
+"C:\Users\albin.samuelsson\Desktop\GitHub\Eyeball\Eyeball\Intermediate\Build\Win64\x64\UnrealEditor\Development\Eyeball\Eyeball.cpp.obj"
+"C:\Users\albin.samuelsson\Desktop\GitHub\Eyeball\Eyeball\Intermediate\Build\Win64\x64\UnrealEditor\Development\Eyeball\PerModuleInline.gen.cpp.obj"
+"C:\Users\albin.samuelsson\Desktop\GitHub\Eyeball\Eyeball\Intermediate\Build\Win64\x64\UnrealEditor\Development\Eyeball\Default.rc2.res"
+/OUT:"C:\Users\albin.samuelsson\Desktop\GitHub\Eyeball\Eyeball\Intermediate\Build\Win64\x64\UnrealEditor\Development\Eyeball\UnrealEditor-Eyeball.lib"
