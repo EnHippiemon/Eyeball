@@ -1,7 +1,6 @@
 #include "EyeCharacter.h"
-
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
 {
@@ -10,19 +9,45 @@ AEyeCharacter::AEyeCharacter()
 	GetCharacterMovement()->GravityScale = 0;
 }
 
-void AEyeCharacter::HandleUpwardsInput(float Value)
+void AEyeCharacter::HandleUpwardsInput(const float Value)
 {
-	Movement.Y = Value ;
+	MovementInput.Y = Value;
 }
 
-void AEyeCharacter::HandleSidewaysInput(float Value)
+void AEyeCharacter::HandleSidewaysInput(const float Value)
 {
-	Movement.X = Value;
+	MovementInput.X = Value;
 }
+
 
 void AEyeCharacter::HandleJumpInput()
 {
-	UE_LOG(LogTemp, Log, TEXT("HandleJumpInput"));
+	bJumpDepressed = true;
+	MakeJump();
+}
+
+void AEyeCharacter::HandleJumpReleased()
+{
+	bJumpDepressed = false;
+	MakeReleaseJump();
+
+	FLatentActionInfo LatentActionInfo;
+	UKismetSystemLibrary::DelayUntilNextTick(GetWorld(), LatentActionInfo);
+
+	JumpHeldTime = 0.f;
+}
+
+void AEyeCharacter::JumpHeldTimer(float DeltaTime)
+{
+	if (!bJumpDepressed)
+		return;
+
+	JumpHeldTime += DeltaTime;
+}
+
+bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
+{
+	return GetJumpHeldTime() > Threshold;
 }
 
 void AEyeCharacter::HandleActionInput()
@@ -30,45 +55,11 @@ void AEyeCharacter::HandleActionInput()
 	UE_LOG(LogTemp, Log, TEXT("HandleActionInput"));
 }
 
-
-void AEyeCharacter::MakeMovement()
+void AEyeCharacter::HandleEjectInput()
 {
-	FVector OutputMovement = FVector(0, Movement.X, Movement.Y) * MovementSpeed * GetWorld()->DeltaTimeSeconds;
-	OutputMovement.Normalize();
-
-	AddMovementInput(OutputMovement);
-}
-
-void AEyeCharacter::FindOverlap()
-{
-	FHitResult HitResult;
-	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(this);
-	TArray<bool> LineTraceResults;
-
-	const FVector TraceOffset = GetActorLocation() - FVector(PlayerRadius, 0, 0);
-	
-	constexpr int TraceAmount = 10;
-	for (int i = 0; i < TraceAmount; ++i)
-	{
-		if (!LineTraceResults.IsValidIndex(i))
-			LineTraceResults.Add(true);
-		
-		FVector TraceStart = TraceOffset + PlayerRadius * GetActorUpVector().RotateAngleAxis(360.f / TraceAmount * i + 1, FVector(1, 0, 0));
-		FVector TraceEnd = TraceStart + FVector(500, 0, 0);;
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red);
-
-		const auto LineTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, SafeZone, Params, FCollisionResponseParams());
-		LineTraceResults[i] = LineTrace;
-		
-		if (!LineTrace)
-			UE_LOG(LogTemp, Log, TEXT("Inside danger zone %i"), i);
-	}
-
-	if (LineTraceResults.Contains(false))
-		return;
-
-	UE_LOG(LogTemp, Log, TEXT("Not in danger"));
+	UE_LOG(LogTemp, Log, TEXT("HandleEjectInput"));
+	if (GetEntityState() != Ees_Eyeball)
+		CurrentEntityState = Ees_Eyeball;
 }
 
 void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -79,23 +70,22 @@ void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("Sideways", this, &AEyeCharacter::HandleSidewaysInput);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AEyeCharacter::HandleJumpInput);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AEyeCharacter::HandleJumpReleased);
+	
 	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &AEyeCharacter::HandleActionInput);
+	PlayerInputComponent->BindAction("Eject", IE_Pressed, this, &AEyeCharacter::HandleEjectInput);
 }
 
 void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
-	this->SetActorLocation(FVector(0, GetActorLocation().Y, GetActorLocation().Z));
-
-	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
+	CurrentEntityState = Ees_Eyeball;
 }
 
 void AEyeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	MakeMovement();
-	FindOverlap();
+	JumpHeldTimer(DeltaTime);
 }

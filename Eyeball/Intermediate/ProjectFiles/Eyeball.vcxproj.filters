@@ -46,6 +46,12 @@
     <ClCompile Include="..\..\Source\Eyeball\EyeCharacter.h">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeEyeBall.cpp">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeEyeBall.h">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Eyeball\EyeGameMode.cpp">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>

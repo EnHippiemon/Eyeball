@@ -14,7 +14,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define EYEBALL_EyeCharacter_generated_h
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_16_INCLASS_NO_PURE_DECLS \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_24_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEyeCharacter(); \
 	friend struct Z_Construct_UClass_AEyeCharacter_Statics; \
@@ -23,7 +23,7 @@ public: \
 	DECLARE_SERIALIZER(AEyeCharacter)
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_16_ENHANCED_CONSTRUCTORS \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_24_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AEyeCharacter(AEyeCharacter&&); \
@@ -35,12 +35,12 @@ public: \
 	NO_API virtual ~AEyeCharacter();
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_13_PROLOG
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_16_GENERATED_BODY \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_21_PROLOG
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_24_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_16_INCLASS_NO_PURE_DECLS \
-	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_16_ENHANCED_CONSTRUCTORS \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_24_INCLASS_NO_PURE_DECLS \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_24_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
