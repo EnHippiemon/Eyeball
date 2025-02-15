@@ -50,6 +50,24 @@ bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 	return GetJumpHeldTime() > Threshold;
 }
 
+void AEyeCharacter::PossessNewEntity(AActor* EntityToPossess)
+{
+	UE_LOG(LogTemp, Log, TEXT("Possessing %s"), *EntityToPossess->GetName())
+	
+	GetController()->UnPossess();
+	GetController()->Possess(EntityToPossess->GetInstigator());
+	/*
+	switch (EntityToPossess)
+	{
+	case EntityHuman:
+		GetController()->Possess(EntityHuman);
+		break;
+	default:
+		GetController()->Possess(EntityEyeball);
+	}
+	*/
+}
+
 void AEyeCharacter::HandleActionInput()
 {
 	UE_LOG(LogTemp, Log, TEXT("HandleActionInput"));
@@ -58,8 +76,12 @@ void AEyeCharacter::HandleActionInput()
 void AEyeCharacter::HandleEjectInput()
 {
 	UE_LOG(LogTemp, Log, TEXT("HandleEjectInput"));
-	if (GetEntityState() != Ees_Eyeball)
-		CurrentEntityState = Ees_Eyeball;
+	if (GetEntityState() == Ees_Eyeball)
+		return;
+	
+	CurrentEntityState = Ees_Eyeball;
+	GetController()->UnPossess();
+	GetController()->Possess(EntityEyeball);
 }
 
 void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -81,6 +103,7 @@ void AEyeCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentEntityState = Ees_Eyeball;
+	
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

@@ -81,10 +81,10 @@ AEyeEntityEyeball::~AEyeEntityEyeball() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeEntityEyeball, AEyeEntityEyeball::StaticClass, TEXT("AEyeEntityEyeball"), &Z_Registration_Info_UClass_AEyeEntityEyeball, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityEyeball), 2608499974U) },
+		{ Z_Construct_UClass_AEyeEntityEyeball, AEyeEntityEyeball::StaticClass, TEXT("AEyeEntityEyeball"), &Z_Registration_Info_UClass_AEyeEntityEyeball, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityEyeball), 1145724023U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_243108741(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_3501738829(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

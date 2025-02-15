@@ -39,8 +39,16 @@ void AEyeEntityEyeball::FindOverlap()
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
 
+	if (bCanChangeEntity)
+		FoundEntity = HitResult.GetActor();
+
 	UE_LOG(LogTemp, Log, TEXT("Safety: %hdd"), bIsInDanger)
 	UE_LOG(LogTemp, Log, TEXT("CanChangeEntity: %hdd"), bCanChangeEntity)
+}
+
+void AEyeEntityEyeball::HandleActionInput()
+{
+	PossessNewEntity(FoundEntity);
 }
 
 void AEyeEntityEyeball::MakeJump()

@@ -5,6 +5,8 @@
 #include "EyeCharacter.generated.h"
 
 
+// Working on possessing. Do I need an actor, pawn or charadcter?
+// 
 // Create line traces all around the sphere, going in on X-axis. If any of them
 // finds danger zone, start bool that determines timer.
 // If none of them finds danger zone, reset bool and timer.
@@ -31,6 +33,15 @@ protected:
 	float GetJumpHeldTime() const { return JumpHeldTime; }
 	ECollisionChannel GetSafeZone() const { return SafeZone; }
 	ECollisionChannel GetEntityBody() const { return EntityBody; }
+
+	// UPROPERTY(EditDefaultsOnly)
+	// TArray<AActor*> PossessableEntities;
+
+	UPROPERTY(EditDefaultsOnly)
+	ACharacter* EntityEyeball;
+	UPROPERTY(EditDefaultsOnly)
+	ACharacter* EntityHuman;
+	
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MovementSpeed = 10.f;
@@ -45,6 +56,10 @@ protected:
 	virtual void MakeReleaseJump() {}
 	
 	virtual bool CheckIsJumpHeld(float Threshold);
+
+	virtual void PossessNewEntity(AActor* EntityToPossess);
+	void HandleActionInput();
+	void HandleEjectInput();
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -70,10 +85,6 @@ private:
 	virtual void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
 	
-	void HandleActionInput();
-	void HandleEjectInput();
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
-
-

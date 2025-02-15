@@ -16,8 +16,13 @@ private:
 
 	bool bCanChangeEntity = false;
 	bool bIsInDanger = false;
+
+	UPROPERTY()
+	AActor* FoundEntity;
 	
 	void FindOverlap();
+
+	virtual void HandleActionInput();
 
 	virtual void MakeJump() override;
 	virtual void MakeReleaseJump() override;
