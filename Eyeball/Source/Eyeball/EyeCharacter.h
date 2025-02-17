@@ -5,6 +5,10 @@
 #include "EyeCharacter.generated.h"
 
 
+// Add delegate for ejection. Figure spawning. 
+//
+//
+// .
 // Working on possessing. Do I need an actor, pawn or charadcter?
 // 
 // Create line traces all around the sphere, going in on X-axis. If any of them
@@ -12,6 +16,8 @@
 // If none of them finds danger zone, reset bool and timer.
 
 // Make a changed state delegate
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 
 enum EEntityState
 {
@@ -25,6 +31,10 @@ class EYEBALL_API AEyeCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY()
+	FOnCharacterChanged OnCharacterChanged;
+	
 protected:
 	AEyeCharacter();
 
@@ -36,12 +46,6 @@ protected:
 
 	// UPROPERTY(EditDefaultsOnly)
 	// TArray<AActor*> PossessableEntities;
-
-	UPROPERTY(EditDefaultsOnly)
-	ACharacter* EntityEyeball;
-	UPROPERTY(EditDefaultsOnly)
-	ACharacter* EntityHuman;
-	
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MovementSpeed = 10.f;
@@ -54,12 +58,12 @@ protected:
 
 	virtual void MakeJump() {}
 	virtual void MakeReleaseJump() {}
+
+	virtual void HandleActionInput();
 	
 	virtual bool CheckIsJumpHeld(float Threshold);
 
-	virtual void PossessNewEntity(AActor* EntityToPossess);
-	void HandleActionInput();
-	void HandleEjectInput();
+	virtual void PossessNewEntity(AEyeCharacter* EntityToPossess);
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -81,10 +85,11 @@ private:
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
 
-	virtual void HandleJumpInput();
-	virtual void HandleJumpReleased();
+	void HandleJumpInput();
+	void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
 	
+	void HandleEjectInput();
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

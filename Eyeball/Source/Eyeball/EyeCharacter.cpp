@@ -1,4 +1,6 @@
 #include "EyeCharacter.h"
+
+#include "EyeEntityEyeball.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -50,12 +52,16 @@ bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 	return GetJumpHeldTime() > Threshold;
 }
 
-void AEyeCharacter::PossessNewEntity(AActor* EntityToPossess)
+void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 {
 	UE_LOG(LogTemp, Log, TEXT("Possessing %s"), *EntityToPossess->GetName())
+
+	OnCharacterChanged.Broadcast(EntityToPossess);
 	
-	GetController()->UnPossess();
-	GetController()->Possess(EntityToPossess->GetInstigator());
+	// GetController()->UnPossess();
+
+	
+	// GetController()->Possess(EntityToPossess->GetInstigator());
 	/*
 	switch (EntityToPossess)
 	{
@@ -70,18 +76,24 @@ void AEyeCharacter::PossessNewEntity(AActor* EntityToPossess)
 
 void AEyeCharacter::HandleActionInput()
 {
-	UE_LOG(LogTemp, Log, TEXT("HandleActionInput"));
+	// UE_LOG(LogTemp, Log, TEXT("HandleActionInput"));
 }
 
 void AEyeCharacter::HandleEjectInput()
 {
 	UE_LOG(LogTemp, Log, TEXT("HandleEjectInput"));
-	if (GetEntityState() == Ees_Eyeball)
-		return;
-	
-	CurrentEntityState = Ees_Eyeball;
-	GetController()->UnPossess();
-	GetController()->Possess(EntityEyeball);
+	// if (GetEntityState() == Ees_Eyeball)
+	// 	return;
+
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+
+	auto SpawnedEntity = GetWorld()->SpawnActor<AEyeEntityEyeball>(GetActorLocation(), GetActorRotation());
+	// auto SpawnedEye = GetWorld()->SpawnActor
+	// GetController()->UnPossess();
+	GetController()->Possess(SpawnedEntity);
+	// GetController()->Possess
+	// CurrentEntityState = Ees_Eyeball;
 }
 
 void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -103,7 +115,6 @@ void AEyeCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentEntityState = Ees_Eyeball;
-	
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

@@ -12,6 +12,7 @@
       <Filter>Source</Filter>
     </None>
     <None Include="..\..\.vsconfig" />
+    <None Include="..\..\Eyeball.sln.DotSettings.user" />
     <None Include="..\..\global.json" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
@@ -46,10 +47,16 @@
     <ClCompile Include="..\..\Source\Eyeball\EyeCharacter.h">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeEyeBall.cpp">
+    <ClCompile Include="..\..\Source\Eyeball\EyeEntityEyeball.cpp">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeEyeBall.h">
+    <ClCompile Include="..\..\Source\Eyeball\EyeEntityEyeball.h">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeEntityHuman.cpp">
+      <Filter>Source\Eyeball</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\EyeEntityHuman.h">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Eyeball\EyeGameMode.cpp">

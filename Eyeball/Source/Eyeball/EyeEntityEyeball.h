@@ -18,11 +18,13 @@ private:
 	bool bIsInDanger = false;
 
 	UPROPERTY()
-	AActor* FoundEntity;
+	AActor* FoundActor;
+	UPROPERTY()
+	AEyeCharacter* FoundEntity;
 	
 	void FindOverlap();
 
-	virtual void HandleActionInput();
+	virtual void HandleActionInput() override;
 
 	virtual void MakeJump() override;
 	virtual void MakeReleaseJump() override;

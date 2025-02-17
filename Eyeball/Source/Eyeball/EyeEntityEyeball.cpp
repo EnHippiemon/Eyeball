@@ -34,20 +34,21 @@ void AEyeEntityEyeball::FindOverlap()
 		
 		const auto EntityTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, GetEntityBody(), Params, FCollisionResponseParams());
 		EntityTraces[i] = EntityTrace;
+		if (EntityTrace)
+			FoundEntity = Cast<AEyeCharacter>(HitResult.GetActor());
 	}
 
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
-
-	if (bCanChangeEntity)
-		FoundEntity = HitResult.GetActor();
-
-	UE_LOG(LogTemp, Log, TEXT("Safety: %hdd"), bIsInDanger)
-	UE_LOG(LogTemp, Log, TEXT("CanChangeEntity: %hdd"), bCanChangeEntity)
 }
 
 void AEyeEntityEyeball::HandleActionInput()
 {
+	Super::HandleActionInput();
+	
+	if (!bCanChangeEntity || !IsValid(FoundEntity))
+		return;
+
 	PossessNewEntity(FoundEntity);
 }
 
@@ -56,7 +57,6 @@ void AEyeEntityEyeball::MakeJump()
 	Super::MakeJump();
 
 	UE_LOG(LogTemp, Log, TEXT("Jump"));
-
 }
 
 void AEyeEntityEyeball::MakeReleaseJump()
