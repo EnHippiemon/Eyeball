@@ -32,7 +32,6 @@ protected:
 	ECollisionChannel GetSafeZone() const { return SafeZone; }
 	ECollisionChannel GetEntityBody() const { return EntityBody; }
 
-#pragma region Move to data asset
 	UPROPERTY(EditDefaultsOnly)
 	float NormalMovementSpeed = 10.f;
 	UPROPERTY(EditDefaultsOnly)
@@ -44,7 +43,6 @@ protected:
 	FVector JumpDirection = FVector(0, 0, 1);
 	UPROPERTY(EditDefaultsOnly)
 	float JumpForce = 10000.f;
-#pragma endregion 
 
 	int JumpCount = 0;
 	int MaxJumpCount = 1;

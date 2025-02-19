@@ -1,6 +1,6 @@
 #include "EyeCharacter.h"
 
-#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
@@ -48,7 +48,8 @@ void AEyeCharacter::UnPossessed()
 {
 	Super::UnPossessed();
 
-	
+	if (IsValid(GetMesh()))
+		GetMesh()->SetSimulatePhysics(true);
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -138,6 +139,8 @@ void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetCharacterMovement()->bRunPhysicsWithNoController = true;
 }
 
 void AEyeCharacter::Tick(float DeltaTime)
