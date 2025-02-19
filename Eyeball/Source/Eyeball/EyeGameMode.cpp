@@ -16,6 +16,11 @@ void AEyeGameMode::EjectCurrentEntity()
 	GetNewPlayerReference();
 }
 
+void AEyeGameMode::HandlePlayerDeath()
+{
+	UE_LOG(LogTemp, Log, TEXT("DEATH IS UPON YOU"));
+}
+
 void AEyeGameMode::GetNewPlayerReference()
 {
 	PlayerCharacter = Cast<AEyeCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
@@ -25,6 +30,7 @@ void AEyeGameMode::GetNewPlayerReference()
 	{
 		PlayerCharacter->OnCharacterChanged.AddUniqueDynamic(this, &AEyeGameMode::ChangeEntity);
 		PlayerCharacter->OnEject.AddUniqueDynamic(this, &AEyeGameMode::EjectCurrentEntity);
+		PlayerCharacter->OnDeath.AddUniqueDynamic(this, &AEyeGameMode::HandlePlayerDeath);
 	}
 
 	PlayerCharacter->OnSpawned();

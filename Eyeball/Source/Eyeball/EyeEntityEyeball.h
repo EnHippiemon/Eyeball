@@ -16,10 +16,12 @@ private:
 	AEyeEntityEyeball();
 	
 	float PlayerRadius;
-	float TimeInDanger = 0.f;
-
+	
 	bool bCanChangeEntity = false;
+	
 	bool bIsInDanger = false;
+	float TimeInDanger = 0.f;
+	float MaxTimeInDanger = 2.f;
 
 	UPROPERTY()
 	AActor* FoundActor;
@@ -28,11 +30,14 @@ private:
 	
 	void FindOverlap();
 
+	void HandleDanger(float DeltaTime);
+
 	virtual void HandleActionInput() override;
 	virtual void HandleEjectInput() override;
 
 	virtual void MakeJump() override;
 	virtual void MakeReleaseJump() override;
+	virtual void ResetJumpCount() override { }
 
 	virtual void MakeMovement(const float DeltaTime) override;
 

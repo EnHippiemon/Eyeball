@@ -1,10 +1,12 @@
 #include "EyeCharacter.h"
-#include "GameFramework/CharacterMovementComponent.h"
+
+#include "Components/CapsuleComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	// PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
 }
 
 void AEyeCharacter::HandleUpwardsInput(const float Value)
@@ -42,6 +44,13 @@ void AEyeCharacter::JumpHeldTimer(float DeltaTime)
 	JumpHeldTime += DeltaTime;
 }
 
+void AEyeCharacter::UnPossessed()
+{
+	Super::UnPossessed();
+
+	
+}
+
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 {
 	return GetJumpHeldTime() > Threshold;
@@ -57,6 +66,47 @@ void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 void AEyeCharacter::OnSpawned()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnSpawned"));
+}
+
+void AEyeCharacter::Force2DMovement()
+{
+	SetActorLocation(FVector(0, GetActorLocation().Y, GetActorLocation().Z));
+}
+
+void AEyeCharacter::MakeJump()
+{
+	if (JumpCount > MaxJumpCount)
+		return;
+	
+	++JumpCount;
+}
+
+void AEyeCharacter::ResetJumpCount()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	TArray<bool> FloorTraces;
+
+	const FVector TraceOffset = GetActorLocation() + OffsetFloorCheck/*- FVector(0, 0, PlayerRadius)*/;
+	
+	constexpr int TraceAmount = 10;
+	for (int i = 0; i < TraceAmount; ++i)
+	{
+		// Decide trace transform 
+		FVector TraceStart = TraceOffset + RadiusFloorCheck * GetActorForwardVector().RotateAngleAxis(360.f / TraceAmount * i + 1, FVector(0, 0, 1));
+		FVector TraceEnd = TraceStart + FVector(0, 0, LengthFloorCheck);
+		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
+
+		// Look for floor 
+		if (!FloorTraces.IsValidIndex(i))
+			FloorTraces.Add(true);
+		
+		const auto FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, Floor, Params, FCollisionResponseParams());
+		FloorTraces[i] = FloorTrace;
+	}
+
+	JumpCount = FloorTraces.Contains(true) ? 0 : JumpCount;
 }
 
 void AEyeCharacter::HandleActionInput()
@@ -95,4 +145,6 @@ void AEyeCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	JumpHeldTimer(DeltaTime);
+	Force2DMovement();
+	ResetJumpCount();
 }

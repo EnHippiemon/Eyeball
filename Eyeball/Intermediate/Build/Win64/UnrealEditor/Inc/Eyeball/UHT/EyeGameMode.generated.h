@@ -16,6 +16,7 @@ class AEyeCharacter;
 #define EYEBALL_EyeGameMode_generated_h
 
 #define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandlePlayerDeath); \
 	DECLARE_FUNCTION(execEjectCurrentEntity); \
 	DECLARE_FUNCTION(execChangeEntity);
 

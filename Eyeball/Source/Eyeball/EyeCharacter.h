@@ -6,6 +6,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 class UBoxComponent;
 UCLASS()
@@ -18,6 +19,8 @@ public:
 	FOnCharacterChanged OnCharacterChanged;
 	UPROPERTY()
 	FOnEject OnEject;
+	UPROPERTY()
+	FOnDeath OnDeath;
 
 	virtual void OnSpawned();
 	
@@ -28,18 +31,37 @@ protected:
 	float GetJumpHeldTime() const { return JumpHeldTime; }
 	ECollisionChannel GetSafeZone() const { return SafeZone; }
 	ECollisionChannel GetEntityBody() const { return EntityBody; }
-	
+
+#pragma region Move to data asset
 	UPROPERTY(EditDefaultsOnly)
-	float MovementSpeed = 10.f;
+	float NormalMovementSpeed = 10.f;
 	UPROPERTY(EditDefaultsOnly)
 	float MaxTimeInDanger = 1.f;
 	UPROPERTY(EditDefaultsOnly)
 	float HeldJumpThreshold = 1.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	FVector JumpDirection = FVector(0, 0, 1);
+	UPROPERTY(EditDefaultsOnly)
+	float JumpForce = 10000.f;
+#pragma endregion 
+
+	int JumpCount = 0;
+	int MaxJumpCount = 1;
+
+	UPROPERTY(EditAnywhere)
+	float RadiusFloorCheck;
+	UPROPERTY(EditAnywhere)
+	float LengthFloorCheck;
+	UPROPERTY(EditAnywhere)
+	FVector OffsetFloorCheck;
 	
 	virtual void MakeMovement(const float DeltaTime) {}
+	virtual void Force2DMovement();
 
-	virtual void MakeJump() {}
+	virtual void MakeJump();
 	virtual void MakeReleaseJump() {}
+	virtual void ResetJumpCount();
 
 	virtual void HandleActionInput();
 	virtual void HandleEjectInput();
@@ -62,6 +84,10 @@ private:
 	TEnumAsByte<ECollisionChannel> SafeZone;
 	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<ECollisionChannel> EntityBody;
+	// Would be cool to make a character that can walk on other surfaces.
+	// If so, make it protected. 
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ECollisionChannel> Floor;
 	
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
@@ -69,6 +95,7 @@ private:
 	void HandleJumpInput();
 	void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
-	
+
+	virtual void UnPossessed() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

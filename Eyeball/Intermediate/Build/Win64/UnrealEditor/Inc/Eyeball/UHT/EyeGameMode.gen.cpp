@@ -91,6 +91,35 @@ DEFINE_FUNCTION(AEyeGameMode::execEjectCurrentEntity)
 }
 // End Class AEyeGameMode Function EjectCurrentEntity
 
+// Begin Class AEyeGameMode Function HandlePlayerDeath
+struct Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "EyeGameMode.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AEyeGameMode, nullptr, "HandlePlayerDeath", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00040401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath_Statics::Function_MetaDataParams), Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AEyeGameMode::execHandlePlayerDeath)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandlePlayerDeath();
+	P_NATIVE_END;
+}
+// End Class AEyeGameMode Function HandlePlayerDeath
+
 // Begin Class AEyeGameMode
 void AEyeGameMode::StaticRegisterNativesAEyeGameMode()
 {
@@ -98,6 +127,7 @@ void AEyeGameMode::StaticRegisterNativesAEyeGameMode()
 	static const FNameNativePtrPair Funcs[] = {
 		{ "ChangeEntity", &AEyeGameMode::execChangeEntity },
 		{ "EjectCurrentEntity", &AEyeGameMode::execEjectCurrentEntity },
+		{ "HandlePlayerDeath", &AEyeGameMode::execHandlePlayerDeath },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -121,22 +151,10 @@ struct Z_Construct_UClass_AEyeGameMode_Statics
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_EntityHuman_MetaData[] = {
 		{ "Category", "EyeGameMode" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// ACharacter* EntityEyeball;\n" },
-#endif
 		{ "ModuleRelativePath", "EyeGameMode.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "ACharacter* EntityEyeball;" },
-#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PlayerCharacter_MetaData[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// ACharacter* EntityHuman;\n" },
-#endif
 		{ "ModuleRelativePath", "EyeGameMode.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "ACharacter* EntityHuman;" },
-#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Controller_MetaData[] = {
 		{ "ModuleRelativePath", "EyeGameMode.h" },
@@ -151,6 +169,7 @@ struct Z_Construct_UClass_AEyeGameMode_Statics
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AEyeGameMode_ChangeEntity, "ChangeEntity" }, // 1270892266
 		{ &Z_Construct_UFunction_AEyeGameMode_EjectCurrentEntity, "EjectCurrentEntity" }, // 2284524464
+		{ &Z_Construct_UFunction_AEyeGameMode_HandlePlayerDeath, "HandlePlayerDeath" }, // 1197661568
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -210,10 +229,10 @@ AEyeGameMode::~AEyeGameMode() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeGameMode, AEyeGameMode::StaticClass, TEXT("AEyeGameMode"), &Z_Registration_Info_UClass_AEyeGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeGameMode), 3172493685U) },
+		{ Z_Construct_UClass_AEyeGameMode, AEyeGameMode::StaticClass, TEXT("AEyeGameMode"), &Z_Registration_Info_UClass_AEyeGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeGameMode), 1954538999U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_4135020706(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_1728430651(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

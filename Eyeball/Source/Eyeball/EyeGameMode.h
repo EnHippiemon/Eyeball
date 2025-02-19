@@ -28,6 +28,9 @@ private:
 	UFUNCTION()
 	void EjectCurrentEntity();
 
+	UFUNCTION()
+	void HandlePlayerDeath();
+
 	void GetNewPlayerReference();
 	
 	virtual void BeginPlay() override;

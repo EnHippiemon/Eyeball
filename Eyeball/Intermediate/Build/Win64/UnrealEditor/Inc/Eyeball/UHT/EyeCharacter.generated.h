@@ -15,15 +15,19 @@ class AEyeCharacter;
 #endif
 #define EYEBALL_EyeCharacter_generated_h
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_11_DELEGATE \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_7_DELEGATE \
 EYEBALL_API void FOnCharacterChanged_DelegateWrapper(const FMulticastScriptDelegate& OnCharacterChanged, AEyeCharacter* Character);
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_12_DELEGATE \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_8_DELEGATE \
 EYEBALL_API void FOnEject_DelegateWrapper(const FMulticastScriptDelegate& OnEject);
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_18_INCLASS_NO_PURE_DECLS \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_9_DELEGATE \
+EYEBALL_API void FOnDeath_DelegateWrapper(const FMulticastScriptDelegate& OnDeath);
+
+
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEyeCharacter(); \
 	friend struct Z_Construct_UClass_AEyeCharacter_Statics; \
@@ -32,7 +36,7 @@ public: \
 	DECLARE_SERIALIZER(AEyeCharacter)
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_18_ENHANCED_CONSTRUCTORS \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_15_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AEyeCharacter(AEyeCharacter&&); \
@@ -44,12 +48,12 @@ public: \
 	NO_API virtual ~AEyeCharacter();
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_15_PROLOG
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_18_GENERATED_BODY \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_12_PROLOG
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_18_INCLASS_NO_PURE_DECLS \
-	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_18_ENHANCED_CONSTRUCTORS \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_15_INCLASS_NO_PURE_DECLS \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeCharacter_h_15_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
