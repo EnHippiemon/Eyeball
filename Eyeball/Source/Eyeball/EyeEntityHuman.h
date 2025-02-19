@@ -9,7 +9,12 @@ class EYEBALL_API AEyeEntityHuman : public AEyeCharacter
 {
 	GENERATED_BODY()
 
+public:
+	virtual void OnSpawned() override;
+	
 private:
+	AEyeEntityHuman();
+	
 	virtual void MakeMovement(const float DeltaTime) override;
 
 	virtual void BeginPlay() override;

@@ -3,6 +3,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 
+AEyeEntityEyeball::AEyeEntityEyeball()
+{
+	GetCharacterMovement()->GravityScale = 0.f;
+	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
+}
+
 void AEyeEntityEyeball::FindOverlap()
 {
 	FHitResult HitResult;
@@ -52,6 +58,11 @@ void AEyeEntityEyeball::HandleActionInput()
 	PossessNewEntity(FoundEntity);
 }
 
+void AEyeEntityEyeball::HandleEjectInput()
+{
+	UE_LOG(LogTemp, Log, TEXT("Don't eject."));
+}
+
 void AEyeEntityEyeball::MakeJump()
 {
 	Super::MakeJump();
@@ -79,21 +90,21 @@ void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
 	AddMovementInput(OutputMovement);
 }
 
-void AEyeEntityEyeball::BeginPlay()
+void AEyeEntityEyeball::OnSpawned()
 {
-	Super::BeginPlay();
-
-	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
-
 	SetActorLocation(FVector(0, GetActorLocation().Y, GetActorLocation().Z));
 	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 }
 
+void AEyeEntityEyeball::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OnSpawned();
+}
+
 void AEyeEntityEyeball::Tick(float DeltaTime)
 {
-	if (GetEntityState() != Ees_Eyeball)
-		return;
-	
 	Super::Tick(DeltaTime);
 
 	FindOverlap();

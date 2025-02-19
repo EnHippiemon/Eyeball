@@ -5,14 +5,29 @@
 void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 {
 	Controller->Possess(Character);
+	GetWorld()->DestroyActor(PlayerCharacter);
+	GetNewPlayerReference();
 }
 
 void AEyeGameMode::EjectCurrentEntity()
 {
-	FActorSpawnParameters SpawnParameters;
-	auto SpawnedEntity = GetWorld()->SpawnActor<AEyeEntityEyeball>(
-		PlayerCharacter->GetActorLocation(), PlayerCharacter->GetActorRotation(), SpawnParameters);
-	Controller->Possess(SpawnedEntity);
+	auto SpawnEyeBall = GetWorld()->SpawnActor<ACharacter>(EntityEyeball, PlayerCharacter->GetTransform());
+	Controller->Possess(SpawnEyeBall);
+	GetNewPlayerReference();
+}
+
+void AEyeGameMode::GetNewPlayerReference()
+{
+	PlayerCharacter = Cast<AEyeCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (!IsValid(PlayerCharacter))
+		{ UE_LOG(LogTemp, Error, TEXT("EyeGameMode.cpp: No valid player character.")); }
+	else
+	{
+		PlayerCharacter->OnCharacterChanged.AddUniqueDynamic(this, &AEyeGameMode::ChangeEntity);
+		PlayerCharacter->OnEject.AddUniqueDynamic(this, &AEyeGameMode::EjectCurrentEntity);
+	}
+
+	PlayerCharacter->OnSpawned();
 }
 
 void AEyeGameMode::BeginPlay()
@@ -22,10 +37,6 @@ void AEyeGameMode::BeginPlay()
 	Controller = GetWorld()->GetFirstPlayerController();
 	if (!IsValid(Controller))
 		UE_LOG(LogTemp, Error, TEXT("EyeGameMode.cpp: No valid player controller."));
-	
-	PlayerCharacter = Cast<AEyeCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (!IsValid(PlayerCharacter))
-		UE_LOG(LogTemp, Error, TEXT("EyeGameMode.cpp: No valid player character."));
-	if (IsValid(PlayerCharacter))
-		PlayerCharacter->OnCharacterChanged.AddUniqueDynamic(this, &AEyeGameMode::ChangeEntity);
+
+	GetNewPlayerReference();
 }

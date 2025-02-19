@@ -1,14 +1,10 @@
 #include "EyeCharacter.h"
-
-#include "EyeEntityEyeball.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	GetCharacterMovement()->GravityScale = 0;
 }
 
 void AEyeCharacter::HandleUpwardsInput(const float Value)
@@ -20,7 +16,6 @@ void AEyeCharacter::HandleSidewaysInput(const float Value)
 {
 	MovementInput.X = Value;
 }
-
 
 void AEyeCharacter::HandleJumpInput()
 {
@@ -57,21 +52,11 @@ void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 	UE_LOG(LogTemp, Log, TEXT("Possessing %s"), *EntityToPossess->GetName())
 
 	OnCharacterChanged.Broadcast(EntityToPossess);
-	
-	// GetController()->UnPossess();
+}
 
-	
-	// GetController()->Possess(EntityToPossess->GetInstigator());
-	/*
-	switch (EntityToPossess)
-	{
-	case EntityHuman:
-		GetController()->Possess(EntityHuman);
-		break;
-	default:
-		GetController()->Possess(EntityEyeball);
-	}
-	*/
+void AEyeCharacter::OnSpawned()
+{
+	UE_LOG(LogTemp, Log, TEXT("OnSpawned"));
 }
 
 void AEyeCharacter::HandleActionInput()
@@ -82,18 +67,8 @@ void AEyeCharacter::HandleActionInput()
 void AEyeCharacter::HandleEjectInput()
 {
 	UE_LOG(LogTemp, Log, TEXT("HandleEjectInput"));
-	// if (GetEntityState() == Ees_Eyeball)
-	// 	return;
 
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.Owner = this;
-
-	auto SpawnedEntity = GetWorld()->SpawnActor<AEyeEntityEyeball>(GetActorLocation(), GetActorRotation());
-	// auto SpawnedEye = GetWorld()->SpawnActor
-	// GetController()->UnPossess();
-	GetController()->Possess(SpawnedEntity);
-	// GetController()->Possess
-	// CurrentEntityState = Ees_Eyeball;
+	OnEject.Broadcast();
 }
 
 void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -113,8 +88,6 @@ void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	CurrentEntityState = Ees_Eyeball;
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

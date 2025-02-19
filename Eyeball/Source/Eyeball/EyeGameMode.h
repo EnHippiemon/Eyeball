@@ -13,13 +13,12 @@ class EYEBALL_API AEyeGameMode : public AGameModeBase
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	ACharacter* EntityEyeball;
+	TSubclassOf<ACharacter> EntityEyeball;
 	UPROPERTY(EditDefaultsOnly)
-	ACharacter* EntityHuman;
+	TSubclassOf<ACharacter> EntityHuman;
 
 	UPROPERTY()
 	AEyeCharacter* PlayerCharacter;
-	
 	UPROPERTY()
 	AController* Controller;
 
@@ -28,6 +27,8 @@ private:
 
 	UFUNCTION()
 	void EjectCurrentEntity();
+
+	void GetNewPlayerReference();
 	
 	virtual void BeginPlay() override;
 };

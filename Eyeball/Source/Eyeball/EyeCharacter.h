@@ -4,26 +4,8 @@
 #include "GameFramework/Character.h"
 #include "EyeCharacter.generated.h"
 
-
-// Add delegate for ejection. Figure spawning. 
-//
-//
-// .
-// Working on possessing. Do I need an actor, pawn or charadcter?
-// 
-// Create line traces all around the sphere, going in on X-axis. If any of them
-// finds danger zone, start bool that determines timer.
-// If none of them finds danger zone, reset bool and timer.
-
-// Make a changed state delegate
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
-
-enum EEntityState
-{
-	Ees_Eyeball,
-	Ees_Human
-};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
 
 class UBoxComponent;
 UCLASS()
@@ -34,18 +16,18 @@ class EYEBALL_API AEyeCharacter : public ACharacter
 public:
 	UPROPERTY()
 	FOnCharacterChanged OnCharacterChanged;
+	UPROPERTY()
+	FOnEject OnEject;
+
+	virtual void OnSpawned();
 	
 protected:
 	AEyeCharacter();
 
 	FVector GetMovementInput() const { return MovementInput; }
-	EEntityState GetEntityState() const { return CurrentEntityState; }
 	float GetJumpHeldTime() const { return JumpHeldTime; }
 	ECollisionChannel GetSafeZone() const { return SafeZone; }
 	ECollisionChannel GetEntityBody() const { return EntityBody; }
-
-	// UPROPERTY(EditDefaultsOnly)
-	// TArray<AActor*> PossessableEntities;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MovementSpeed = 10.f;
@@ -60,6 +42,7 @@ protected:
 	virtual void MakeReleaseJump() {}
 
 	virtual void HandleActionInput();
+	virtual void HandleEjectInput();
 	
 	virtual bool CheckIsJumpHeld(float Threshold);
 
@@ -80,16 +63,12 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TEnumAsByte<ECollisionChannel> EntityBody;
 	
-	EEntityState CurrentEntityState;
-	
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
 
 	void HandleJumpInput();
 	void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
-	
-	void HandleEjectInput();
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

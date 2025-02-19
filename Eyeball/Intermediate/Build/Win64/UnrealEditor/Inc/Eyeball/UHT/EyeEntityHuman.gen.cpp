@@ -72,7 +72,6 @@ template<> EYEBALL_API UClass* StaticClass<AEyeEntityHuman>()
 {
 	return AEyeEntityHuman::StaticClass();
 }
-AEyeEntityHuman::AEyeEntityHuman() {}
 DEFINE_VTABLE_PTR_HELPER_CTOR(AEyeEntityHuman);
 AEyeEntityHuman::~AEyeEntityHuman() {}
 // End Class AEyeEntityHuman
@@ -81,10 +80,10 @@ AEyeEntityHuman::~AEyeEntityHuman() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeEntityHuman, AEyeEntityHuman::StaticClass, TEXT("AEyeEntityHuman"), &Z_Registration_Info_UClass_AEyeEntityHuman, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityHuman), 1830455505U) },
+		{ Z_Construct_UClass_AEyeEntityHuman, AEyeEntityHuman::StaticClass, TEXT("AEyeEntityHuman"), &Z_Registration_Info_UClass_AEyeEntityHuman, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityHuman), 3911569607U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_1935179043(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_1913555332(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

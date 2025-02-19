@@ -24,8 +24,6 @@ public: \
 
 
 #define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_10_ENHANCED_CONSTRUCTORS \
-	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API AEyeEntityHuman(); \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AEyeEntityHuman(AEyeEntityHuman&&); \
