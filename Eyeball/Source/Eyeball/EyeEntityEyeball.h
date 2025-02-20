@@ -29,9 +29,7 @@ private:
 	AEyeCharacter* FoundEntity;
 	
 	void FindOverlap();
-
-	void HandleDanger(float DeltaTime);
-
+	
 	virtual void HandleActionInput() override;
 	virtual void HandleEjectInput() override;
 

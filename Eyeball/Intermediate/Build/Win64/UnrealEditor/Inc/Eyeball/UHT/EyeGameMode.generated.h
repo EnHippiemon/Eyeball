@@ -16,6 +16,7 @@ class AEyeCharacter;
 #define EYEBALL_EyeGameMode_generated_h
 
 #define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleDangerChange); \
 	DECLARE_FUNCTION(execHandlePlayerDeath); \
 	DECLARE_FUNCTION(execEjectCurrentEntity); \
 	DECLARE_FUNCTION(execChangeEntity);
@@ -31,8 +32,6 @@ public: \
 
 
 #define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_12_ENHANCED_CONSTRUCTORS \
-	/** Standard constructor, called after all reflected properties have been initialized */ \
-	NO_API AEyeGameMode(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AEyeGameMode(AEyeGameMode&&); \
@@ -40,7 +39,7 @@ private: \
 public: \
 	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, AEyeGameMode); \
 	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(AEyeGameMode); \
-	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AEyeGameMode) \
+	DEFINE_DEFAULT_CONSTRUCTOR_CALL(AEyeGameMode) \
 	NO_API virtual ~AEyeGameMode();
 
 

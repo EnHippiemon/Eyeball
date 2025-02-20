@@ -8,6 +8,7 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeEyeball_init() {}
 	EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnCharacterChanged__DelegateSignature();
+	EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnDangerChanged__DelegateSignature();
 	EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature();
 	EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnEject__DelegateSignature();
 	static FPackageRegistrationInfo Z_Registration_Info_UPackage__Script_Eyeball;
@@ -17,6 +18,7 @@ void EmptyLinkFunctionForGeneratedCodeEyeball_init() {}
 		{
 			static UObject* (*const SingletonFuncArray[])() = {
 				(UObject* (*)())Z_Construct_UDelegateFunction_Eyeball_OnCharacterChanged__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_Eyeball_OnDangerChanged__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Eyeball_OnEject__DelegateSignature,
 			};
@@ -25,13 +27,13 @@ void EmptyLinkFunctionForGeneratedCodeEyeball_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xBD110960,
-				0x77E8EC35,
+				0x1357F74C,
+				0x37B39491,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_Eyeball.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_Eyeball.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Eyeball(Z_Construct_UPackage__Script_Eyeball, TEXT("/Script/Eyeball"), Z_Registration_Info_UPackage__Script_Eyeball, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xBD110960, 0x77E8EC35));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Eyeball(Z_Construct_UPackage__Script_Eyeball, TEXT("/Script/Eyeball"), Z_Registration_Info_UPackage__Script_Eyeball, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x1357F74C, 0x37B39491));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

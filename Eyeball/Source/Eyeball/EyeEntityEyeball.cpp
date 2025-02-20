@@ -6,7 +6,6 @@
 AEyeEntityEyeball::AEyeEntityEyeball()
 {
 	GetCharacterMovement()->GravityScale = 0.f;
-	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
 }
 
 void AEyeEntityEyeball::FindOverlap()
@@ -49,23 +48,7 @@ void AEyeEntityEyeball::FindOverlap()
 
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
-}
-
-void AEyeEntityEyeball::HandleDanger(float DeltaTime)
-{
-	if (!bIsInDanger)
-	{
-		TimeInDanger = 0.f;
-		return;
-	}
-
-	TimeInDanger += DeltaTime;
-	UE_LOG(LogTemp, Log, TEXT("Time in danger: %f"), TimeInDanger);
-
-	if (TimeInDanger < MaxTimeInDanger)
-		return;
-
-	OnDeath.Broadcast();
+	OnDangerChanged.Broadcast(bIsInDanger, TimeDilationDanger, MaxTimeInDanger);
 }
 
 void AEyeEntityEyeball::HandleActionInput()
@@ -115,6 +98,7 @@ void AEyeEntityEyeball::OnSpawned()
 
 	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
 	GetCharacterMovement()->MaxFlySpeed = NormalMovementSpeed;
+	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
 }
 
 void AEyeEntityEyeball::BeginPlay()
@@ -130,5 +114,4 @@ void AEyeEntityEyeball::Tick(float DeltaTime)
 
 	FindOverlap();
 	MakeMovement(DeltaTime);
-	HandleDanger(DeltaTime);
 }

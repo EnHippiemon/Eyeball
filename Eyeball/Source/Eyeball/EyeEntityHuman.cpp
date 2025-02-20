@@ -21,7 +21,7 @@ void AEyeEntityHuman::MakeJump()
 {
 	Super::MakeJump();
 
-	if (JumpCount > MaxJumpCount)
+	if (!GetIsOnFloor() || GetJumpCount() > MaxJumpCount)
 		return;
 	
 	GetCharacterMovement()->AddImpulse(JumpDirection * JumpForce);

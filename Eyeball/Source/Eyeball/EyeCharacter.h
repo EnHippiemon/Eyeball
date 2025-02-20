@@ -6,7 +6,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDangerChanged, bool, IsInDanger, float, TimeDilationAmount, float, MaxDangerTime);
 
 class UBoxComponent;
 UCLASS()
@@ -20,39 +20,51 @@ public:
 	UPROPERTY()
 	FOnEject OnEject;
 	UPROPERTY()
-	FOnDeath OnDeath;
+	FOnDangerChanged OnDangerChanged;
 
 	virtual void OnSpawned();
 	
 protected:
 	AEyeCharacter();
 
-	FVector GetMovementInput() const { return MovementInput; }
-	float GetJumpHeldTime() const { return JumpHeldTime; }
-	ECollisionChannel GetSafeZone() const { return SafeZone; }
-	ECollisionChannel GetEntityBody() const { return EntityBody; }
+	/* Getters */
+		FVector GetMovementInput() const { return MovementInput; }
+		float GetJumpHeldTime() const { return JumpHeldTime; }
+		ECollisionChannel GetSafeZone() const { return SafeZone; }
+		ECollisionChannel GetEntityBody() const { return EntityBody; }
+		int GetJumpCount() const { return JumpCount; }
+		bool GetIsOnFloor() const { return bIsOnFloor; }
 
-	UPROPERTY(EditDefaultsOnly)
-	float NormalMovementSpeed = 10.f;
-	UPROPERTY(EditDefaultsOnly)
-	float MaxTimeInDanger = 1.f;
-	UPROPERTY(EditDefaultsOnly)
-	float HeldJumpThreshold = 1.f;
+	/* Movement */
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
+		float NormalMovementSpeed = 10.f;
 
-	UPROPERTY(EditDefaultsOnly)
-	FVector JumpDirection = FVector(0, 0, 1);
-	UPROPERTY(EditDefaultsOnly)
-	float JumpForce = 10000.f;
+	/* Danger */
+		UPROPERTY(EditDefaultsOnly, Category="Danger")
+		float MaxTimeInDanger = 1.f;
+		UPROPERTY(EditDefaultsOnly, Category="Danger")
+		float TimeDilationDanger = 0.2f;
 
-	int JumpCount = 0;
-	int MaxJumpCount = 1;
+	/* Jump */
+		UPROPERTY(EditDefaultsOnly, Category="Jump")
+		float HeldJumpThreshold = 1.f;
+		UPROPERTY(EditDefaultsOnly, Category="Jump")
+		FVector JumpDirection = FVector(0, 0, 1);
+		UPROPERTY(EditDefaultsOnly, Category="Jump")
+		float JumpForce = 10000.f;
+		UPROPERTY(EditDefaultsOnly, Category="Jump")
+		int MaxJumpCount = 1;
+		
+		UPROPERTY(EditAnywhere, Category="Jump")
+		float RadiusFloorCheck;
+		UPROPERTY(EditAnywhere, Category="Jump")
+		float LengthFloorCheck;
+		UPROPERTY(EditAnywhere, Category="Jump")
+		FVector OffsetFloorCheck;
 
-	UPROPERTY(EditAnywhere)
-	float RadiusFloorCheck;
-	UPROPERTY(EditAnywhere)
-	float LengthFloorCheck;
-	UPROPERTY(EditAnywhere)
-	FVector OffsetFloorCheck;
+	/* Positioning */
+		UPROPERTY(EditDefaultsOnly, Category="Positioning")
+		FVector OffsetActorPlacement = FVector(0, 0, 0);
 	
 	virtual void MakeMovement(const float DeltaTime) {}
 	virtual void Force2DMovement();
@@ -77,14 +89,16 @@ private:
 	bool bJumpDepressed = false;
 	bool bJumpHeld = false;
 	float JumpHeldTime = 0.f;
+	int JumpCount = 0;
+	bool bIsOnFloor = false;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Collision")
 	TEnumAsByte<ECollisionChannel> SafeZone;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Collision")
 	TEnumAsByte<ECollisionChannel> EntityBody;
 	// Would be cool to make a character that can walk on other surfaces.
 	// If so, make it protected. 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Collision")
 	TEnumAsByte<ECollisionChannel> Floor;
 	
 	void HandleUpwardsInput(float Value);

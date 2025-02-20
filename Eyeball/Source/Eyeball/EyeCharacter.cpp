@@ -6,7 +6,6 @@
 AEyeCharacter::AEyeCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	// PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
 }
 
 void AEyeCharacter::HandleUpwardsInput(const float Value)
@@ -71,7 +70,7 @@ void AEyeCharacter::OnSpawned()
 
 void AEyeCharacter::Force2DMovement()
 {
-	SetActorLocation(FVector(0, GetActorLocation().Y, GetActorLocation().Z));
+	SetActorLocation(FVector(OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
 void AEyeCharacter::MakeJump()
@@ -108,6 +107,7 @@ void AEyeCharacter::ResetJumpCount()
 	}
 
 	JumpCount = FloorTraces.Contains(true) ? 0 : JumpCount;
+	bIsOnFloor = FloorTraces.Contains(true);
 }
 
 void AEyeCharacter::HandleActionInput()
