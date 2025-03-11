@@ -74,5 +74,14 @@
     <ClCompile Include="..\..\Source\Eyeball\DataAssets\EyeCharacterDataAsset.h">
       <Filter>Source\Eyeball\DataAssets</Filter>
     </ClCompile>
+    <Filter Include="Source\Eyeball\Entities">
+      <UniqueIdentifier>{506A9E4B-0E4A-3E39-8B0A-FAFBC16A40D9}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityGrasshopper.cpp">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityGrasshopper.h">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
