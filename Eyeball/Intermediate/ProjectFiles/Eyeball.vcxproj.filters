@@ -65,5 +65,14 @@
     <ClCompile Include="..\..\Source\Eyeball\EyeGameMode.h">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
+    <Filter Include="Source\Eyeball\DataAssets">
+      <UniqueIdentifier>{E34B863D-43B8-30E4-9B91-95EDA3783CC5}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Eyeball\DataAssets\EyeCharacterDataAsset.cpp">
+      <Filter>Source\Eyeball\DataAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\DataAssets\EyeCharacterDataAsset.h">
+      <Filter>Source\Eyeball\DataAssets</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

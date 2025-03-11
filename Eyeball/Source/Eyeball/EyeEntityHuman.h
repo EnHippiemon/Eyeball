@@ -18,7 +18,7 @@ private:
 	virtual void MakeMovement(const float DeltaTime) override;
 
 	virtual void MakeJump() override;
-
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };

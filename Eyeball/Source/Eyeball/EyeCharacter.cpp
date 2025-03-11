@@ -2,6 +2,7 @@
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 
 AEyeCharacter::AEyeCharacter()
 {
@@ -70,12 +71,12 @@ void AEyeCharacter::OnSpawned()
 
 void AEyeCharacter::Force2DMovement()
 {
-	SetActorLocation(FVector(OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
+	SetActorLocation(FVector(EntityData->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
 void AEyeCharacter::MakeJump()
 {
-	if (JumpCount > MaxJumpCount)
+	if (JumpCount > EntityData->MaxJumpCount)
 		return;
 	
 	++JumpCount;
@@ -88,21 +89,21 @@ void AEyeCharacter::ResetJumpCount()
 	Params.AddIgnoredActor(this);
 	TArray<bool> FloorTraces;
 
-	const FVector TraceOffset = GetActorLocation() + OffsetFloorCheck/*- FVector(0, 0, PlayerRadius)*/;
+	const FVector TraceOffset = GetActorLocation() + EntityData->OffsetFloorCheck;
 	
 	constexpr int TraceAmount = 10;
 	for (int i = 0; i < TraceAmount; ++i)
 	{
 		// Decide trace transform 
-		FVector TraceStart = TraceOffset + RadiusFloorCheck * GetActorForwardVector().RotateAngleAxis(360.f / TraceAmount * i + 1, FVector(0, 0, 1));
-		FVector TraceEnd = TraceStart + FVector(0, 0, LengthFloorCheck);
+		FVector TraceStart = TraceOffset + EntityData->RadiusFloorCheck * GetActorForwardVector().RotateAngleAxis(360.f / TraceAmount * i + 1, FVector(0, 0, 1));
+		FVector TraceEnd = TraceStart + FVector(0, 0, EntityData->LengthFloorCheck);
 		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
 
 		// Look for floor 
 		if (!FloorTraces.IsValidIndex(i))
 			FloorTraces.Add(true);
 		
-		const auto FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, Floor, Params, FCollisionResponseParams());
+		const auto FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, EntityData->Floor, Params, FCollisionResponseParams());
 		FloorTraces[i] = FloorTrace;
 	}
 

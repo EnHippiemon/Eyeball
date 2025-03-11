@@ -1,10 +1,16 @@
 #include "EyeEntityEyeball.h"
 
 #include "Components/CapsuleComponent.h"
+#include "DataAssets/EyeCharacterDataAsset.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 
 AEyeEntityEyeball::AEyeEntityEyeball()
 {
+	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(TEXT("/Game/Characters/Player/DataAssets/Eyeball_DataAsset"));
+	if (EntityDataAsset.Object)
+		EntityData = EntityDataAsset.Object;
+
 	GetCharacterMovement()->GravityScale = 0.f;
 }
 
@@ -48,7 +54,7 @@ void AEyeEntityEyeball::FindOverlap()
 
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
-	OnDangerChanged.Broadcast(bIsInDanger, TimeDilationDanger, MaxTimeInDanger);
+	OnDangerChanged.Broadcast(bIsInDanger, EntityData->TimeDilationDanger, EntityData->MaxTimeInDanger);
 }
 
 void AEyeEntityEyeball::HandleActionInput()
@@ -68,25 +74,25 @@ void AEyeEntityEyeball::HandleEjectInput()
 
 void AEyeEntityEyeball::MakeJump()
 {
-	GetCharacterMovement()->MaxFlySpeed = JumpForce;
+	GetCharacterMovement()->MaxFlySpeed = EntityData->JumpForce;
 }
 
 void AEyeEntityEyeball::MakeReleaseJump()
 {
 	Super::MakeReleaseJump();
 
-	GetCharacterMovement()->MaxFlySpeed = NormalMovementSpeed;
+	GetCharacterMovement()->MaxFlySpeed = EntityData->NormalMovementSpeed;
 	UE_LOG(LogTemp, Log, TEXT("Don't jump"));
 
 	// CheckIsJumpHeld(JumpHoldTime);
-	UE_LOG(LogTemp, Log, TEXT("Long jump: %hhd"), CheckIsJumpHeld(HeldJumpThreshold));
+	UE_LOG(LogTemp, Log, TEXT("Long jump: %hhd"), CheckIsJumpHeld(EntityData->HeldJumpThreshold));
 }
 
 void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * NormalMovementSpeed * DeltaTime;
+	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * EntityData->NormalMovementSpeed * DeltaTime;
 	OutputMovement.Normalize();
 
 	AddMovementInput(OutputMovement);
@@ -97,7 +103,7 @@ void AEyeEntityEyeball::OnSpawned()
 	Super::OnSpawned();
 
 	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
-	GetCharacterMovement()->MaxFlySpeed = NormalMovementSpeed;
+	GetCharacterMovement()->MaxFlySpeed = EntityData->NormalMovementSpeed;
 	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
 }
 

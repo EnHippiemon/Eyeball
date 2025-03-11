@@ -27,7 +27,7 @@ private:
 	AActor* FoundActor;
 	UPROPERTY()
 	AEyeCharacter* FoundEntity;
-	
+
 	void FindOverlap();
 	
 	virtual void HandleActionInput() override;
