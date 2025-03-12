@@ -1,6 +1,5 @@
 #include "EyeCharacter.h"
 
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 
@@ -48,8 +47,7 @@ void AEyeCharacter::UnPossessed()
 {
 	Super::UnPossessed();
 
-	// if (IsValid(GetMesh()))
-	// 	GetMesh()->SetSimulatePhysics(true);
+	bIsUnPossessed = true;
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -67,6 +65,7 @@ void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 void AEyeCharacter::OnSpawned()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnSpawned"));
+	bIsUnPossessed = false;
 }
 
 void AEyeCharacter::Force2DMovement()
@@ -148,6 +147,9 @@ void AEyeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsUnPossessed)
+		return;
+	
 	JumpHeldTimer(DeltaTime);
 	Force2DMovement();
 	ResetJumpCount();

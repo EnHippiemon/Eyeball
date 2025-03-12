@@ -39,6 +39,7 @@ protected:
 		ECollisionChannel GetEntityBody() const { return EntityData->EntityBody; }
 
 	float CurrentMovementSpeed;
+	bool bIsUnPossessed;
 	
 	virtual void MakeMovement(const float DeltaTime) {}
 	virtual void Force2DMovement();

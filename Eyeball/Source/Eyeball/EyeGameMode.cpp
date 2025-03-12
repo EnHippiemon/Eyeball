@@ -31,6 +31,8 @@ void AEyeGameMode::HandleDangerChange(bool IsInDanger, float TimeDilationAmount,
 {
 	if (bIsInDanger == IsInDanger)
 		return;
+
+	// UE_LOG(LogTemp, Log, TEXT("DANGER"));
 	
 	bIsInDanger = IsInDanger;
 	MaxTimeInDanger = MaxDangerTime;

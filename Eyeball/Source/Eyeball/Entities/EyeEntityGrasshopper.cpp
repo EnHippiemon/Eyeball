@@ -18,10 +18,10 @@ void AEyeEntityGrasshopper::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 	
-	auto OutputMovement = FVector(0, GetMovementInput().X, 0) * DeltaTime;
+	auto OutputMovement = FVector(0, GetMovementInput().X, 0) ;
 	OutputMovement.Normalize();
 	
-	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed;
+	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 
@@ -65,6 +65,9 @@ void AEyeEntityGrasshopper::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsUnPossessed)
+		return;
+	
 	MakeMovement(DeltaTime);
 	DecideMovementSpeed();
 }

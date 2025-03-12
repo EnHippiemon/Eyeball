@@ -90,10 +90,10 @@ void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * DeltaTime;
+	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y);
 	OutputMovement.Normalize();
 	
-	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed;
+	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 
@@ -116,6 +116,9 @@ void AEyeEntityEyeball::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsUnPossessed)
+		return;
+	
 	FindOverlap();
 	MakeMovement(DeltaTime);
 }
