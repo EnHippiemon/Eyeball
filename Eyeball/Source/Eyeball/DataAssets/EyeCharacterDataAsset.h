@@ -13,6 +13,9 @@ public:
 	/* Movement */
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float NormalMovementSpeed = 10.f;
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
+		float HighMovementSpeed = 200.f;
+		
 
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")

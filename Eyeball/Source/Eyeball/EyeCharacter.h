@@ -31,11 +31,12 @@ protected:
 
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
+		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
-		ECollisionChannel GetSafeZone() const { return EntityData->SafeZone; }
-		ECollisionChannel GetEntityBody() const { return EntityData->EntityBody; }
 		int GetJumpCount() const { return JumpCount; }
 		bool GetIsOnFloor() const { return bIsOnFloor; }
+		ECollisionChannel GetSafeZone() const { return EntityData->SafeZone; }
+		ECollisionChannel GetEntityBody() const { return EntityData->EntityBody; }
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
 	UEyeCharacterDataAsset* EntityData;

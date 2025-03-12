@@ -13,11 +13,24 @@ AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 void AEyeEntityGrasshopper::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
-
-	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * EntityData->NormalMovementSpeed * DeltaTime;
+	
+	auto OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * DeltaTime;
 	OutputMovement.Normalize();
 	
 	AddMovementInput(OutputMovement);
+}
+
+void AEyeEntityGrasshopper::DecideMovementSpeed() const
+{
+	float MovementSpeed;
+	if (!GetIsOnFloor())
+		MovementSpeed = EntityData->HighMovementSpeed;
+	else if (GetJumpDepressed())
+		MovementSpeed = 0.f;
+	else
+		MovementSpeed = EntityData->NormalMovementSpeed;
+
+	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
 }
 
 void AEyeEntityGrasshopper::MakeReleaseJump()
@@ -51,4 +64,5 @@ void AEyeEntityGrasshopper::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	MakeMovement(DeltaTime);
+	DecideMovementSpeed();
 }

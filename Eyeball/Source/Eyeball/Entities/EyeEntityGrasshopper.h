@@ -13,8 +13,8 @@ private:
 	AEyeEntityGrasshopper();
 	
 	virtual void MakeMovement(const float DeltaTime) override;
+	void DecideMovementSpeed() const;
 
-	// virtual void MakeJump() override;
 	virtual void MakeReleaseJump() override;
 
 public:

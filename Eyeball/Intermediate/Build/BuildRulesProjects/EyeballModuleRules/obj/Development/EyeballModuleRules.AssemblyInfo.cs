@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EyeballModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+104c73d41bcbd6993a510c11018a6e15749a1c0f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46bb401447171dc0069933741a6dfaf9f31f6a21")]
 [assembly: System.Reflection.AssemblyProductAttribute("EyeballModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EyeballModuleRules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
