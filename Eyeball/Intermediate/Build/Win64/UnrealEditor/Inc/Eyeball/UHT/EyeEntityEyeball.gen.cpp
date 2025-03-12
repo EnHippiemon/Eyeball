@@ -11,6 +11,7 @@ void EmptyLinkFunctionForGeneratedCodeEyeEntityEyeball() {}
 
 // Begin Cross Module References
 ENGINE_API UClass* Z_Construct_UClass_AActor_NoRegister();
+ENGINE_API UClass* Z_Construct_UClass_USphereComponent_NoRegister();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeCharacter();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeCharacter_NoRegister();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeEntityEyeball();
@@ -41,9 +42,15 @@ struct Z_Construct_UClass_AEyeEntityEyeball_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FoundEntity_MetaData[] = {
 		{ "ModuleRelativePath", "EyeEntityEyeball.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SphereComponent_MetaData[] = {
+		{ "Category", "EyeEntityEyeball" },
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "EyeEntityEyeball.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FoundActor;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FoundEntity;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_SphereComponent;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -53,9 +60,11 @@ struct Z_Construct_UClass_AEyeEntityEyeball_Statics
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeEntityEyeball_Statics::NewProp_FoundActor = { "FoundActor", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeEntityEyeball, FoundActor), Z_Construct_UClass_AActor_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FoundActor_MetaData), NewProp_FoundActor_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeEntityEyeball_Statics::NewProp_FoundEntity = { "FoundEntity", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeEntityEyeball, FoundEntity), Z_Construct_UClass_AEyeCharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FoundEntity_MetaData), NewProp_FoundEntity_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeEntityEyeball_Statics::NewProp_SphereComponent = { "SphereComponent", nullptr, (EPropertyFlags)0x00400000000a0009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeEntityEyeball, SphereComponent), Z_Construct_UClass_USphereComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SphereComponent_MetaData), NewProp_SphereComponent_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEyeEntityEyeball_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeEntityEyeball_Statics::NewProp_FoundActor,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeEntityEyeball_Statics::NewProp_FoundEntity,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeEntityEyeball_Statics::NewProp_SphereComponent,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AEyeEntityEyeball_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AEyeEntityEyeball_Statics::DependentSingletons[])() = {
@@ -98,10 +107,10 @@ AEyeEntityEyeball::~AEyeEntityEyeball() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeEntityEyeball, AEyeEntityEyeball::StaticClass, TEXT("AEyeEntityEyeball"), &Z_Registration_Info_UClass_AEyeEntityEyeball, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityEyeball), 892521072U) },
+		{ Z_Construct_UClass_AEyeEntityEyeball, AEyeEntityEyeball::StaticClass, TEXT("AEyeEntityEyeball"), &Z_Registration_Info_UClass_AEyeEntityEyeball, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityEyeball), 2265951291U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_2645096884(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_3751830128(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityEyeball_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

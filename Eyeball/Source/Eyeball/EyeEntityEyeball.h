@@ -4,6 +4,8 @@
 #include "EyeCharacter.h"
 #include "EyeEntityEyeball.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class EYEBALL_API AEyeEntityEyeball : public AEyeCharacter
 {
@@ -41,4 +43,7 @@ private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* SphereComponent;
 };

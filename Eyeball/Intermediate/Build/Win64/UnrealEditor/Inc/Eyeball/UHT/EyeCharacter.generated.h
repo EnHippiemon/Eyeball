@@ -32,7 +32,7 @@ private: \
 	static void StaticRegisterNativesAEyeCharacter(); \
 	friend struct Z_Construct_UClass_AEyeCharacter_Statics; \
 public: \
-	DECLARE_CLASS(AEyeCharacter, ACharacter, COMPILED_IN_FLAGS(0 | CLASS_Config), CASTCLASS_None, TEXT("/Script/Eyeball"), NO_API) \
+	DECLARE_CLASS(AEyeCharacter, APawn, COMPILED_IN_FLAGS(0 | CLASS_Config), CASTCLASS_None, TEXT("/Script/Eyeball"), NO_API) \
 	DECLARE_SERIALIZER(AEyeCharacter)
 
 

@@ -21,4 +21,7 @@ private:
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere)
+	UCapsuleComponent* Capsule;
 };

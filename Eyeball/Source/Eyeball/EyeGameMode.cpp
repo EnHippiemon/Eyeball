@@ -17,7 +17,7 @@ void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 
 void AEyeGameMode::EjectCurrentEntity()
 {
-	auto SpawnEyeBall = GetWorld()->SpawnActor<ACharacter>(EntityEyeball, PlayerCharacter->GetTransform());
+	auto SpawnEyeBall = GetWorld()->SpawnActor<APawn>(EntityEyeball, PlayerCharacter->GetTransform());
 	Controller->Possess(SpawnEyeBall);
 	GetNewPlayerReference();
 }

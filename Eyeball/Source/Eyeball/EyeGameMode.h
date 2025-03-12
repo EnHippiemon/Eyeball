@@ -18,9 +18,9 @@ private:
 	float TimeDilationDanger = 0.2f;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ACharacter> EntityEyeball;
+	TSubclassOf<APawn> EntityEyeball;
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ACharacter> EntityHuman;
+	TSubclassOf<APawn> EntityHuman;
 
 	bool bIsInDanger = false;
 	float TimeInDanger = 0.f;

@@ -13,7 +13,7 @@ private:
 	AEyeEntityGrasshopper();
 	
 	virtual void MakeMovement(const float DeltaTime) override;
-	void DecideMovementSpeed() const;
+	void DecideMovementSpeed();
 
 	virtual void MakeReleaseJump() override;
 
@@ -23,4 +23,7 @@ public:
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* Box;
 };

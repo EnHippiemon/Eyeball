@@ -12,7 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDangerChanged, bool, IsInDange
 
 class UBoxComponent;
 UCLASS()
-class EYEBALL_API AEyeCharacter : public ACharacter
+class EYEBALL_API AEyeCharacter : public APawn
 {
 	GENERATED_BODY()
 
@@ -37,10 +37,9 @@ protected:
 		bool GetIsOnFloor() const { return bIsOnFloor; }
 		ECollisionChannel GetSafeZone() const { return EntityData->SafeZone; }
 		ECollisionChannel GetEntityBody() const { return EntityData->EntityBody; }
+
+	float CurrentMovementSpeed;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
-	UEyeCharacterDataAsset* EntityData;
-		
 	virtual void MakeMovement(const float DeltaTime) {}
 	virtual void Force2DMovement();
 
@@ -57,6 +56,9 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
+	UEyeCharacterDataAsset* EntityData;
 
 private:
 	FVector MovementInput;

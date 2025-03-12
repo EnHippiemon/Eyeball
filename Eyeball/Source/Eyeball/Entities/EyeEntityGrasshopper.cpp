@@ -1,5 +1,5 @@
 #include "Eyeball/Entities/EyeEntityGrasshopper.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/BoxComponent.h"
 
 AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 {
@@ -7,20 +7,25 @@ AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 	if (EntityDataAsset.Object)
 		EntityData = EntityDataAsset.Object;
 
-	GetCharacterMovement()->GravityScale = 1.f;
+	Box = CreateDefaultSubobject<UBoxComponent>("Box");
+	RootComponent = Box;
+
+	Box->SetEnableGravity(true);
+	Box->SetSimulatePhysics(true);
 }
 
 void AEyeEntityGrasshopper::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 	
-	auto OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * DeltaTime;
+	auto OutputMovement = FVector(0, GetMovementInput().X, 0) * DeltaTime;
 	OutputMovement.Normalize();
 	
-	AddMovementInput(OutputMovement);
+	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed;
+	RootComponent->SetRelativeLocation(NewLocation);
 }
 
-void AEyeEntityGrasshopper::DecideMovementSpeed() const
+void AEyeEntityGrasshopper::DecideMovementSpeed()
 {
 	float MovementSpeed;
 	if (!GetIsOnFloor())
@@ -30,7 +35,7 @@ void AEyeEntityGrasshopper::DecideMovementSpeed() const
 	else
 		MovementSpeed = EntityData->NormalMovementSpeed;
 
-	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
+	CurrentMovementSpeed = MovementSpeed;
 }
 
 void AEyeEntityGrasshopper::MakeReleaseJump()
@@ -41,15 +46,12 @@ void AEyeEntityGrasshopper::MakeReleaseJump()
 		return;
 
 	auto Impulse = CheckIsJumpHeld(EntityData->HeldJumpThreshold) ? EntityData->JumpForce : EntityData->JumpForce * 0.25f;
- 	GetCharacterMovement()->AddImpulse(EntityData->JumpDirection * Impulse);
+	Box->AddImpulse(EntityData->JumpDirection * Impulse);
 }
 
 void AEyeEntityGrasshopper::OnSpawned()
 {
 	Super::OnSpawned();
-
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-	GetCharacterMovement()->MaxWalkSpeed = EntityData->NormalMovementSpeed;
 }
 
 void AEyeEntityGrasshopper::BeginPlay()

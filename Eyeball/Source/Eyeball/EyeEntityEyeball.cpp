@@ -1,8 +1,7 @@
 #include "EyeEntityEyeball.h"
 
-#include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "DataAssets/EyeCharacterDataAsset.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 
 AEyeEntityEyeball::AEyeEntityEyeball()
@@ -11,7 +10,10 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 	if (EntityDataAsset.Object)
 		EntityData = EntityDataAsset.Object;
 
-	GetCharacterMovement()->GravityScale = 0.f;
+	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
+	RootComponent = SphereComponent;
+	
+	SphereComponent->SetEnableGravity(false);
 }
 
 void AEyeEntityEyeball::FindOverlap()
@@ -74,37 +76,33 @@ void AEyeEntityEyeball::HandleEjectInput()
 
 void AEyeEntityEyeball::MakeJump()
 {
-	GetCharacterMovement()->MaxFlySpeed = EntityData->JumpForce;
+	CurrentMovementSpeed = EntityData->JumpForce;
 }
 
 void AEyeEntityEyeball::MakeReleaseJump()
 {
 	Super::MakeReleaseJump();
 
-	GetCharacterMovement()->MaxFlySpeed = EntityData->NormalMovementSpeed;
-	UE_LOG(LogTemp, Log, TEXT("Don't jump"));
-
-	// CheckIsJumpHeld(JumpHoldTime);
-	UE_LOG(LogTemp, Log, TEXT("Long jump: %hhd"), CheckIsJumpHeld(EntityData->HeldJumpThreshold));
+	CurrentMovementSpeed = EntityData->NormalMovementSpeed;
 }
 
 void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * EntityData->NormalMovementSpeed * DeltaTime;
+	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * DeltaTime;
 	OutputMovement.Normalize();
-
-	AddMovementInput(OutputMovement);
+	
+	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed;
+	RootComponent->SetRelativeLocation(NewLocation);
 }
 
 void AEyeEntityEyeball::OnSpawned()
 {
 	Super::OnSpawned();
 
-	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
-	GetCharacterMovement()->MaxFlySpeed = EntityData->NormalMovementSpeed;
-	PlayerRadius = GetCapsuleComponent()->GetScaledCapsuleRadius();
+	CurrentMovementSpeed = EntityData->NormalMovementSpeed;
+	PlayerRadius = SphereComponent->GetScaledSphereRadius();
 }
 
 void AEyeEntityEyeball::BeginPlay()

@@ -48,8 +48,8 @@ void AEyeCharacter::UnPossessed()
 {
 	Super::UnPossessed();
 
-	if (IsValid(GetMesh()))
-		GetMesh()->SetSimulatePhysics(true);
+	// if (IsValid(GetMesh()))
+	// 	GetMesh()->SetSimulatePhysics(true);
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -141,7 +141,7 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetCharacterMovement()->bRunPhysicsWithNoController = true;
+	// GetCharacterMovement()->bRunPhysicsWithNoController = true;
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

@@ -1,6 +1,5 @@
 #include "EyeEntityHuman.h"
-
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 
 AEyeEntityHuman::AEyeEntityHuman()
@@ -9,17 +8,22 @@ AEyeEntityHuman::AEyeEntityHuman()
 	if (EntityDataAsset.Object)
 		EntityData = EntityDataAsset.Object;
 
-	GetCharacterMovement()->GravityScale = 1.f;
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>("Capsule");
+	RootComponent = Capsule;
+
+	Capsule->SetEnableGravity(true);
+	Capsule->SetSimulatePhysics(true);
 }
 
 void AEyeEntityHuman::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y) * EntityData->NormalMovementSpeed * DeltaTime;
+	auto OutputMovement = FVector(0, GetMovementInput().X, 0) * DeltaTime;
 	OutputMovement.Normalize();
-
-	AddMovementInput(OutputMovement);
+	
+	auto NewLocation = GetActorLocation() + OutputMovement * EntityData->NormalMovementSpeed;
+	RootComponent->SetRelativeLocation(NewLocation);
 }
 
 void AEyeEntityHuman::MakeJump()
@@ -28,16 +32,13 @@ void AEyeEntityHuman::MakeJump()
 
 	if (!GetIsOnFloor() || GetJumpCount() > EntityData->MaxJumpCount)
 		return;
-	
-	GetCharacterMovement()->AddImpulse(EntityData->JumpDirection * EntityData->JumpForce);
+
+	Capsule->AddImpulse(EntityData->JumpDirection * EntityData->JumpForce);
 }
 
 void AEyeEntityHuman::OnSpawned()
 {
 	Super::OnSpawned();
-	
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-	GetCharacterMovement()->MaxWalkSpeed = EntityData->NormalMovementSpeed;
 }
 
 void AEyeEntityHuman::BeginPlay()

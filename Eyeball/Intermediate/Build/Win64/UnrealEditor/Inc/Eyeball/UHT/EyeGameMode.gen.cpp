@@ -11,9 +11,9 @@ void EmptyLinkFunctionForGeneratedCodeEyeGameMode() {}
 
 // Begin Cross Module References
 COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
-ENGINE_API UClass* Z_Construct_UClass_ACharacter_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_AController_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_AGameModeBase();
+ENGINE_API UClass* Z_Construct_UClass_APawn_NoRegister();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeCharacter_NoRegister();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeGameMode();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeGameMode_NoRegister();
@@ -242,8 +242,8 @@ struct Z_Construct_UClass_AEyeGameMode_Statics
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_TimeDilationDanger = { "TimeDilationDanger", nullptr, (EPropertyFlags)0x0040000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, TimeDilationDanger), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TimeDilationDanger_MetaData), NewProp_TimeDilationDanger_MetaData) };
-const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_EntityEyeball = { "EntityEyeball", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, EntityEyeball), Z_Construct_UClass_UClass, Z_Construct_UClass_ACharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EntityEyeball_MetaData), NewProp_EntityEyeball_MetaData) };
-const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_EntityHuman = { "EntityHuman", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, EntityHuman), Z_Construct_UClass_UClass, Z_Construct_UClass_ACharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EntityHuman_MetaData), NewProp_EntityHuman_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_EntityEyeball = { "EntityEyeball", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, EntityEyeball), Z_Construct_UClass_UClass, Z_Construct_UClass_APawn_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EntityEyeball_MetaData), NewProp_EntityEyeball_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_EntityHuman = { "EntityHuman", nullptr, (EPropertyFlags)0x0044000000010001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, EntityHuman), Z_Construct_UClass_UClass, Z_Construct_UClass_APawn_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EntityHuman_MetaData), NewProp_EntityHuman_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_PlayerCharacter = { "PlayerCharacter", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, PlayerCharacter), Z_Construct_UClass_AEyeCharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlayerCharacter_MetaData), NewProp_PlayerCharacter_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeGameMode_Statics::NewProp_Controller = { "Controller", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeGameMode, Controller), Z_Construct_UClass_AController_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Controller_MetaData), NewProp_Controller_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEyeGameMode_Statics::PropPointers[] = {
@@ -294,10 +294,10 @@ AEyeGameMode::~AEyeGameMode() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeGameMode, AEyeGameMode::StaticClass, TEXT("AEyeGameMode"), &Z_Registration_Info_UClass_AEyeGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeGameMode), 3316690072U) },
+		{ Z_Construct_UClass_AEyeGameMode, AEyeGameMode::StaticClass, TEXT("AEyeGameMode"), &Z_Registration_Info_UClass_AEyeGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeGameMode), 3189258037U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_1579244950(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_2131180605(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeGameMode_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
