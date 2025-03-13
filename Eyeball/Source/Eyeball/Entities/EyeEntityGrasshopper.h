@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Eyeball/EyeCharacter.h"
+#include "Eyeball/Entities/EyeCharacter.h"
 #include "EyeEntityGrasshopper.generated.h"
 
 UCLASS()

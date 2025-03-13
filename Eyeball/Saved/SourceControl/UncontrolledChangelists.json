@@ -17,9 +17,13 @@
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Statics/BP_Floor.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Eyeball_DataAsset.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Human_DataAsset.uasset",
-				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Grasshopper_DataAsset1.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/BP_Entity_Grasshopper.uasset",
-				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Grasshopper_DataAsset.uasset"
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Grasshopper_DataAsset.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_Lever.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_MoveableWall.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_OldMoveableWall.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_MoveableObject.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Grasshopper_DataAsset1.uasset"
 			]
 		}
 	]

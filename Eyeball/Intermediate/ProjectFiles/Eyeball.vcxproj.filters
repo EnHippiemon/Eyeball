@@ -41,24 +41,6 @@
     <ClCompile Include="..\..\Source\Eyeball\Eyeball.h">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeCharacter.cpp">
-      <Filter>Source\Eyeball</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeCharacter.h">
-      <Filter>Source\Eyeball</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeEntityEyeball.cpp">
-      <Filter>Source\Eyeball</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeEntityEyeball.h">
-      <Filter>Source\Eyeball</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeEntityHuman.cpp">
-      <Filter>Source\Eyeball</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Eyeball\EyeEntityHuman.h">
-      <Filter>Source\Eyeball</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Eyeball\EyeGameMode.cpp">
       <Filter>Source\Eyeball</Filter>
     </ClCompile>
@@ -77,11 +59,44 @@
     <Filter Include="Source\Eyeball\Entities">
       <UniqueIdentifier>{506A9E4B-0E4A-3E39-8B0A-FAFBC16A40D9}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeCharacter.cpp">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeCharacter.h">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityEyeball.cpp">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityEyeball.h">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityGrasshopper.cpp">
       <Filter>Source\Eyeball\Entities</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityGrasshopper.h">
       <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityHuman.cpp">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\Entities\EyeEntityHuman.h">
+      <Filter>Source\Eyeball\Entities</Filter>
+    </ClCompile>
+    <Filter Include="Source\Eyeball\PuzzleComponents">
+      <UniqueIdentifier>{70B7181C-D951-3D24-A0B8-A91ED8B09528}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Eyeball\PuzzleComponents\EyeLever.cpp">
+      <Filter>Source\Eyeball\PuzzleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\PuzzleComponents\EyeLever.h">
+      <Filter>Source\Eyeball\PuzzleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\PuzzleComponents\EyeMoveableObject.cpp">
+      <Filter>Source\Eyeball\PuzzleComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Eyeball\PuzzleComponents\EyeMoveableObject.h">
+      <Filter>Source\Eyeball\PuzzleComponents</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

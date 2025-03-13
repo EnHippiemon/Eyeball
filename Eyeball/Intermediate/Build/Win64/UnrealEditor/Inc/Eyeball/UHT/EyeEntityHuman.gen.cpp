@@ -5,15 +5,17 @@
 ===========================================================================*/
 
 #include "UObject/GeneratedCppIncludes.h"
-#include "Eyeball/EyeEntityHuman.h"
+#include "Eyeball/Entities/EyeEntityHuman.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeEyeEntityHuman() {}
 
 // Begin Cross Module References
 ENGINE_API UClass* Z_Construct_UClass_UCapsuleComponent_NoRegister();
+ENGINE_API UEnum* Z_Construct_UEnum_Engine_ECollisionChannel();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeCharacter();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeEntityHuman();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeEntityHuman_NoRegister();
+EYEBALL_API UClass* Z_Construct_UClass_AEyeLever_NoRegister();
 UPackage* Z_Construct_UPackage__Script_Eyeball();
 // End Cross Module References
 
@@ -31,15 +33,24 @@ struct Z_Construct_UClass_AEyeEntityHuman_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
 		{ "HideCategories", "Navigation" },
-		{ "IncludePath", "EyeEntityHuman.h" },
-		{ "ModuleRelativePath", "EyeEntityHuman.h" },
+		{ "IncludePath", "Entities/EyeEntityHuman.h" },
+		{ "ModuleRelativePath", "Entities/EyeEntityHuman.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_InteractableObject_MetaData[] = {
+		{ "ModuleRelativePath", "Entities/EyeEntityHuman.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_InteractableCollision_MetaData[] = {
+		{ "Category", "EyeEntityHuman" },
+		{ "ModuleRelativePath", "Entities/EyeEntityHuman.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Capsule_MetaData[] = {
 		{ "Category", "EyeEntityHuman" },
 		{ "EditInline", "true" },
-		{ "ModuleRelativePath", "EyeEntityHuman.h" },
+		{ "ModuleRelativePath", "Entities/EyeEntityHuman.h" },
 	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_InteractableObject;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_InteractableCollision;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_Capsule;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
@@ -48,8 +59,12 @@ struct Z_Construct_UClass_AEyeEntityHuman_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeEntityHuman_Statics::NewProp_InteractableObject = { "InteractableObject", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeEntityHuman, InteractableObject), Z_Construct_UClass_AEyeLever_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InteractableObject_MetaData), NewProp_InteractableObject_MetaData) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_AEyeEntityHuman_Statics::NewProp_InteractableCollision = { "InteractableCollision", nullptr, (EPropertyFlags)0x0040000000010001, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeEntityHuman, InteractableCollision), Z_Construct_UEnum_Engine_ECollisionChannel, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_InteractableCollision_MetaData), NewProp_InteractableCollision_MetaData) }; // 756624936
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeEntityHuman_Statics::NewProp_Capsule = { "Capsule", nullptr, (EPropertyFlags)0x00400000000a0009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeEntityHuman, Capsule), Z_Construct_UClass_UCapsuleComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Capsule_MetaData), NewProp_Capsule_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEyeEntityHuman_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeEntityHuman_Statics::NewProp_InteractableObject,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeEntityHuman_Statics::NewProp_InteractableCollision,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeEntityHuman_Statics::NewProp_Capsule,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AEyeEntityHuman_Statics::PropPointers) < 2048);
@@ -90,14 +105,14 @@ AEyeEntityHuman::~AEyeEntityHuman() {}
 // End Class AEyeEntityHuman
 
 // Begin Registration
-struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_Statics
+struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeEntityHuman_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeEntityHuman, AEyeEntityHuman::StaticClass, TEXT("AEyeEntityHuman"), &Z_Registration_Info_UClass_AEyeEntityHuman, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityHuman), 999017467U) },
+		{ Z_Construct_UClass_AEyeEntityHuman, AEyeEntityHuman::StaticClass, TEXT("AEyeEntityHuman"), &Z_Registration_Info_UClass_AEyeEntityHuman, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeEntityHuman), 3914761295U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_1985414350(TEXT("/Script/Eyeball"),
-	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_EyeEntityHuman_h_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeEntityHuman_h_2040349085(TEXT("/Script/Eyeball"),
+	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeEntityHuman_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeEntityHuman_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // End Registration

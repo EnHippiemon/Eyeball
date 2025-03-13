@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\intermediate\\build\\win64\\unrealeditor\\inc\\eyeball\\uht\\eyemoveableobject.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\intermediate\\build\\win64\\x64\\eyeballeditor\\debuggame\\unrealed\\sharedpch.unrealed.project.nonoptimized.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\intermediate\\build\\win64\\x64\\unrealeditor\\debuggame\\eyeball\\definitions.eyeball.h",
+            "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\source\\eyeball\\puzzlecomponents\\eyemoveableobject.h",
+            "c:\\users\\albin.samuelsson\\desktop\\github\\eyeball\\eyeball\\intermediate\\build\\win64\\unrealeditor\\inc\\eyeball\\uht\\eyemoveableobject.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

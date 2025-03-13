@@ -1,5 +1,5 @@
 #include "EyeGameMode.h"
-#include "EyeCharacter.h"
+#include "Entities/EyeCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 AEyeGameMode::AEyeGameMode()
@@ -31,8 +31,6 @@ void AEyeGameMode::HandleDangerChange(bool IsInDanger, float TimeDilationAmount,
 {
 	if (bIsInDanger == IsInDanger)
 		return;
-
-	// UE_LOG(LogTemp, Log, TEXT("DANGER"));
 	
 	bIsInDanger = IsInDanger;
 	MaxTimeInDanger = MaxDangerTime;
@@ -84,4 +82,5 @@ void AEyeGameMode::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CountTimeInDanger(DeltaTime);
+	
 }
