@@ -9,10 +9,18 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
+class AActor;
+class UPrimitiveComponent;
+struct FHitResult;
 #ifdef EYEBALL_EyeMoveableObject_generated_h
 #error "EyeMoveableObject.generated.h already included, missing '#pragma once' in EyeMoveableObject.h"
 #endif
 #define EYEBALL_EyeMoveableObject_generated_h
+
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execHandleEndOverlap); \
+	DECLARE_FUNCTION(execHandleBeginOverlap);
+
 
 #define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_13_INCLASS_NO_PURE_DECLS \
 private: \
@@ -39,6 +47,7 @@ public: \
 #define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_13_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
 	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_13_INCLASS_NO_PURE_DECLS \
 	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_13_ENHANCED_CONSTRUCTORS \
 private: \

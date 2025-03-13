@@ -4,12 +4,13 @@
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 #include "EyeCharacter.generated.h"
 
-class UEyeCharacterDataAsset;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDangerChanged, bool, IsInDanger, float, TimeDilationAmount, float, MaxDangerTime);
 
+class UEyeCharacterDataAsset;
 class UBoxComponent;
+
 UCLASS()
 class EYEBALL_API AEyeCharacter : public APawn
 {

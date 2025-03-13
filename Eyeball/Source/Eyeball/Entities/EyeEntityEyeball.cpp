@@ -70,7 +70,6 @@ void AEyeEntityEyeball::HandleActionInput()
 
 void AEyeEntityEyeball::HandleEjectInput()
 {
-	UE_LOG(LogTemp, Log, TEXT("Don't eject."));
 }
 
 void AEyeEntityEyeball::MakeJump()

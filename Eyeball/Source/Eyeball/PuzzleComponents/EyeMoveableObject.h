@@ -24,12 +24,18 @@ private:
 	
 	bool bIsActivated = false;
 	bool bHasReachedTarget = false;
+	bool bIsHindered = false;
 	
 	FVector StartLocation;
 	FVector TargetLocation;
 	
 	void MoveToTarget();
 	void MoveToStart();
+
+	UFUNCTION()
+	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Box;

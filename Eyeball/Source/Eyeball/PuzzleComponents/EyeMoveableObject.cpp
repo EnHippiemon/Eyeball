@@ -2,6 +2,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Eyeball/DataAssets/EyeMoveableObjectDataAsset.h"
+#include "Eyeball/Entities/EyeCharacter.h"
 
 AEyeMoveableObject::AEyeMoveableObject()
 {
@@ -12,6 +13,8 @@ AEyeMoveableObject::AEyeMoveableObject()
 	
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("CollisionComponent");
 	CollisionBox->SetupAttachment(Box);
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AEyeMoveableObject::HandleBeginOverlap);
+	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AEyeMoveableObject::HandleEndOverlap);
 }
 
 void AEyeMoveableObject::Activate()
@@ -25,7 +28,7 @@ void AEyeMoveableObject::MoveToTarget()
 	if (!bIsActivated)
 		return;
 
-	if ((GetActorLocation() - TargetLocation).Length() < 10.f)
+	if ((GetActorLocation() - TargetLocation).Length() < 5.f)
 	{
 		bIsActivated = false;
 		bHasReachedTarget = true;
@@ -37,14 +40,32 @@ void AEyeMoveableObject::MoveToTarget()
 
 void AEyeMoveableObject::MoveToStart()
 {
-	if (!ObjectData->ReturnToStartLocation || !bHasReachedTarget)
+	if (!ObjectData->ReturnToStartLocation || !bHasReachedTarget || bIsHindered)
 		return;
 
-	if ((GetActorLocation() - StartLocation).Length() < 10.f)
+	if ((GetActorLocation() - StartLocation).Length() < 5.f)
 		bHasReachedTarget = false;
 	
 	const auto NewLocation = GetActorLocation() - ObjectData->MoveDirection * ObjectData->MoveSpeed * GetWorld()->DeltaTimeSeconds;
 	SetActorRelativeLocation(NewLocation);
+}
+
+void AEyeMoveableObject::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA<AEyeCharacter>())
+	{
+		bIsHindered = true;
+	}
+}
+
+void AEyeMoveableObject::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor->IsA<AEyeCharacter>())
+	{
+		bIsHindered = false;
+	}
 }
 
 void AEyeMoveableObject::BeginPlay()

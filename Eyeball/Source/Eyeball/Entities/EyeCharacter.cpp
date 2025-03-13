@@ -57,14 +57,11 @@ bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 
 void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 {
-	UE_LOG(LogTemp, Log, TEXT("Possessing %s"), *EntityToPossess->GetName())
-
 	OnCharacterChanged.Broadcast(EntityToPossess);
 }
 
 void AEyeCharacter::OnSpawned()
 {
-	UE_LOG(LogTemp, Log, TEXT("OnSpawned"));
 	bIsUnPossessed = false;
 }
 
@@ -112,13 +109,10 @@ void AEyeCharacter::ResetJumpCount()
 
 void AEyeCharacter::HandleActionInput()
 {
-	// UE_LOG(LogTemp, Log, TEXT("HandleActionInput"));
 }
 
 void AEyeCharacter::HandleEjectInput()
 {
-	UE_LOG(LogTemp, Log, TEXT("HandleEjectInput"));
-
 	OnEject.Broadcast();
 }
 
