@@ -65,6 +65,11 @@ void AEyeCharacter::OnSpawned()
 	bIsUnPossessed = false;
 }
 
+void AEyeCharacter::DamagePlayer()
+{
+	OnDeath.Broadcast();
+}
+
 void AEyeCharacter::Force2DMovement()
 {
 	SetActorLocation(FVector(EntityData->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));

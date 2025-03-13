@@ -13,6 +13,7 @@ class EYEBALL_API AEyeEntityEyeball : public AEyeCharacter
 
 public:
 	virtual void OnSpawned() override;
+	virtual void DamagePlayer() override {}
 
 private:
 	AEyeEntityEyeball();

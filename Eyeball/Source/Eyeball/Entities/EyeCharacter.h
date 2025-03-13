@@ -7,6 +7,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDangerChanged, bool, IsInDanger, float, TimeDilationAmount, float, MaxDangerTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 class UEyeCharacterDataAsset;
 class UBoxComponent;
@@ -23,8 +24,11 @@ public:
 	FOnEject OnEject;
 	UPROPERTY()
 	FOnDangerChanged OnDangerChanged;
+	UPROPERTY()
+	FOnDeath OnDeath;
 
 	virtual void OnSpawned();
+	virtual void DamagePlayer();
 	
 protected:
 	AEyeCharacter();
@@ -63,6 +67,8 @@ protected:
 
 private:
 	FVector MovementInput;
+
+	bool bIsDead = false;
 	
 	bool bJumpDepressed = false;
 	bool bJumpHeld = false;

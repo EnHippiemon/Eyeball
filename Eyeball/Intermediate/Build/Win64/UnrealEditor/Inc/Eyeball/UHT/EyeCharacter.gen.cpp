@@ -16,6 +16,7 @@ EYEBALL_API UClass* Z_Construct_UClass_AEyeCharacter_NoRegister();
 EYEBALL_API UClass* Z_Construct_UClass_UEyeCharacterDataAsset_NoRegister();
 EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnCharacterChanged__DelegateSignature();
 EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnDangerChanged__DelegateSignature();
+EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature();
 EYEBALL_API UFunction* Z_Construct_UDelegateFunction_Eyeball_OnEject__DelegateSignature();
 UPackage* Z_Construct_UPackage__Script_Eyeball();
 // End Cross Module References
@@ -151,6 +152,32 @@ void FOnDangerChanged_DelegateWrapper(const FMulticastScriptDelegate& OnDangerCh
 }
 // End Delegate FOnDangerChanged
 
+// Begin Delegate FOnDeath
+struct Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "Entities/EyeCharacter.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature_Statics::FuncParams = { (UObject*(*)())Z_Construct_UPackage__Script_Eyeball, nullptr, "OnDeath__DelegateSignature", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00130000, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature_Statics::Function_MetaDataParams), Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+void FOnDeath_DelegateWrapper(const FMulticastScriptDelegate& OnDeath)
+{
+	OnDeath.ProcessMulticastDelegate<UObject>(NULL);
+}
+// End Delegate FOnDeath
+
 // Begin Class AEyeCharacter
 void AEyeCharacter::StaticRegisterNativesAEyeCharacter()
 {
@@ -177,6 +204,9 @@ struct Z_Construct_UClass_AEyeCharacter_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnDangerChanged_MetaData[] = {
 		{ "ModuleRelativePath", "Entities/EyeCharacter.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_OnDeath_MetaData[] = {
+		{ "ModuleRelativePath", "Entities/EyeCharacter.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_EntityData_MetaData[] = {
 		{ "AllowPrivateAccess", "true" },
 		{ "Category", "DataAsset" },
@@ -186,6 +216,7 @@ struct Z_Construct_UClass_AEyeCharacter_Statics
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnCharacterChanged;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnEject;
 	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnDangerChanged;
+	static const UECodeGen_Private::FMulticastDelegatePropertyParams NewProp_OnDeath;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_EntityData;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
@@ -197,11 +228,13 @@ struct Z_Construct_UClass_AEyeCharacter_Statics
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnCharacterChanged = { "OnCharacterChanged", nullptr, (EPropertyFlags)0x0010000000080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeCharacter, OnCharacterChanged), Z_Construct_UDelegateFunction_Eyeball_OnCharacterChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnCharacterChanged_MetaData), NewProp_OnCharacterChanged_MetaData) }; // 3187667202
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnEject = { "OnEject", nullptr, (EPropertyFlags)0x0010000000080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeCharacter, OnEject), Z_Construct_UDelegateFunction_Eyeball_OnEject__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnEject_MetaData), NewProp_OnEject_MetaData) }; // 3402013746
 const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnDangerChanged = { "OnDangerChanged", nullptr, (EPropertyFlags)0x0010000000080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeCharacter, OnDangerChanged), Z_Construct_UDelegateFunction_Eyeball_OnDangerChanged__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnDangerChanged_MetaData), NewProp_OnDangerChanged_MetaData) }; // 1157825587
+const UECodeGen_Private::FMulticastDelegatePropertyParams Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnDeath = { "OnDeath", nullptr, (EPropertyFlags)0x0010000000080000, UECodeGen_Private::EPropertyGenFlags::InlineMulticastDelegate, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeCharacter, OnDeath), Z_Construct_UDelegateFunction_Eyeball_OnDeath__DelegateSignature, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_OnDeath_MetaData), NewProp_OnDeath_MetaData) }; // 694257316
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeCharacter_Statics::NewProp_EntityData = { "EntityData", nullptr, (EPropertyFlags)0x0020080000010015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeCharacter, EntityData), Z_Construct_UClass_UEyeCharacterDataAsset_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EntityData_MetaData), NewProp_EntityData_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEyeCharacter_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnCharacterChanged,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnEject,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnDangerChanged,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeCharacter_Statics::NewProp_OnDeath,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeCharacter_Statics::NewProp_EntityData,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AEyeCharacter_Statics::PropPointers) < 2048);
@@ -245,10 +278,10 @@ AEyeCharacter::~AEyeCharacter() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeCharacter, AEyeCharacter::StaticClass, TEXT("AEyeCharacter"), &Z_Registration_Info_UClass_AEyeCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeCharacter), 3170715664U) },
+		{ Z_Construct_UClass_AEyeCharacter, AEyeCharacter::StaticClass, TEXT("AEyeCharacter"), &Z_Registration_Info_UClass_AEyeCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeCharacter), 114020778U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_2050417412(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_3339141598(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

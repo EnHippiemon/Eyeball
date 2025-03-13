@@ -27,7 +27,11 @@ EYEBALL_API void FOnEject_DelegateWrapper(const FMulticastScriptDelegate& OnEjec
 EYEBALL_API void FOnDangerChanged_DelegateWrapper(const FMulticastScriptDelegate& OnDangerChanged, bool IsInDanger, float TimeDilationAmount, float MaxDangerTime);
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_17_INCLASS_NO_PURE_DECLS \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_10_DELEGATE \
+EYEBALL_API void FOnDeath_DelegateWrapper(const FMulticastScriptDelegate& OnDeath);
+
+
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_18_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAEyeCharacter(); \
 	friend struct Z_Construct_UClass_AEyeCharacter_Statics; \
@@ -36,7 +40,7 @@ public: \
 	DECLARE_SERIALIZER(AEyeCharacter)
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_17_ENHANCED_CONSTRUCTORS \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_18_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AEyeCharacter(AEyeCharacter&&); \
@@ -48,12 +52,12 @@ public: \
 	NO_API virtual ~AEyeCharacter();
 
 
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_14_PROLOG
-#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_17_GENERATED_BODY \
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_15_PROLOG
+#define FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_18_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_17_INCLASS_NO_PURE_DECLS \
-	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_17_ENHANCED_CONSTRUCTORS \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_18_INCLASS_NO_PURE_DECLS \
+	FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_Entities_EyeCharacter_h_18_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
