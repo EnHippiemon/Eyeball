@@ -1,6 +1,7 @@
 #include "../PuzzleComponents/EyeMoveableObject.h"
 
 #include "Components/BoxComponent.h"
+#include "Eyeball/DataAssets/EyeMoveableObjectDataAsset.h"
 
 AEyeMoveableObject::AEyeMoveableObject()
 {
@@ -30,19 +31,19 @@ void AEyeMoveableObject::MoveToTarget()
 		bHasReachedTarget = true;
 	}
 
-	const auto NewLocation = GetActorLocation() + MoveDirection * MoveSpeed * GetWorld()->DeltaTimeSeconds;
+	const auto NewLocation = GetActorLocation() + ObjectData->MoveDirection * ObjectData->MoveSpeed * GetWorld()->DeltaTimeSeconds;
 	SetActorRelativeLocation(NewLocation);
 }
 
 void AEyeMoveableObject::MoveToStart()
 {
-	if (!ReturnToStartLocation || !bHasReachedTarget)
+	if (!ObjectData->ReturnToStartLocation || !bHasReachedTarget)
 		return;
 
 	if ((GetActorLocation() - StartLocation).Length() < 10.f)
 		bHasReachedTarget = false;
 	
-	const auto NewLocation = GetActorLocation() - MoveDirection * MoveSpeed * GetWorld()->DeltaTimeSeconds;
+	const auto NewLocation = GetActorLocation() - ObjectData->MoveDirection * ObjectData->MoveSpeed * GetWorld()->DeltaTimeSeconds;
 	SetActorRelativeLocation(NewLocation);
 }
 
@@ -51,7 +52,7 @@ void AEyeMoveableObject::BeginPlay()
 	Super::BeginPlay();
 
 	StartLocation = GetActorLocation();
-	TargetLocation = GetActorLocation() + TargetOffset;
+	TargetLocation = GetActorLocation() + ObjectData->TargetOffset;
 }
 
 void AEyeMoveableObject::Tick(float DeltaTime)

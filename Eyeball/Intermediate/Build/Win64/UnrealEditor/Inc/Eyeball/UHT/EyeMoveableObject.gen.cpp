@@ -10,11 +10,11 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeEyeMoveableObject() {}
 
 // Begin Cross Module References
-COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
 ENGINE_API UClass* Z_Construct_UClass_UBoxComponent_NoRegister();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeMoveableObject();
 EYEBALL_API UClass* Z_Construct_UClass_AEyeMoveableObject_NoRegister();
+EYEBALL_API UClass* Z_Construct_UClass_UEyeMoveableObjectDataAsset_NoRegister();
 UPackage* Z_Construct_UPackage__Script_Eyeball();
 // End Cross Module References
 
@@ -34,27 +34,15 @@ struct Z_Construct_UClass_AEyeMoveableObject_Statics
 		{ "IncludePath", "PuzzleComponents/EyeMoveableObject.h" },
 		{ "ModuleRelativePath", "PuzzleComponents/EyeMoveableObject.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MoveDirection_MetaData[] = {
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ObjectData_MetaData[] = {
 		{ "Category", "EyeMoveableObject" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// bool bIsActivated = false;\n" },
+		{ "Comment", "// UPROPERTY(EditAnywhere)\n// FVector MoveDirection;\n// UPROPERTY(EditAnywhere)\n// float MoveSpeed;\n// UPROPERTY(EditAnywhere)\n// FVector TargetOffset;\n// UPROPERTY(EditAnywhere)\n// bool ReturnToStartLocation;\n" },
 #endif
 		{ "ModuleRelativePath", "PuzzleComponents/EyeMoveableObject.h" },
 #if !UE_BUILD_SHIPPING
-		{ "ToolTip", "bool bIsActivated = false;" },
+		{ "ToolTip", "UPROPERTY(EditAnywhere)\nFVector MoveDirection;\nUPROPERTY(EditAnywhere)\nfloat MoveSpeed;\nUPROPERTY(EditAnywhere)\nFVector TargetOffset;\nUPROPERTY(EditAnywhere)\nbool ReturnToStartLocation;" },
 #endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MoveSpeed_MetaData[] = {
-		{ "Category", "EyeMoveableObject" },
-		{ "ModuleRelativePath", "PuzzleComponents/EyeMoveableObject.h" },
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TargetOffset_MetaData[] = {
-		{ "Category", "EyeMoveableObject" },
-		{ "ModuleRelativePath", "PuzzleComponents/EyeMoveableObject.h" },
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ReturnToStartLocation_MetaData[] = {
-		{ "Category", "EyeMoveableObject" },
-		{ "ModuleRelativePath", "PuzzleComponents/EyeMoveableObject.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Box_MetaData[] = {
 		{ "Category", "EyeMoveableObject" },
@@ -67,11 +55,7 @@ struct Z_Construct_UClass_AEyeMoveableObject_Statics
 		{ "ModuleRelativePath", "PuzzleComponents/EyeMoveableObject.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FStructPropertyParams NewProp_MoveDirection;
-	static const UECodeGen_Private::FFloatPropertyParams NewProp_MoveSpeed;
-	static const UECodeGen_Private::FStructPropertyParams NewProp_TargetOffset;
-	static void NewProp_ReturnToStartLocation_SetBit(void* Obj);
-	static const UECodeGen_Private::FBoolPropertyParams NewProp_ReturnToStartLocation;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ObjectData;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_Box;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CollisionBox;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
@@ -81,21 +65,11 @@ struct Z_Construct_UClass_AEyeMoveableObject_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_MoveDirection = { "MoveDirection", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeMoveableObject, MoveDirection), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoveDirection_MetaData), NewProp_MoveDirection_MetaData) };
-const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_MoveSpeed = { "MoveSpeed", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeMoveableObject, MoveSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoveSpeed_MetaData), NewProp_MoveSpeed_MetaData) };
-const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_TargetOffset = { "TargetOffset", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeMoveableObject, TargetOffset), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TargetOffset_MetaData), NewProp_TargetOffset_MetaData) };
-void Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_ReturnToStartLocation_SetBit(void* Obj)
-{
-	((AEyeMoveableObject*)Obj)->ReturnToStartLocation = 1;
-}
-const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_ReturnToStartLocation = { "ReturnToStartLocation", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AEyeMoveableObject), &Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_ReturnToStartLocation_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnToStartLocation_MetaData), NewProp_ReturnToStartLocation_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_ObjectData = { "ObjectData", nullptr, (EPropertyFlags)0x0040000000000801, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeMoveableObject, ObjectData), Z_Construct_UClass_UEyeMoveableObjectDataAsset_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ObjectData_MetaData), NewProp_ObjectData_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_Box = { "Box", nullptr, (EPropertyFlags)0x0040000000090009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeMoveableObject, Box), Z_Construct_UClass_UBoxComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Box_MetaData), NewProp_Box_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_CollisionBox = { "CollisionBox", nullptr, (EPropertyFlags)0x0040000000090009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AEyeMoveableObject, CollisionBox), Z_Construct_UClass_UBoxComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CollisionBox_MetaData), NewProp_CollisionBox_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AEyeMoveableObject_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_MoveDirection,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_MoveSpeed,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_TargetOffset,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_ReturnToStartLocation,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_ObjectData,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_Box,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AEyeMoveableObject_Statics::NewProp_CollisionBox,
 };
@@ -140,10 +114,10 @@ AEyeMoveableObject::~AEyeMoveableObject() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeMoveableObject, AEyeMoveableObject::StaticClass, TEXT("AEyeMoveableObject"), &Z_Registration_Info_UClass_AEyeMoveableObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeMoveableObject), 4163431170U) },
+		{ Z_Construct_UClass_AEyeMoveableObject, AEyeMoveableObject::StaticClass, TEXT("AEyeMoveableObject"), &Z_Registration_Info_UClass_AEyeMoveableObject, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeMoveableObject), 3099136130U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_3819781608(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_4010654188(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeMoveableObject_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

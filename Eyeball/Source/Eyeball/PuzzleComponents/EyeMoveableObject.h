@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "EyeMoveableObject.generated.h"
 
+class UEyeMoveableObjectDataAsset;
 class UBoxComponent;
 
 UCLASS()
@@ -18,14 +19,8 @@ public:
 	FVector GetTargetLocation() const { return TargetLocation; }
 
 private:	
-	UPROPERTY(EditAnywhere)
-	FVector MoveDirection;
-	UPROPERTY(EditAnywhere)
-	float MoveSpeed;
-	UPROPERTY(EditAnywhere)
-	FVector TargetOffset;
-	UPROPERTY(EditAnywhere)
-	bool ReturnToStartLocation;
+	UPROPERTY(EditInstanceOnly)
+	UEyeMoveableObjectDataAsset* ObjectData;
 	
 	bool bIsActivated = false;
 	bool bHasReachedTarget = false;

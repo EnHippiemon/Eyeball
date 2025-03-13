@@ -35,13 +35,7 @@ struct Z_Construct_UClass_AEyeLever_Statics
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MoveableObject_MetaData[] = {
 		{ "Category", "EyeLever" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// UPROPERTY(EditInstanceOnly)\n// AActor* MoveableObject;\n" },
-#endif
 		{ "ModuleRelativePath", "PuzzleComponents/EyeLever.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "UPROPERTY(EditInstanceOnly)\nAActor* MoveableObject;" },
-#endif
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_MoveableObject;
@@ -97,10 +91,10 @@ AEyeLever::~AEyeLever() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeLever_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AEyeLever, AEyeLever::StaticClass, TEXT("AEyeLever"), &Z_Registration_Info_UClass_AEyeLever, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeLever), 1576024642U) },
+		{ Z_Construct_UClass_AEyeLever, AEyeLever::StaticClass, TEXT("AEyeLever"), &Z_Registration_Info_UClass_AEyeLever, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AEyeLever), 2352070009U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeLever_h_754344099(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeLever_h_3546439529(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeLever_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_PuzzleComponents_EyeLever_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

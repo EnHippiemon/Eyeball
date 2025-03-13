@@ -25,13 +25,13 @@ void EmptyLinkFunctionForGeneratedCodeEyeball_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0x1B96812D,
-				0x3B097043,
+				0x332C94BF,
+				0x45C3D6FC,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_Eyeball.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_Eyeball.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Eyeball(Z_Construct_UPackage__Script_Eyeball, TEXT("/Script/Eyeball"), Z_Registration_Info_UPackage__Script_Eyeball, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x1B96812D, 0x3B097043));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_Eyeball(Z_Construct_UPackage__Script_Eyeball, TEXT("/Script/Eyeball"), Z_Registration_Info_UPackage__Script_Eyeball, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x332C94BF, 0x45C3D6FC));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

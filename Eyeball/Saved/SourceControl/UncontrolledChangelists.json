@@ -7,9 +7,7 @@
 			"files": [
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Levels/Test.umap",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/BP_EyeCharacter.uasset",
-				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Statics/BP_Floor.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/BP_EyeGameMode.uasset",
-				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Statics/BP_DangerZone.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/BP_Entity_Eyeball.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/RandomEntity.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/BP_Entity_Human.uasset",
@@ -23,6 +21,9 @@
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_MoveableWall.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_OldMoveableWall.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/BP_MoveableObject.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/PuzzleComponents/DataAssets/MoveableObject1_DataAsset.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Statics/BP_Floor.uasset",
+				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Statics/BP_DangerZone.uasset",
 				"C:/Users/albin.samuelsson/Desktop/GitHub/Eyeball/Eyeball/Content/Characters/Player/DataAssets/Grasshopper_DataAsset1.uasset"
 			]
 		}
