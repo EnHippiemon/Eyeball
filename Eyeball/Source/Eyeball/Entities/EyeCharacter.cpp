@@ -108,8 +108,19 @@ void AEyeCharacter::ResetJumpCount()
 		FloorTraces[i] = FloorTrace;
 	}
 
-	JumpCount = FloorTraces.Contains(true) ? 0 : JumpCount;
-	bIsOnFloor = FloorTraces.Contains(true);
+	const auto TraceResult = FloorTraces.Contains(true);
+	
+	if (TraceResult && GetVelocity().Z < EntityData->ThresholdFallDamageVelocity)
+		TakeFallDamage();
+	
+	JumpCount = TraceResult ? 0 : JumpCount;
+	bIsOnFloor = TraceResult;
+}
+
+void AEyeCharacter::TakeFallDamage()
+{
+	// UE_LOG(LogTemp, Display, TEXT("TakeFallDamage | Velocity: %s"), *GetVelocity().ToString());
+	DamagePlayer();
 }
 
 void AEyeCharacter::HandleActionInput()

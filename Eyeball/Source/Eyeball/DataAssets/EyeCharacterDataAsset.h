@@ -22,6 +22,8 @@ public:
 		float MaxTimeInDanger = 1.f;
 		UPROPERTY(EditDefaultsOnly, Category="Danger")
 		float TimeDilationDanger = 0.2f;
+		UPROPERTY(EditDefaultsOnly, Category="Danger")
+		float ThresholdFallDamageVelocity = -90.f;
 
 	/* Jump */
 		UPROPERTY(EditDefaultsOnly, Category="Jump")

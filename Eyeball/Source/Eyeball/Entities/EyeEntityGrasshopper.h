@@ -16,6 +16,7 @@ private:
 	void DecideMovementSpeed();
 
 	virtual void MakeReleaseJump() override;
+	virtual void TakeFallDamage() override {}
 
 public:
 	virtual void OnSpawned() override;

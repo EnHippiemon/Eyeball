@@ -62,6 +62,10 @@ struct Z_Construct_UClass_UEyeCharacterDataAsset_Statics
 		{ "Category", "Danger" },
 		{ "ModuleRelativePath", "DataAssets/EyeCharacterDataAsset.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ThresholdFallDamageVelocity_MetaData[] = {
+		{ "Category", "Danger" },
+		{ "ModuleRelativePath", "DataAssets/EyeCharacterDataAsset.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HeldJumpThreshold_MetaData[] = {
 		{ "Category", "Jump" },
 #if !UE_BUILD_SHIPPING
@@ -129,6 +133,7 @@ struct Z_Construct_UClass_UEyeCharacterDataAsset_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_HighMovementSpeed;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_MaxTimeInDanger;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_TimeDilationDanger;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_ThresholdFallDamageVelocity;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_HeldJumpThreshold;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_JumpDirection;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_JumpForce;
@@ -151,6 +156,7 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDa
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_HighMovementSpeed = { "HighMovementSpeed", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, HighMovementSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HighMovementSpeed_MetaData), NewProp_HighMovementSpeed_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_MaxTimeInDanger = { "MaxTimeInDanger", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, MaxTimeInDanger), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MaxTimeInDanger_MetaData), NewProp_MaxTimeInDanger_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_TimeDilationDanger = { "TimeDilationDanger", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, TimeDilationDanger), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TimeDilationDanger_MetaData), NewProp_TimeDilationDanger_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_ThresholdFallDamageVelocity = { "ThresholdFallDamageVelocity", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, ThresholdFallDamageVelocity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ThresholdFallDamageVelocity_MetaData), NewProp_ThresholdFallDamageVelocity_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_HeldJumpThreshold = { "HeldJumpThreshold", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, HeldJumpThreshold), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HeldJumpThreshold_MetaData), NewProp_HeldJumpThreshold_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_JumpDirection = { "JumpDirection", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, JumpDirection), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JumpDirection_MetaData), NewProp_JumpDirection_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_JumpForce = { "JumpForce", nullptr, (EPropertyFlags)0x0010000000010001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UEyeCharacterDataAsset, JumpForce), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_JumpForce_MetaData), NewProp_JumpForce_MetaData) };
@@ -167,6 +173,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UEyeChara
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_HighMovementSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_MaxTimeInDanger,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_TimeDilationDanger,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_ThresholdFallDamageVelocity,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_HeldJumpThreshold,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_JumpDirection,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UEyeCharacterDataAsset_Statics::NewProp_JumpForce,
@@ -221,10 +228,10 @@ UEyeCharacterDataAsset::~UEyeCharacterDataAsset() {}
 struct Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_DataAssets_EyeCharacterDataAsset_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UEyeCharacterDataAsset, UEyeCharacterDataAsset::StaticClass, TEXT("UEyeCharacterDataAsset"), &Z_Registration_Info_UClass_UEyeCharacterDataAsset, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEyeCharacterDataAsset), 2073074116U) },
+		{ Z_Construct_UClass_UEyeCharacterDataAsset, UEyeCharacterDataAsset::StaticClass, TEXT("UEyeCharacterDataAsset"), &Z_Registration_Info_UClass_UEyeCharacterDataAsset, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UEyeCharacterDataAsset), 4132964593U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_DataAssets_EyeCharacterDataAsset_h_2650511470(TEXT("/Script/Eyeball"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_DataAssets_EyeCharacterDataAsset_h_2552085928(TEXT("/Script/Eyeball"),
 	Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_DataAssets_EyeCharacterDataAsset_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_albin_samuelsson_Desktop_GitHub_Eyeball_Eyeball_Source_Eyeball_DataAssets_EyeCharacterDataAsset_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

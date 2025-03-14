@@ -51,6 +51,7 @@ protected:
 	virtual void MakeJump();
 	virtual void MakeReleaseJump() {}
 	virtual void ResetJumpCount();
+	virtual void TakeFallDamage();
 
 	virtual void HandleActionInput();
 	virtual void HandleEjectInput();
