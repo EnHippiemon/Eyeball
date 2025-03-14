@@ -25,12 +25,29 @@ private:
 	bool bIsInDanger = false;
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
-	
+
 	UPROPERTY()
 	AEyeCharacter* PlayerCharacter;
 	UPROPERTY()
 	AController* Controller;
+	
+	/* Checkpoint */
+		UFUNCTION()
+		void HandleCheckpointReached();
+	
+		UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AEyeCharacter> EyeCharacter;
+		UPROPERTY()
+		TArray<AActor*> CharacterArray;
+		UPROPERTY()
+		AEyeCharacter* PossessedAtCheckpoint;
+	
+		void FindAllReferences();
+		void SaveLocations();
+		void ResetLocations();
 
+		TArray<FVector> CharacterLocations;
+	
 	UFUNCTION()
 	void ChangeEntity(AEyeCharacter* Character);
 

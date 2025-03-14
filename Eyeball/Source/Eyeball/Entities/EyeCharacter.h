@@ -8,6 +8,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*,
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnDangerChanged, bool, IsInDanger, float, TimeDilationAmount, float, MaxDangerTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReached);
 
 class UEyeCharacterDataAsset;
 class UBoxComponent;
@@ -26,6 +27,8 @@ public:
 	FOnDangerChanged OnDangerChanged;
 	UPROPERTY()
 	FOnDeath OnDeath;
+	UPROPERTY()
+	FOnCheckpointReached OnCheckpointReached;
 
 	virtual void OnSpawned();
 	virtual void DamagePlayer();
