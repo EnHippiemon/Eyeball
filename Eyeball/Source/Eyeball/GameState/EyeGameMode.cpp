@@ -1,5 +1,6 @@
 #include "EyeGameMode.h"
 #include "../Entities/EyeCharacter.h"
+#include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Kismet/GameplayStatics.h"
 
 AEyeGameMode::AEyeGameMode()
@@ -14,8 +15,14 @@ void AEyeGameMode::HandleCheckpointReached()
 
 void AEyeGameMode::FindAllReferences()
 {
+	if (!Eyeball)
+		Eyeball = Cast<AEyeEntityEyeball>(UGameplayStatics::GetActorOfClass(GetWorld(), EntityEyeball));
+	
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
 
+	auto FoundEyeball = UGameplayStatics::GetActorOfClass(GetWorld(), EntityEyeball);
+	bEyeballHiddenAtCheckpoint = FoundEyeball->IsHidden();
+	
 	SaveLocations();
 }
 
@@ -26,20 +33,21 @@ void AEyeGameMode::SaveLocations()
 	for (int i = 0; i < CharacterArray.Num(); ++i)
 	{
 		if (!CharacterLocations.IsValidIndex(i))
-			CharacterLocations.Add(CharacterArray[i]->GetActorLocation());
+			CharacterLocations.Insert(CharacterArray[i]->GetActorLocation(), i);
 		else
 			CharacterLocations[i] = CharacterArray[i]->GetActorLocation();
 	}
+
+	if (CharacterLocations.Num() > CharacterArray.Num())
+		UE_LOG(LogTemp, Warning, TEXT("Potential memory leak: EyeGameMode.cpp | CharacterLocations Array Size: %d"), CharacterLocations.Num());
 }
 
 void AEyeGameMode::ResetLocations()
 {
-	TArray<AActor*> CurrentArray;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CurrentArray);
-	if (CurrentArray.Num() < CharacterArray.Num())
-		EjectCurrentEntity();
-	else if (CurrentArray.Num() > CharacterArray.Num())
+	if (bEyeballHiddenAtCheckpoint)
 		ChangeEntity(PossessedAtCheckpoint);
+	else
+		EjectCurrentEntity();
 	
 	for (int i = 0; i < CharacterArray.Num(); ++i)
 	{
@@ -49,16 +57,17 @@ void AEyeGameMode::ResetLocations()
 
 void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 {
+	Eyeball->SetActorHiddenInGame(true);
 	Controller->Possess(Character);
-	GetWorld()->DestroyActor(PlayerCharacter);
 	GetNewPlayerReference();
 	HandleDangerChange(false, 1, 1);
 }
 
 void AEyeGameMode::EjectCurrentEntity()
 {
-	auto SpawnEyeBall = GetWorld()->SpawnActor<APawn>(EntityEyeball, PlayerCharacter->GetTransform());
-	Controller->Possess(SpawnEyeBall);
+	Eyeball->SetActorLocation(PlayerCharacter->GetActorLocation());
+	Eyeball->SetActorHiddenInGame(false);
+	Controller->Possess(Eyeball);
 	GetNewPlayerReference();
 }
 

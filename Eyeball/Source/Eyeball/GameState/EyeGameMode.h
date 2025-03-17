@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class AEyeEntityEyeball;
 class AEyeCharacter;
 
 UCLASS()
@@ -32,21 +33,25 @@ private:
 	AController* Controller;
 	
 	/* Checkpoint */
-		UFUNCTION()
-		void HandleCheckpointReached();
-	
 		UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AEyeCharacter> EyeCharacter;
+		UPROPERTY()
+		AEyeEntityEyeball* Eyeball;
 		UPROPERTY()
 		TArray<AActor*> CharacterArray;
 		UPROPERTY()
 		AEyeCharacter* PossessedAtCheckpoint;
+
+		TArray<FVector> CharacterLocations;
+	
+		bool bEyeballHiddenAtCheckpoint = false;
+	
+		UFUNCTION()
+		void HandleCheckpointReached();
 	
 		void FindAllReferences();
 		void SaveLocations();
 		void ResetLocations();
-
-		TArray<FVector> CharacterLocations;
 	
 	UFUNCTION()
 	void ChangeEntity(AEyeCharacter* Character);
