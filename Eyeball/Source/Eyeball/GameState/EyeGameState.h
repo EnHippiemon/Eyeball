@@ -8,5 +8,6 @@ UCLASS()
 class EYEBALL_API AEyeGameState : public AGameStateBase
 {
 	GENERATED_BODY()
+
 	
 };

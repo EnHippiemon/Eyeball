@@ -41,7 +41,7 @@ private:
 	virtual void ResetJumpCount() override { }
 
 	virtual void MakeMovement(const float DeltaTime) override;
-
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 

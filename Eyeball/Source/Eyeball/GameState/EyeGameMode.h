@@ -4,15 +4,32 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyeRestartWidget;
 class AEyeEntityEyeball;
 class AEyeCharacter;
+
+UENUM(BlueprintType)
+enum EGameState
+{
+	Egs_Playing,
+	Egs_GameOver,
+	Egs_StartingGame
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedState, EGameState, NewState);
 
 UCLASS()
 class EYEBALL_API AEyeGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY()
+	FOnChangedState OnChangedState;
+	
 private:
+	EGameState CurrentGameState;
+	
 	AEyeGameMode();
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -31,6 +48,10 @@ private:
 	AEyeCharacter* PlayerCharacter;
 	UPROPERTY()
 	AController* Controller;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UEyeRestartWidget> RestartWidget;
+	TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
 	
 	/* Checkpoint */
 		UPROPERTY(EditDefaultsOnly)
@@ -66,6 +87,9 @@ private:
 	void CountTimeInDanger(float DeltaTime);
 	
 	void GetNewPlayerReference();
+
+	UFUNCTION()
+	void SetNewState(bool bScreenIsBlack);
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

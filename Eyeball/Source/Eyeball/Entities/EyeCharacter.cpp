@@ -2,6 +2,8 @@
 
 #include "Kismet/KismetSystemLibrary.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
+#include "Eyeball/GameState/EyeGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 AEyeCharacter::AEyeCharacter()
 {
@@ -10,16 +12,19 @@ AEyeCharacter::AEyeCharacter()
 
 void AEyeCharacter::HandleUpwardsInput(const float Value)
 {
-	MovementInput.Y = Value;
+	bInputIsAllowed ? MovementInput.Y = Value : MovementInput.Y = 0;
 }
 
 void AEyeCharacter::HandleSidewaysInput(const float Value)
 {
-	MovementInput.X = Value;
+	bInputIsAllowed ? MovementInput.X = Value : MovementInput.X = 0;
 }
 
 void AEyeCharacter::HandleJumpInput()
 {
+	if (!bInputIsAllowed)
+		return;
+	
 	bJumpDepressed = true;
 	MakeJump();
 }
@@ -60,6 +65,11 @@ void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 	OnCharacterChanged.Broadcast(EntityToPossess);
 }
 
+// void AEyeCharacter::ChangeState(EGameState NewState)
+// {
+// 	bInputIsAllowed = NewState == Egs_Playing;
+// }
+
 void AEyeCharacter::OnSpawned()
 {
 	bIsUnPossessed = false;
@@ -68,6 +78,11 @@ void AEyeCharacter::OnSpawned()
 void AEyeCharacter::DamagePlayer()
 {
 	OnDeath.Broadcast();
+}
+
+void AEyeCharacter::SetActive(bool Active)
+{
+	bInputIsAllowed = Active;
 }
 
 void AEyeCharacter::Force2DMovement()
@@ -129,6 +144,9 @@ void AEyeCharacter::HandleActionInput()
 
 void AEyeCharacter::HandleEjectInput()
 {
+	if (!bInputIsAllowed)
+		return;
+	
 	OnEject.Broadcast();
 }
 
@@ -150,6 +168,10 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	// if (GameMode)
+	// 	GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
+	
 	// GetCharacterMovement()->bRunPhysicsWithNoController = true;
 }
 

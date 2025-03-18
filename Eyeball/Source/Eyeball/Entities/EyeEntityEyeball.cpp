@@ -2,6 +2,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
+#include "Kismet/GameplayStatics.h"
 
 AEyeEntityEyeball::AEyeEntityEyeball()
 {

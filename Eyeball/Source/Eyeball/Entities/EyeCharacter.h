@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
+#include "Eyeball/GameState/EyeGameMode.h"
 #include "EyeCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
@@ -12,6 +13,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReached);
 
 class UEyeCharacterDataAsset;
 class UBoxComponent;
+class AEyeGameMode;
+
+// enum EGameState : int;
 
 UCLASS()
 class EYEBALL_API AEyeCharacter : public APawn
@@ -32,6 +36,7 @@ public:
 
 	virtual void OnSpawned();
 	virtual void DamagePlayer();
+	virtual void SetActive(bool Active);
 	
 protected:
 	AEyeCharacter();
@@ -63,16 +68,23 @@ protected:
 
 	virtual void PossessNewEntity(AEyeCharacter* EntityToPossess);
 
+	// UFUNCTION()
+	// virtual void ChangeState(EGameState NewState);
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
 	UEyeCharacterDataAsset* EntityData;
+	
+	UPROPERTY()
+	AEyeGameMode* GameMode;
 
 private:
 	FVector MovementInput;
 
-	bool bIsDead = false;
+	// bool bIsDead = false;
+	bool bInputIsAllowed = true;
 	
 	bool bJumpDepressed = false;
 	bool bJumpHeld = false;

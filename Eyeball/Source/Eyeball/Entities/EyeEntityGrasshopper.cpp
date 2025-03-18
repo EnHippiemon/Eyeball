@@ -1,5 +1,6 @@
 #include "Eyeball/Entities/EyeEntityGrasshopper.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 {

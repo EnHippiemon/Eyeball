@@ -1,7 +1,13 @@
 #include "EyeGameMode.h"
 #include "../Entities/EyeCharacter.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
+#include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Kismet/GameplayStatics.h"
+
+// void AEyeGameMode::InitGameState()
+// {
+// 	Super::InitGameState();
+// }
 
 AEyeGameMode::AEyeGameMode()
 {
@@ -18,11 +24,8 @@ void AEyeGameMode::FindAllReferences()
 	if (!Eyeball)
 		Eyeball = Cast<AEyeEntityEyeball>(UGameplayStatics::GetActorOfClass(GetWorld(), EntityEyeball));
 	
+	bEyeballHiddenAtCheckpoint = Eyeball->IsHidden();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
-
-	auto FoundEyeball = UGameplayStatics::GetActorOfClass(GetWorld(), EntityEyeball);
-	bEyeballHiddenAtCheckpoint = FoundEyeball->IsHidden();
-	
 	SaveLocations();
 }
 
@@ -73,8 +76,10 @@ void AEyeGameMode::EjectCurrentEntity()
 
 void AEyeGameMode::HandlePlayerDeath()
 {
-	ResetLocations();
 	UE_LOG(LogTemp, Log, TEXT("DEATH IS UPON YOU"));
+	CurrentGameState = Egs_GameOver;
+	OnChangedState.Broadcast(CurrentGameState);
+	PlayerCharacter->SetActive(CurrentGameState == Egs_Playing);
 }
 
 void AEyeGameMode::HandleDangerChange(bool IsInDanger, float TimeDilationAmount, float MaxDangerTime)
@@ -89,7 +94,7 @@ void AEyeGameMode::HandleDangerChange(bool IsInDanger, float TimeDilationAmount,
 
 void AEyeGameMode::CountTimeInDanger(float const DeltaTime)
 {
-	if (!bIsInDanger)
+	if (!bIsInDanger || CurrentGameState != Egs_Playing)
 	{
 		TimeInDanger = 0;
 		return;
@@ -118,6 +123,20 @@ void AEyeGameMode::GetNewPlayerReference()
 	PlayerCharacter->OnSpawned();
 }
 
+void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
+{
+	if (bScreenIsBlack)
+	{
+		ResetLocations();
+		CurrentGameState = Egs_StartingGame;
+	}
+	else
+		CurrentGameState = Egs_Playing;
+	
+	OnChangedState.Broadcast(CurrentGameState);
+	PlayerCharacter->SetActive(CurrentGameState == Egs_Playing);
+}
+
 void AEyeGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -125,9 +144,22 @@ void AEyeGameMode::BeginPlay()
 	Controller = GetWorld()->GetFirstPlayerController();
 	if (!IsValid(Controller))
 		UE_LOG(LogTemp, Error, TEXT("EyeGameMode.cpp: No valid player controller."));
+	
+	RestartWidgetRef = CreateWidget<UEyeRestartWidget>(GetWorld(), RestartWidget);
+	if (RestartWidgetRef)
+	{
+		RestartWidgetRef->AddToViewport();
+		RestartWidgetRef->OnTransitionCompleted.AddUniqueDynamic(this, &AEyeGameMode::SetNewState);
+	}
 
+	CurrentGameState = Egs_StartingGame;
+	OnChangedState.Broadcast(CurrentGameState);
+	
 	GetNewPlayerReference();
 	FindAllReferences();
+
+	if (PlayerCharacter)
+		PlayerCharacter->SetActive(CurrentGameState == Egs_Playing);
 }
 
 void AEyeGameMode::Tick(float DeltaTime)

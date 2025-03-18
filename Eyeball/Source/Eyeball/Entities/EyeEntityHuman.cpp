@@ -2,6 +2,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 #include "Eyeball/PuzzleComponents/EyeLever.h"
+#include "Kismet/GameplayStatics.h"
 
 AEyeEntityHuman::AEyeEntityHuman()
 {
@@ -77,7 +78,7 @@ void AEyeEntityHuman::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OnSpawned();	
+	OnSpawned();
 }
 
 void AEyeEntityHuman::Tick(float DeltaTime)
