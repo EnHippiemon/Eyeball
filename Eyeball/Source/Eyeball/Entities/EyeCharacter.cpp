@@ -65,10 +65,10 @@ void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 	OnCharacterChanged.Broadcast(EntityToPossess);
 }
 
-// void AEyeCharacter::ChangeState(EGameState NewState)
-// {
-// 	bInputIsAllowed = NewState == Egs_Playing;
-// }
+void AEyeCharacter::ChangeState(EGameState NewState)
+{
+	bInputIsAllowed = NewState == Egs_Playing;
+}
 
 void AEyeCharacter::OnSpawned()
 {
@@ -78,11 +78,6 @@ void AEyeCharacter::OnSpawned()
 void AEyeCharacter::DamagePlayer()
 {
 	OnDeath.Broadcast();
-}
-
-void AEyeCharacter::SetActive(bool Active)
-{
-	bInputIsAllowed = Active;
 }
 
 void AEyeCharacter::Force2DMovement()
@@ -168,9 +163,9 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	// if (GameMode)
-	// 	GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
+	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode)
+		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
 	
 	// GetCharacterMovement()->bRunPhysicsWithNoController = true;
 }

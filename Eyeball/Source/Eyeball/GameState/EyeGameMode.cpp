@@ -79,7 +79,6 @@ void AEyeGameMode::HandlePlayerDeath()
 	UE_LOG(LogTemp, Log, TEXT("DEATH IS UPON YOU"));
 	CurrentGameState = Egs_GameOver;
 	OnChangedState.Broadcast(CurrentGameState);
-	PlayerCharacter->SetActive(CurrentGameState == Egs_Playing);
 }
 
 void AEyeGameMode::HandleDangerChange(bool IsInDanger, float TimeDilationAmount, float MaxDangerTime)
@@ -134,7 +133,6 @@ void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 		CurrentGameState = Egs_Playing;
 	
 	OnChangedState.Broadcast(CurrentGameState);
-	PlayerCharacter->SetActive(CurrentGameState == Egs_Playing);
 }
 
 void AEyeGameMode::BeginPlay()
@@ -157,9 +155,6 @@ void AEyeGameMode::BeginPlay()
 	
 	GetNewPlayerReference();
 	FindAllReferences();
-
-	if (PlayerCharacter)
-		PlayerCharacter->SetActive(CurrentGameState == Egs_Playing);
 }
 
 void AEyeGameMode::Tick(float DeltaTime)

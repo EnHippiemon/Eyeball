@@ -49,9 +49,10 @@ private:
 	UPROPERTY()
 	AController* Controller;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UEyeRestartWidget> RestartWidget;
-	TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
+	/* Game over */
+		UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<UEyeRestartWidget> RestartWidget;
+		TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
 	
 	/* Checkpoint */
 		UPROPERTY(EditDefaultsOnly)

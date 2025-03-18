@@ -15,8 +15,6 @@ class UEyeCharacterDataAsset;
 class UBoxComponent;
 class AEyeGameMode;
 
-// enum EGameState : int;
-
 UCLASS()
 class EYEBALL_API AEyeCharacter : public APawn
 {
@@ -36,7 +34,6 @@ public:
 
 	virtual void OnSpawned();
 	virtual void DamagePlayer();
-	virtual void SetActive(bool Active);
 	
 protected:
 	AEyeCharacter();
@@ -68,8 +65,8 @@ protected:
 
 	virtual void PossessNewEntity(AEyeCharacter* EntityToPossess);
 
-	// UFUNCTION()
-	// virtual void ChangeState(EGameState NewState);
+	UFUNCTION()
+	virtual void ChangeState(EGameState NewState);
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
