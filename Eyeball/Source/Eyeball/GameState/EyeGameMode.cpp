@@ -31,6 +31,9 @@ void AEyeGameMode::FindAllReferences()
 
 void AEyeGameMode::SaveLocations()
 {
+	if (CurrentGameState != Egs_Playing)
+		return;
+	
 	PossessedAtCheckpoint = PlayerCharacter;
 	
 	for (int i = 0; i < CharacterArray.Num(); ++i)
