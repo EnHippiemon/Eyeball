@@ -31,7 +31,7 @@ void AEyeGameMode::FindAllReferences()
 
 void AEyeGameMode::SaveLocations()
 {
-	if (CurrentGameState != Egs_Playing)
+	if (CurrentGameState == Egs_GameOver)
 		return;
 	
 	PossessedAtCheckpoint = PlayerCharacter;
@@ -59,6 +59,8 @@ void AEyeGameMode::ResetLocations()
 	{
 		CharacterArray[i]->SetActorLocation(CharacterLocations[i]);
 	}
+	
+	CurrentGameState = Egs_StartingGame;
 }
 
 void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
@@ -128,10 +130,7 @@ void AEyeGameMode::GetNewPlayerReference()
 void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 {
 	if (bScreenIsBlack)
-	{
 		ResetLocations();
-		CurrentGameState = Egs_StartingGame;
-	}
 	else
 		CurrentGameState = Egs_Playing;
 	

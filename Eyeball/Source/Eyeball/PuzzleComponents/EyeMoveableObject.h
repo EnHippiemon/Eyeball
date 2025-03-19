@@ -18,6 +18,13 @@ public:
 	void Activate();
 	FVector GetTargetLocation() const { return TargetLocation; }
 
+protected:
+	UFUNCTION()
+	virtual void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	
 private:	
 	UPROPERTY(EditInstanceOnly)
 	UEyeMoveableObjectDataAsset* ObjectData;
@@ -33,15 +40,10 @@ private:
 	void MoveToStart();
 
 	UFUNCTION()
-	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	UFUNCTION()
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	
+
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Box;
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* CollisionBox;
-
-	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 };

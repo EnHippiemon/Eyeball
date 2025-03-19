@@ -14,9 +14,7 @@ void UEyeRestartWidget::NativeConstruct()
 		GameMode->OnChangedState.AddUniqueDynamic(this, &UEyeRestartWidget::HandleChangedState);
 	}
 
-	// BlackImage->SetOpacity(1.f);
 	OpacityValue = 1.f;
-	// BlackImage->SetBrushFromTexture(BlackTexture);
 }
 
 void UEyeRestartWidget::HandleChangedState(EGameState NewState)
@@ -28,10 +26,6 @@ void UEyeRestartWidget::SetOpacity(const float DeltaTime)
 {
 	if (CurrentGameState != Egs_StartingGame && CurrentGameState != Egs_GameOver)
 		return;
-	
-	// if (OpacityValue >= 1.f && CurrentGameState == Egs_StartingGame
-	// 	|| OpacityValue <= 0.f && CurrentGameState == Egs_GameOver)
-	// 	return;
 	
 	switch (CurrentGameState)
 	{
@@ -49,7 +43,6 @@ void UEyeRestartWidget::SetOpacity(const float DeltaTime)
 			break;
 	}
 	
-	// BlackImage->SetOpacity(0.5f);
 	BlackImage->SetOpacity(OpacityValue);
 }
 

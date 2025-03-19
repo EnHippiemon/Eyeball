@@ -6,8 +6,8 @@
 
 class FCanvasItem;
 class UImage;
-enum EGameState : int;
 class AEyeGameMode;
+enum EGameState : int;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTransitionCompleted, bool, bScreenIsBlack);
 
@@ -25,9 +25,6 @@ protected:
 	UImage* BlackImage;
 		
 private:
-	// UFUNCTION(BlueprintGetter)
-	// float GetOpacityValue() { return OpacityValue; }
-
 	UPROPERTY(EditDefaultsOnly)
 	float TransitionSpeed = 1.f;
 	

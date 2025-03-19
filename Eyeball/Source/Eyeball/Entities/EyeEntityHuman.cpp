@@ -25,7 +25,6 @@ bool AEyeEntityHuman::FoundInteractableObject()
 	const auto TraceStart = GetActorLocation() + FVector(0, 20, 0);
 	const auto TraceEnd = TraceStart - FVector(0, 40, 0);
 
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Green, true, 1, 0, 20);
 	const auto Trace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, InteractableCollision, Params);
 	if (!Trace)
 		return false;

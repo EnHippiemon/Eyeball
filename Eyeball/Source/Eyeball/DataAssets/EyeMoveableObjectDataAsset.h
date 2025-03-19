@@ -11,6 +11,8 @@ class EYEBALL_API UEyeMoveableObjectDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere)
+	bool bStartActivated;
+	UPROPERTY(EditAnywhere)
 	FVector MoveDirection;
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed;

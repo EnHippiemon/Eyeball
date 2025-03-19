@@ -72,14 +72,24 @@ void AEyeMoveableObject::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (!ObjectData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Object data in: %s"), *GetActorNameOrLabel())
+		return;
+	}
+	
 	StartLocation = GetActorLocation();
 	TargetLocation = GetActorLocation() + ObjectData->TargetOffset;
+	bIsActivated = ObjectData->bStartActivated;
 }
 
 void AEyeMoveableObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!ObjectData)
+		return;
+	
 	MoveToTarget();
 	MoveToStart();
 }
