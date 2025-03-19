@@ -13,6 +13,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bStartActivated;
 	UPROPERTY(EditAnywhere)
+	bool bShouldLoop;
+	UPROPERTY(EditAnywhere)
 	FVector MoveDirection;
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed;

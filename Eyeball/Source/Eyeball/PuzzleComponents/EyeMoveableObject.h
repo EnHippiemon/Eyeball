@@ -26,9 +26,6 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	
 private:	
-	UPROPERTY(EditInstanceOnly)
-	UEyeMoveableObjectDataAsset* ObjectData;
-	
 	bool bIsActivated = false;
 	bool bHasReachedTarget = false;
 	bool bIsHindered = false;
@@ -42,6 +39,9 @@ private:
 	UFUNCTION()
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UPROPERTY(EditInstanceOnly)
+	UEyeMoveableObjectDataAsset* ObjectData;
+	
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Box;
 	UPROPERTY(EditDefaultsOnly)

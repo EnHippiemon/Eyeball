@@ -44,7 +44,12 @@ void AEyeMoveableObject::MoveToStart()
 		return;
 
 	if ((GetActorLocation() - StartLocation).Length() < 5.f)
+	{
 		bHasReachedTarget = false;
+
+		if (ObjectData->bShouldLoop)
+			bIsActivated = true;
+	}
 	
 	const auto NewLocation = GetActorLocation() - ObjectData->MoveDirection * ObjectData->MoveSpeed * GetWorld()->DeltaTimeSeconds;
 	SetActorRelativeLocation(NewLocation);
