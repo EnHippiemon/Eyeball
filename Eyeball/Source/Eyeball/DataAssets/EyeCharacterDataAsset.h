@@ -15,7 +15,6 @@ public:
 		float NormalMovementSpeed = 10.f;
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float HighMovementSpeed = 200.f;
-		
 
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")
@@ -45,6 +44,8 @@ public:
 	/* Positioning */
 		UPROPERTY(EditDefaultsOnly, Category="Positioning")
 		FVector OffsetActorPlacement = FVector(0, 0, 0);
+		UPROPERTY(EditDefaultsOnly, Category="Positioning")
+		int FloorTraceAmount = 10;
 
 	/* Collisions */
 		UPROPERTY(EditDefaultsOnly, Category="Collision")

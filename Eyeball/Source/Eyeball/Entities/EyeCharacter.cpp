@@ -48,6 +48,11 @@ void AEyeCharacter::JumpHeldTimer(float DeltaTime)
 	JumpHeldTime += DeltaTime;
 }
 
+void AEyeCharacter::CalculateFloorTraceDistance()
+{
+	FloorTraceDistance = EntityData->RadiusFloorCheck / EntityData->FloorTraceAmount;
+}
+
 void AEyeCharacter::UnPossessed()
 {
 	Super::UnPossessed();
@@ -73,6 +78,8 @@ void AEyeCharacter::ChangeState(EGameState NewState)
 void AEyeCharacter::OnSpawned()
 {
 	bIsUnPossessed = false;
+
+	CalculateFloorTraceDistance();
 }
 
 void AEyeCharacter::DamagePlayer()
@@ -99,26 +106,40 @@ void AEyeCharacter::ResetJumpCount()
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	TArray<bool> FloorTraces;
-
-	const FVector TraceOffset = GetActorLocation() + EntityData->OffsetFloorCheck;
+	TArray<bool> LeftFloorTraces;
 	
-	constexpr int TraceAmount = 10;
-	for (int i = 0; i < TraceAmount; ++i)
+	// Calculate set trace offset.
+	FVector TraceOffset = GetActorLocation() + EntityData->OffsetFloorCheck;
+
+	int HalfTraceAmount = EntityData->FloorTraceAmount * 0.5;
+	for (int i = 0; i < HalfTraceAmount; ++i)
 	{
-		// Decide trace transform 
-		FVector TraceStart = TraceOffset + EntityData->RadiusFloorCheck * GetActorForwardVector().RotateAngleAxis(360.f / TraceAmount * i + 1, FVector(0, 0, 1));
+		// Decide right side trace transform
+		FVector TraceStart = TraceOffset - FVector( 0, FloorTraceDistance, 0) + FVector(0, FloorTraceDistance * i, 0);
 		FVector TraceEnd = TraceStart + FVector(0, 0, EntityData->LengthFloorCheck);
 		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
 
-		// Look for floor 
+		// Look for floor on right side 
 		if (!FloorTraces.IsValidIndex(i))
 			FloorTraces.Add(true);
 		
-		const auto FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, EntityData->Floor, Params, FCollisionResponseParams());
+		auto FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, EntityData->Floor, Params, FCollisionResponseParams());
 		FloorTraces[i] = FloorTrace;
+		
+		// Decide left side trace transform
+		FVector LeftTraceStart = TraceOffset + FVector( 0, FloorTraceDistance, 0) - FVector(0, FloorTraceDistance * i, 0);
+		FVector LeftTraceEnd = LeftTraceStart + FVector(0, 0, EntityData->LengthFloorCheck);
+		DrawDebugLine(GetWorld(), LeftTraceStart, LeftTraceEnd, FColor::Cyan);
+		
+		// Look for floor on left side
+		if (!LeftFloorTraces.IsValidIndex(i))
+			LeftFloorTraces.Add(true);
+		
+		FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, LeftTraceStart, LeftTraceEnd, EntityData->Floor, Params, FCollisionResponseParams());
+		LeftFloorTraces[i] = FloorTrace;
 	}
 
-	const auto TraceResult = FloorTraces.Contains(true);
+	const auto TraceResult = FloorTraces.Contains(true) || LeftFloorTraces.Contains(true);
 	
 	if (TraceResult && GetVelocity().Z < EntityData->ThresholdFallDamageVelocity)
 		TakeFallDamage();
@@ -166,8 +187,8 @@ void AEyeCharacter::BeginPlay()
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
 		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
-	
-	// GetCharacterMovement()->bRunPhysicsWithNoController = true;
+
+	OnSpawned();
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

@@ -88,6 +88,7 @@ private:
 	float JumpHeldTime = 0.f;
 	int JumpCount = 0;
 	bool bIsOnFloor = false;
+	float FloorTraceDistance;
 
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
@@ -95,6 +96,8 @@ private:
 	void HandleJumpInput();
 	void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
+
+	void CalculateFloorTraceDistance();
 
 	virtual void UnPossessed() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
