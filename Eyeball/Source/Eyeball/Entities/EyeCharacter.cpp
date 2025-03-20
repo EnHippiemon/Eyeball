@@ -4,6 +4,7 @@
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Eyeball/StaticFunctionLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
 {
@@ -102,50 +103,16 @@ void AEyeCharacter::MakeJump()
 
 void AEyeCharacter::ResetJumpCount()
 {
-	FHitResult HitResult;
-	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(this);
-	TArray<bool> FloorTraces;
-	TArray<bool> LeftFloorTraces;
+	const bool FoundFloor = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->OffsetFloorCheck,
+	                                                                EntityData->FloorTraceAmount, FloorTraceDistance,
+	                                                                EntityData->LengthFloorCheck, EntityData->Floor,
+	                                                                true);
 	
-	// Calculate set trace offset.
-	FVector TraceOffset = GetActorLocation() + EntityData->OffsetFloorCheck;
-
-	int HalfTraceAmount = EntityData->FloorTraceAmount * 0.5;
-	for (int i = 0; i < HalfTraceAmount; ++i)
-	{
-		// Decide right side trace transform
-		FVector TraceStart = TraceOffset - FVector( 0, FloorTraceDistance, 0) + FVector(0, FloorTraceDistance * i, 0);
-		FVector TraceEnd = TraceStart + FVector(0, 0, EntityData->LengthFloorCheck);
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue);
-
-		// Look for floor on right side 
-		if (!FloorTraces.IsValidIndex(i))
-			FloorTraces.Add(true);
-		
-		auto FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, EntityData->Floor, Params, FCollisionResponseParams());
-		FloorTraces[i] = FloorTrace;
-		
-		// Decide left side trace transform
-		FVector LeftTraceStart = TraceOffset + FVector( 0, FloorTraceDistance, 0) - FVector(0, FloorTraceDistance * i, 0);
-		FVector LeftTraceEnd = LeftTraceStart + FVector(0, 0, EntityData->LengthFloorCheck);
-		DrawDebugLine(GetWorld(), LeftTraceStart, LeftTraceEnd, FColor::Cyan);
-		
-		// Look for floor on left side
-		if (!LeftFloorTraces.IsValidIndex(i))
-			LeftFloorTraces.Add(true);
-		
-		FloorTrace = GetWorld()->LineTraceSingleByChannel(HitResult, LeftTraceStart, LeftTraceEnd, EntityData->Floor, Params, FCollisionResponseParams());
-		LeftFloorTraces[i] = FloorTrace;
-	}
-
-	const auto TraceResult = FloorTraces.Contains(true) || LeftFloorTraces.Contains(true);
-	
-	if (TraceResult && GetVelocity().Z < EntityData->ThresholdFallDamageVelocity)
+	if (FoundFloor && GetVelocity().Z < EntityData->ThresholdFallDamageVelocity)
 		TakeFallDamage();
 	
-	JumpCount = TraceResult ? 0 : JumpCount;
-	bIsOnFloor = TraceResult;
+	JumpCount = FoundFloor ? 0 : JumpCount;
+	bIsOnFloor = FoundFloor;
 }
 
 void AEyeCharacter::TakeFallDamage()
