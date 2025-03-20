@@ -58,6 +58,8 @@ protected:
 	virtual void ResetJumpCount();
 	virtual void TakeFallDamage();
 
+	virtual void SlideDownWall();
+
 	virtual void HandleActionInput();
 	virtual void HandleEjectInput();
 	
@@ -90,6 +92,8 @@ private:
 	bool bIsOnFloor = false;
 	float FloorTraceDistance;
 
+	float SlideTraceDistance;
+
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
 
@@ -97,7 +101,7 @@ private:
 	void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
 
-	void CalculateFloorTraceDistance();
+	void CalculateTraceDistances();
 
 	virtual void UnPossessed() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

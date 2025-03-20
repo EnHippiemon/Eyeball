@@ -49,9 +49,10 @@ void AEyeCharacter::JumpHeldTimer(float DeltaTime)
 	JumpHeldTime += DeltaTime;
 }
 
-void AEyeCharacter::CalculateFloorTraceDistance()
+void AEyeCharacter::CalculateTraceDistances()
 {
 	FloorTraceDistance = EntityData->RadiusFloorCheck / EntityData->FloorTraceAmount;
+	SlideTraceDistance = EntityData->SlidingTraceHeight / EntityData->SlidingTraceAmount;
 }
 
 void AEyeCharacter::UnPossessed()
@@ -80,7 +81,7 @@ void AEyeCharacter::OnSpawned()
 {
 	bIsUnPossessed = false;
 
-	CalculateFloorTraceDistance();
+	CalculateTraceDistances();
 }
 
 void AEyeCharacter::DamagePlayer()
@@ -103,7 +104,9 @@ void AEyeCharacter::MakeJump()
 
 void AEyeCharacter::ResetJumpCount()
 {
-	const bool FoundFloor = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->OffsetFloorCheck,
+	const bool FoundFloor = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->FloorLineDirection,
+	                                                                EntityData->FloorTraceDirection,
+	                                                                EntityData->OffsetFloorCheck,
 	                                                                EntityData->FloorTraceAmount, FloorTraceDistance,
 	                                                                EntityData->LengthFloorCheck, EntityData->Floor,
 	                                                                true);
@@ -119,6 +122,23 @@ void AEyeCharacter::TakeFallDamage()
 {
 	// UE_LOG(LogTemp, Display, TEXT("TakeFallDamage | Velocity: %s"), *GetVelocity().ToString());
 	DamagePlayer();
+}
+
+void AEyeCharacter::SlideDownWall()
+{
+	if (!GetMovementInput().X)
+		return;
+	
+	const bool FoundWall = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->SlidingLineDirection,
+	                                                               EntityData->SlidingTraceDirection,
+	                                                               EntityData->SlidingTraceOffset,
+	                                                               EntityData->SlidingTraceAmount, SlideTraceDistance,
+	                                                               EntityData->SlidingTraceLength, EntityData->Floor,
+	                                                               true);
+	
+	if (FoundWall)
+		RootComponent->SetRelativeLocation(
+			GetActorLocation() - FVector(0, 0, EntityData->SlidingSpeed) * GetWorld()->DeltaTimeSeconds);
 }
 
 void AEyeCharacter::HandleActionInput()
@@ -168,4 +188,5 @@ void AEyeCharacter::Tick(float DeltaTime)
 	JumpHeldTimer(DeltaTime);
 	Force2DMovement();
 	ResetJumpCount();
+	SlideDownWall();
 }

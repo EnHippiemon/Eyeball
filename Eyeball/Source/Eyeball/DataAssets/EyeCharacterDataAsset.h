@@ -33,19 +33,40 @@ public:
 		float JumpForce = 10000.f;
 		UPROPERTY(EditDefaultsOnly, Category="Jump")
 		int MaxJumpCount = 1;
-			
-		UPROPERTY(EditAnywhere, Category="Jump")
+
+	/* Floor traces */
+		UPROPERTY(EditDefaultsOnly, Category="Positioning")
+		int FloorTraceAmount = 10;
+		UPROPERTY(EditAnywhere, Category="FloorTrace")
 		float RadiusFloorCheck;
-		UPROPERTY(EditAnywhere, Category="Jump")
+		UPROPERTY(EditAnywhere, Category="FloorTrace")
 		float LengthFloorCheck;
-		UPROPERTY(EditAnywhere, Category="Jump")
+		UPROPERTY(EditAnywhere, Category="FloorTrace")
 		FVector OffsetFloorCheck;
+		UPROPERTY(EditAnywhere, Category="FloorTrace")
+		FVector FloorLineDirection = FVector(0, 1, 0);
+		UPROPERTY(EditAnywhere, Category="FloorTrace")
+		FVector FloorTraceDirection = FVector(0, 0, 1);
+
+	/* Sliding */
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Speed")
+		float SlidingSpeed = 3.f;
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		int SlidingTraceAmount = 4;
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		float SlidingTraceLength = 3.f;
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		float SlidingTraceHeight;
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		FVector SlidingTraceOffset;
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		FVector SlidingLineDirection = FVector(0, 0, 1);
+		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		FVector SlidingTraceDirection = FVector(0, 1, 0);
 
 	/* Positioning */
 		UPROPERTY(EditDefaultsOnly, Category="Positioning")
 		FVector OffsetActorPlacement = FVector(0, 0, 0);
-		UPROPERTY(EditDefaultsOnly, Category="Positioning")
-		int FloorTraceAmount = 10;
 
 	/* Collisions */
 		UPROPERTY(EditDefaultsOnly, Category="Collision")
