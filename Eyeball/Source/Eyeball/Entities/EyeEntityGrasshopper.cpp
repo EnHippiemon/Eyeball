@@ -43,8 +43,10 @@ void AEyeEntityGrasshopper::MakeReleaseJump()
 {
 	Super::MakeReleaseJump();
 
-	if (!GetIsOnFloor() || GetJumpCount() > EntityData->MaxJumpCount)
+	if (!GetIsOnFloor() || !GetCanJump())
 		return;
+
+	AddJumpCount(1);
 
 	auto Impulse = CheckIsJumpHeld(EntityData->HeldJumpThreshold) ? EntityData->JumpForce : EntityData->JumpForce * 0.25f;
 	Box->AddImpulse(EntityData->JumpDirection * Impulse);

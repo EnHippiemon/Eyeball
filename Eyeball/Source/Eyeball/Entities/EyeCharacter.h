@@ -38,6 +38,9 @@ public:
 protected:
 	AEyeCharacter();
 
+	/* Setters */
+		void AddJumpCount(const int Value) { JumpCount += Value; }
+	
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
 		FVector GetMovementDirection() const { return MovementDirection; }
@@ -45,6 +48,7 @@ protected:
 
 		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
+		bool GetCanJump() const { return JumpCount < EntityData->MaxJumpCount;}
 		int GetJumpCount() const { return JumpCount; }
 		bool GetIsOnFloor() const { return bIsOnFloor; }
 		ECollisionChannel GetSafeZone() const { return EntityData->SafeZone; }

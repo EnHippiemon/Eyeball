@@ -35,6 +35,10 @@ public:
 		float JumpForce = 10000.f;
 		UPROPERTY(EditDefaultsOnly, Category="Jump")
 		int MaxJumpCount = 1;
+		UPROPERTY(EditDefaultsOnly, Category="Jump")
+		float DashCooldown = 1.f;
+		UPROPERTY(EditDefaultsOnly, Category="Jump")
+		float DashDuration = 0.5f;
 
 	/* Floor traces */
 		UPROPERTY(EditDefaultsOnly, Category="Positioning")

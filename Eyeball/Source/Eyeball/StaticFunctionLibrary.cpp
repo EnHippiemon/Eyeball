@@ -19,7 +19,7 @@ bool UStaticFunctionLibrary::TracesAlongLine(AActor* Actor, FVector LineDirectio
 		FVector LeftTraceStart = FinalTraceOffset + LineDirection * DistanceBetweenTraces - LineDirection * DistanceBetweenTraces * i;
 		FVector LeftTraceEnd = LeftTraceStart + TraceDirection * TraceLength;
 		
-		// Look for floor on left side
+		// Look for collision on left side
 		if (!LeftTraces.IsValidIndex(i))
 			LeftTraces.Add(true);
 		
@@ -30,7 +30,7 @@ bool UStaticFunctionLibrary::TracesAlongLine(AActor* Actor, FVector LineDirectio
 		FVector RightTraceStart = FinalTraceOffset - LineDirection * DistanceBetweenTraces + LineDirection * DistanceBetweenTraces * i;
 		FVector RightTraceEnd = RightTraceStart + TraceDirection * TraceLength;
 
-		// Look for floor on right side 
+		// Look for collision on right side 
 		if (!RightTraces.IsValidIndex(i))
 			RightTraces.Add(true);
 		

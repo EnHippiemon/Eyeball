@@ -102,10 +102,6 @@ void AEyeCharacter::Force2DMovement()
 
 void AEyeCharacter::MakeJump()
 {
-	if (JumpCount > EntityData->MaxJumpCount)
-		return;
-	
-	++JumpCount;
 }
 
 void AEyeCharacter::ResetJumpCount()

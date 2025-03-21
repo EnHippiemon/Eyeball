@@ -6,14 +6,35 @@
 
 AEyeEntityEyeball::AEyeEntityEyeball()
 {
-	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(TEXT("/Game/Characters/Player/DataAssets/Eyeball_DataAsset"));
+	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(
+		TEXT("/Game/Characters/Player/DataAssets/Eyeball_DataAsset"));
 	if (EntityDataAsset.Object)
 		EntityData = EntityDataAsset.Object;
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	RootComponent = SphereComponent;
-	
+
 	SphereComponent->SetEnableGravity(false);
+}
+
+FVector AEyeEntityEyeball::Dash(const float DeltaTime)
+{
+	const auto NewLocation = GetActorLocation() + DashDirection * EntityData->JumpForce * DeltaTime;
+	return NewLocation;
+}
+
+FVector AEyeEntityEyeball::Move(const float DeltaTime)
+{
+	// Movement direction
+	FVector OutputMovement = GetMovementDirection();
+	OutputMovement.Normalize();
+
+	// Accelerate movement
+	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), FMath::Abs(GetMovementDirection().Z));
+
+	// Movement speed and set location
+	const auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
+	return NewLocation;
 }
 
 void AEyeEntityEyeball::FindOverlap()
@@ -69,35 +90,48 @@ void AEyeEntityEyeball::HandleActionInput()
 	PossessNewEntity(FoundEntity);
 }
 
-void AEyeEntityEyeball::HandleEjectInput()
-{
-}
-
 void AEyeEntityEyeball::MakeJump()
 {
-	CurrentMovementSpeed = EntityData->JumpForce;
+	Super::MakeJump();
+
+	if (!GetCanJump() || GetMovementInput().Length() == 0)
+		return;
+	
+	DashDirection = FVector(0, GetMovementInput().X, GetMovementInput().Y);
+	DashDirection.Normalize();
+	
+	AddJumpCount(1);
+	bIsDashing = true;
 }
 
 void AEyeEntityEyeball::MakeReleaseJump()
 {
 	Super::MakeReleaseJump();
+}
 
-	CurrentMovementSpeed = EntityData->NormalMovementSpeed;
+void AEyeEntityEyeball::ResetJumpCount()
+{
+	if (GetCanJump())
+		return;
+
+	TimeSinceDashed += GetWorld()->DeltaTimeSeconds;
+	if (TimeSinceDashed >= EntityData->DashCooldown)
+	{
+		AddJumpCount(-1);
+		TimeSinceDashed = 0.f;
+	}
+
+	if (!bIsDashing)
+		return;
+
+	bIsDashing = TimeSinceDashed < EntityData->DashDuration;
 }
 
 void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	// Movement direction
-	FVector OutputMovement = GetMovementDirection();
-	OutputMovement.Normalize();
-
-	// Accelerate movement
-	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), FMath::Abs(GetMovementDirection().Z));
-
-	// Movement speed and set location
-	const auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
+	auto const NewLocation = bIsDashing ? Dash(DeltaTime) : Move(DeltaTime);
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 
@@ -122,7 +156,8 @@ void AEyeEntityEyeball::Tick(float DeltaTime)
 
 	if (bIsUnPossessed)
 		return;
-	
+
 	FindOverlap();
 	MakeMovement(DeltaTime);
+	ResetJumpCount();
 }

@@ -67,9 +67,10 @@ void AEyeEntityHuman::MakeJump()
 {
 	Super::MakeJump();
 
-	if (!GetIsOnFloor() || GetJumpCount() > EntityData->MaxJumpCount)
+	if (!GetIsOnFloor() || !GetCanJump())
 		return;
 
+	AddJumpCount(1);
 	Capsule->AddImpulse(EntityData->JumpDirection * EntityData->JumpForce);
 }
 

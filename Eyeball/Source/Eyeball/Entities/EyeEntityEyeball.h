@@ -26,6 +26,13 @@ private:
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
 
+	bool bIsDashing = false;
+	bool bCanDash = true;
+	float TimeSinceDashed = 0.f;
+	FVector Dash(const float DeltaTime);
+	FVector Move(const float DeltaTime);
+	FVector DashDirection;
+
 	UPROPERTY()
 	AActor* FoundActor;
 	UPROPERTY()
@@ -34,11 +41,10 @@ private:
 	void FindOverlap();
 	
 	virtual void HandleActionInput() override;
-	virtual void HandleEjectInput() override;
 
 	virtual void MakeJump() override;
 	virtual void MakeReleaseJump() override;
-	virtual void ResetJumpCount() override {}
+	virtual void ResetJumpCount() override;
 
 	virtual void SlideDownWall() override {}
 
