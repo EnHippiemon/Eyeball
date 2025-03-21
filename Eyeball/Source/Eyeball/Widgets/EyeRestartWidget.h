@@ -4,7 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "EyeRestartWidget.generated.h"
 
-class FCanvasItem;
+// class FCanvasItem;
 class UImage;
 class AEyeGameMode;
 enum EGameState : int;

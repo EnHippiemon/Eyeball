@@ -21,6 +21,12 @@ void AEyeCharacter::HandleSidewaysInput(const float Value)
 	bInputIsAllowed ? MovementInput.X = Value : MovementInput.X = 0;
 }
 
+void AEyeCharacter::SetMovementDirection(const float DeltaTime)
+{
+	FVector VectorTranslation = FVector(0, GetMovementInput().X, GetMovementInput().Y);
+	MovementDirection = FMath::Lerp(MovementDirection, VectorTranslation, DeltaTime * EntityData->MovementAcceleration);
+}
+
 void AEyeCharacter::HandleJumpInput()
 {
 	if (!bInputIsAllowed)
@@ -189,4 +195,5 @@ void AEyeCharacter::Tick(float DeltaTime)
 	Force2DMovement();
 	ResetJumpCount();
 	SlideDownWall();
+	SetMovementDirection(DeltaTime);
 }

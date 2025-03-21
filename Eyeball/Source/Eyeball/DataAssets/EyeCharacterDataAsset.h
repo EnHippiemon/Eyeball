@@ -15,6 +15,8 @@ public:
 		float NormalMovementSpeed = 10.f;
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float HighMovementSpeed = 200.f;
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
+		float MovementAcceleration = 0.5f;
 
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")

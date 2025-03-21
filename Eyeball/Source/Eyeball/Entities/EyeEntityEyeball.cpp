@@ -89,10 +89,15 @@ void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	FVector OutputMovement = FVector(0, GetMovementInput().X, GetMovementInput().Y);
+	// Movement direction
+	FVector OutputMovement = GetMovementDirection();
 	OutputMovement.Normalize();
-	
-	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
+
+	// Accelerate movement
+	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), FMath::Abs(GetMovementDirection().Z));
+
+	// Movement speed and set location
+	const auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 

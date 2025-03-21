@@ -51,9 +51,14 @@ void AEyeEntityHuman::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
 
-	auto OutputMovement = FVector(0, GetMovementInput().X, 0);
+	// Movement direction
+	FVector OutputMovement = FVector(0, GetMovementDirection().Y, 0);
 	OutputMovement.Normalize();
 	
+	// Accelerate movement
+	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), 0);
+
+	// Movement speed and set location
 	auto NewLocation = GetActorLocation() + OutputMovement * EntityData->NormalMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }

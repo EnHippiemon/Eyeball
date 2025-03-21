@@ -40,6 +40,9 @@ protected:
 
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
+		FVector GetMovementDirection() const { return MovementDirection; }
+		FVector GetMovementVelocity() const { return MovementVelocity; }
+
 		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
 		int GetJumpCount() const { return JumpCount; }
@@ -82,7 +85,6 @@ protected:
 private:
 	FVector MovementInput;
 
-	// bool bIsDead = false;
 	bool bInputIsAllowed = true;
 	
 	bool bJumpDepressed = false;
@@ -93,9 +95,13 @@ private:
 	float FloorTraceDistance;
 
 	float SlideTraceDistance;
+	FVector MovementDirection;
+	FVector MovementVelocity;
 
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
+
+	void SetMovementDirection(float DeltaTime);
 
 	void HandleJumpInput();
 	void HandleJumpReleased();

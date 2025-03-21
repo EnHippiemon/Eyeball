@@ -81,7 +81,6 @@ void AEyeGameMode::EjectCurrentEntity()
 
 void AEyeGameMode::HandlePlayerDeath()
 {
-	UE_LOG(LogTemp, Log, TEXT("DEATH IS UPON YOU"));
 	CurrentGameState = Egs_GameOver;
 	OnChangedState.Broadcast(CurrentGameState);
 }
