@@ -3,6 +3,7 @@
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // void AEyeGameMode::InitGameState()
 // {
@@ -68,7 +69,7 @@ void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 	Eyeball->SetActorHiddenInGame(true);
 	Controller->Possess(Character);
 	GetNewPlayerReference();
-	HandleDangerChange(false, 1, 1);
+	HandleDangerChange(false);
 }
 
 void AEyeGameMode::EjectCurrentEntity()
@@ -85,14 +86,13 @@ void AEyeGameMode::HandlePlayerDeath()
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
-void AEyeGameMode::HandleDangerChange(bool IsInDanger, float TimeDilationAmount, float MaxDangerTime)
+void AEyeGameMode::HandleDangerChange(bool IsInDanger)
 {
 	if (bIsInDanger == IsInDanger)
 		return;
 	
 	bIsInDanger = IsInDanger;
-	MaxTimeInDanger = MaxDangerTime;
-	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), IsInDanger ? TimeDilationAmount : 1);
+	TargetTimeDilation = IsInDanger ? TimeDilationDanger : 1;
 }
 
 void AEyeGameMode::CountTimeInDanger(float const DeltaTime)
@@ -105,8 +105,17 @@ void AEyeGameMode::CountTimeInDanger(float const DeltaTime)
 
 	TimeInDanger += DeltaTime;
 	
-	if (TimeInDanger > MaxTimeInDanger)
+	if (TimeInDanger > MaxDangerTime)
 		HandlePlayerDeath();
+}
+
+void AEyeGameMode::SetTimeDilation(float DeltaTime)
+{
+	float CurrentTimeDilation = UGameplayStatics::GetGlobalTimeDilation(GetWorld());
+	CurrentTimeDilation = FMath::Lerp(CurrentTimeDilation, TargetTimeDilation, TimeDilationTransitionSpeed * DeltaTime);
+		// TargetTimeDilation;
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), CurrentTimeDilation);
+	UE_LOG(LogTemp, Log, TEXT("TimeDilation: %f"), UGameplayStatics::GetGlobalTimeDilation(GetWorld()));
 }
 
 void AEyeGameMode::GetNewPlayerReference()
@@ -163,4 +172,5 @@ void AEyeGameMode::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CountTimeInDanger(DeltaTime);
+	SetTimeDilation(DeltaTime);
 }

@@ -34,6 +34,10 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float TimeDilationDanger = 0.2f;
+	UPROPERTY(EditDefaultsOnly)
+	float MaxDangerTime = 2.f;
+	UPROPERTY(EditDefaultsOnly)
+	float TimeDilationTransitionSpeed = 25.f;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> EntityEyeball;
@@ -43,6 +47,7 @@ private:
 	bool bIsInDanger = false;
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
+	float TargetTimeDilation = 1.f;
 
 	UPROPERTY()
 	AEyeCharacter* PlayerCharacter;
@@ -84,8 +89,9 @@ private:
 	UFUNCTION()
 	void HandlePlayerDeath();
 	UFUNCTION()
-	void HandleDangerChange(bool bIsInDanger, float TimeDilationAmount, float MaxDangerTime);
+	void HandleDangerChange(bool bIsInDanger);
 	void CountTimeInDanger(float DeltaTime);
+	void SetTimeDilation(float DeltaTime);
 	
 	void GetNewPlayerReference();
 
