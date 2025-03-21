@@ -40,12 +40,11 @@ protected:
 
 	/* Setters */
 		void AddJumpCount(const int Value) { JumpCount += Value; }
-	
+		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
+
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
 		FVector GetMovementDirection() const { return MovementDirection; }
-		// FVector GetMovementVelocity() const { return MovementVelocity; }
-
 		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
 		bool GetCanJump() const { return JumpCount < EntityData->MaxJumpCount;}

@@ -99,6 +99,8 @@ void AEyeEntityEyeball::MakeJump()
 	
 	DashDirection = FVector(0, GetMovementInput().X, GetMovementInput().Y);
 	DashDirection.Normalize();
+
+	SetMoveDirection(DashDirection);
 	
 	AddJumpCount(1);
 	bIsDashing = true;

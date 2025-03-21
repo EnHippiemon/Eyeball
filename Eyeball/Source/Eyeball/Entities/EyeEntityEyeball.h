@@ -29,9 +29,9 @@ private:
 	bool bIsDashing = false;
 	bool bCanDash = true;
 	float TimeSinceDashed = 0.f;
+	FVector DashDirection;
 	FVector Dash(const float DeltaTime);
 	FVector Move(const float DeltaTime);
-	FVector DashDirection;
 
 	UPROPERTY()
 	AActor* FoundActor;

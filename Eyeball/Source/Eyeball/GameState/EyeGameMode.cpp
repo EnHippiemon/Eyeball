@@ -113,7 +113,6 @@ void AEyeGameMode::SetTimeDilation(float DeltaTime)
 {
 	float CurrentTimeDilation = UGameplayStatics::GetGlobalTimeDilation(GetWorld());
 	CurrentTimeDilation = FMath::Lerp(CurrentTimeDilation, TargetTimeDilation, TimeDilationTransitionSpeed * DeltaTime);
-		// TargetTimeDilation;
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), CurrentTimeDilation);
 	UE_LOG(LogTemp, Log, TEXT("TimeDilation: %f"), UGameplayStatics::GetGlobalTimeDilation(GetWorld()));
 }
