@@ -44,7 +44,7 @@ protected:
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
 		FVector GetMovementDirection() const { return MovementDirection; }
-		FVector GetMovementVelocity() const { return MovementVelocity; }
+		// FVector GetMovementVelocity() const { return MovementVelocity; }
 
 		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
@@ -100,7 +100,6 @@ private:
 
 	float SlideTraceDistance;
 	FVector MovementDirection;
-	FVector MovementVelocity;
 
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);

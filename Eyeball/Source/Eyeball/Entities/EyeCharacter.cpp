@@ -87,6 +87,7 @@ void AEyeCharacter::OnSpawned()
 {
 	bIsUnPossessed = false;
 
+	MovementDirection = FVector(0, 0, 0);
 	CalculateTraceDistances();
 }
 
