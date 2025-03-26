@@ -18,6 +18,13 @@ public:
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float MovementAcceleration = 0.5f;
 
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
+		float InputMultiplier = 1.f;
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
+		float DecaySpeed = 1.f;
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
+		float ArtificialMovementSpeed = 1.f;
+
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")
 		float ThresholdFallDamageVelocity = -90.f;

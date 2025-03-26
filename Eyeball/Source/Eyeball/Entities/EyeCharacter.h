@@ -34,6 +34,7 @@ public:
 
 	virtual void OnSpawned();
 	virtual void DamagePlayer();
+
 	
 protected:
 	AEyeCharacter();

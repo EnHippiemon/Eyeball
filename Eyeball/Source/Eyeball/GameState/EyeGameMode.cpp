@@ -1,5 +1,6 @@
 #include "EyeGameMode.h"
 #include "../Entities/EyeCharacter.h"
+#include "Components/SphereComponent.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
@@ -75,9 +76,11 @@ void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 
 void AEyeGameMode::EjectCurrentEntity()
 {
+	const auto CurrentVelocity = FVector(0, PlayerCharacter->GetVelocity().Y, PlayerCharacter->GetVelocity().Z);
 	Eyeball->SetActorLocation(PlayerCharacter->GetActorLocation());
 	Eyeball->SetActorHiddenInGame(false);
 	Controller->Possess(Eyeball);
+	Eyeball->AddArtificialInput(CurrentVelocity);
 	GetNewPlayerReference();
 }
 

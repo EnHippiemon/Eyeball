@@ -75,6 +75,7 @@ bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 
 void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 {
+	MovementDirection = FVector(0, 0, 0);
 	OnCharacterChanged.Broadcast(EntityToPossess);
 }
 
@@ -86,8 +87,10 @@ void AEyeCharacter::ChangeState(EGameState NewState)
 void AEyeCharacter::OnSpawned()
 {
 	bIsUnPossessed = false;
-
-	MovementDirection = FVector(0, 0, 0);
+	//
+	// if (bInputIsAllowed)
+		// MovementDirection = FVector(0, 0, 0);
+	
 	CalculateTraceDistances();
 }
 
