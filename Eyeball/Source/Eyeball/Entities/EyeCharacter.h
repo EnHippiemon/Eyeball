@@ -35,6 +35,9 @@ public:
 	virtual void OnSpawned();
 	virtual void DamagePlayer();
 
+	void AddArtificialInput(FVector Direction);
+	
+	FVector GetMovementDirection() const { return MovementDirection; }
 	
 protected:
 	AEyeCharacter();
@@ -45,7 +48,6 @@ protected:
 
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
-		FVector GetMovementDirection() const { return MovementDirection; }
 		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
 		bool GetCanJump() const { return JumpCount < EntityData->MaxJumpCount;}
@@ -59,6 +61,9 @@ protected:
 	
 	virtual void MakeMovement(const float DeltaTime) {}
 	virtual void Force2DMovement();
+	
+	FVector ArtificialInput;
+	void MakeArtificialInput(float const DeltaTime);
 
 	virtual void MakeJump();
 	virtual void MakeReleaseJump() {}

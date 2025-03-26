@@ -5,6 +5,7 @@
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Eyeball/StaticFunctionLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
 {
@@ -75,8 +76,8 @@ bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 
 void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 {
-	MovementDirection = FVector(0, 0, 0);
 	OnCharacterChanged.Broadcast(EntityToPossess);
+	MovementDirection = FVector(0, 0, 0);
 }
 
 void AEyeCharacter::ChangeState(EGameState NewState)
@@ -86,11 +87,11 @@ void AEyeCharacter::ChangeState(EGameState NewState)
 
 void AEyeCharacter::OnSpawned()
 {
-	bIsUnPossessed = false;
-	//
-	// if (bInputIsAllowed)
-		// MovementDirection = FVector(0, 0, 0);
+	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode)
+		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
 	
+	bIsUnPossessed = false;
 	CalculateTraceDistances();
 }
 
@@ -102,6 +103,25 @@ void AEyeCharacter::DamagePlayer()
 void AEyeCharacter::Force2DMovement()
 {
 	SetActorLocation(FVector(EntityData->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
+}
+
+
+void AEyeCharacter::AddArtificialInput(FVector Direction)
+{
+	ArtificialInput = Direction * EntityData->InputMultiplier;
+}
+
+void AEyeCharacter::MakeArtificialInput(float const DeltaTime)
+{
+	if (ArtificialInput.Size() <= 0)
+		return;
+
+	// Decrease input over time
+	ArtificialInput = UKismetMathLibrary::VLerp(ArtificialInput, FVector(0, 0, 0), EntityData->DecaySpeed * DeltaTime);
+
+	// Movement speed and set location
+	const auto NewLocation = GetActorLocation() + ArtificialInput * DeltaTime;
+	RootComponent->SetRelativeLocation(NewLocation);
 }
 
 void AEyeCharacter::MakeJump()
@@ -177,10 +197,6 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (GameMode)
-		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
-
 	OnSpawned();
 }
 
@@ -196,4 +212,5 @@ void AEyeCharacter::Tick(float DeltaTime)
 	ResetJumpCount();
 	SlideDownWall();
 	SetMovementDirection(DeltaTime);
+	MakeArtificialInput(DeltaTime);
 }

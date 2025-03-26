@@ -2,25 +2,6 @@
 
 #include "Components/SphereComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
-#include "Kismet/KismetMathLibrary.h"
-
-void AEyeEntityEyeball::AddArtificialInput(FVector Direction)
-{
-	ArtificialInput = Direction * EntityData->InputMultiplier;
-}
-
-void AEyeEntityEyeball::MakeArtificialInput(float const DeltaTime)
-{
-	if (ArtificialInput.Size() <= 0)
-		return;
-
-	// Decrease input over time
-	ArtificialInput = UKismetMathLibrary::VLerp(ArtificialInput, FVector(0, 0, 0), EntityData->DecaySpeed * DeltaTime);
-
-	// Movement speed and set location
-	const auto NewLocation = GetActorLocation() + ArtificialInput * EntityData->ArtificialMovementSpeed * DeltaTime;
-	RootComponent->SetRelativeLocation(NewLocation);
-}
 
 AEyeEntityEyeball::AEyeEntityEyeball()
 {
@@ -106,8 +87,8 @@ void AEyeEntityEyeball::HandleActionInput()
 		return;
 
 	bIsDashing = false;
-	ArtificialInput = FVector(0, 0, 0);
 	PossessNewEntity(FoundEntity);
+	ArtificialInput = FVector(0, 0, 0);
 }
 
 void AEyeEntityEyeball::MakeJump()
@@ -182,5 +163,4 @@ void AEyeEntityEyeball::Tick(float DeltaTime)
 	FindOverlap();
 	MakeMovement(DeltaTime);
 	ResetJumpCount();
-	MakeArtificialInput(DeltaTime);
 }

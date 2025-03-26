@@ -68,19 +68,21 @@ void AEyeGameMode::ResetLocations()
 
 void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 {
+	const auto CurrentVelocity = PlayerCharacter->GetMovementDirection();
 	Eyeball->SetActorHiddenInGame(true);
 	Controller->Possess(Character);
 	GetNewPlayerReference();
 	HandleDangerFound(false);
+	Character->AddArtificialInput(CurrentVelocity);
 }
 
 void AEyeGameMode::EjectCurrentEntity()
 {
 	const auto CurrentVelocity = FVector(0, PlayerCharacter->GetVelocity().Y, PlayerCharacter->GetVelocity().Z);
+	Eyeball->AddArtificialInput(CurrentVelocity);
 	Eyeball->SetActorLocation(PlayerCharacter->GetActorLocation());
 	Eyeball->SetActorHiddenInGame(false);
 	Controller->Possess(Eyeball);
-	Eyeball->AddArtificialInput(CurrentVelocity);
 	GetNewPlayerReference();
 }
 

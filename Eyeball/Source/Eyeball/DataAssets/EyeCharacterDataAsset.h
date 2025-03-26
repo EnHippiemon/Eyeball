@@ -22,8 +22,6 @@ public:
 		float InputMultiplier = 1.f;
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
 		float DecaySpeed = 1.f;
-		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
-		float ArtificialMovementSpeed = 1.f;
 
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")

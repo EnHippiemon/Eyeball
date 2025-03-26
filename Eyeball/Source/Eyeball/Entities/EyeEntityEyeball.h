@@ -16,7 +16,6 @@ public:
 	virtual void DamagePlayer() override {}
 
 	USphereComponent* GetSphereComponent() { return SphereComponent; }
-	void AddArtificialInput(FVector Direction);
 
 private:
 	AEyeEntityEyeball();
@@ -36,8 +35,6 @@ private:
 	FVector Dash(const float DeltaTime);
 	FVector Move(const float DeltaTime);
 
-	FVector ArtificialInput;
-	void MakeArtificialInput(float const DeltaTime);
 
 	UPROPERTY()
 	AActor* FoundActor;
