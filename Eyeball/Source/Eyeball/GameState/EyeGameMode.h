@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyeDangerWidget;
 class UEyeRestartWidget;
 class AEyeEntityEyeball;
 class AEyeCharacter;
@@ -17,7 +18,7 @@ enum EGameState
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedState, EGameState, NewState);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDangerChanged, bool, IsInDanger);
 UCLASS()
 class EYEBALL_API AEyeGameMode : public AGameModeBase
 {
@@ -26,6 +27,8 @@ class EYEBALL_API AEyeGameMode : public AGameModeBase
 public:
 	UPROPERTY()
 	FOnChangedState OnChangedState;
+	UPROPERTY()
+	FOnDangerChanged OnDangerChanged;
 	
 private:
 	EGameState CurrentGameState;
@@ -44,7 +47,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> EntityHuman;
 
-	bool bIsInDanger = false;
+	bool bIsInDanger = true;
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
 	float TargetTimeDilation = 1.f;
@@ -54,10 +57,18 @@ private:
 	UPROPERTY()
 	AController* Controller;
 
-	/* Game over */
-		UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<UEyeRestartWidget> RestartWidget;
-		TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
+	/* Widgets */
+		/* Game over */
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<UEyeRestartWidget> RestartWidget;
+			TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
+	
+		/* Danger */
+			UPROPERTY(EditDefaultsOnly)
+			// TSubclassOf<UDangerWidget> DangerWidget;
+			TSubclassOf<UEyeDangerWidget> DangerWidget;
+			TObjectPtr<UEyeDangerWidget> DangerWidgetRef;
+	
 	
 	/* Checkpoint */
 		UPROPERTY(EditDefaultsOnly)
@@ -89,7 +100,7 @@ private:
 	UFUNCTION()
 	void HandlePlayerDeath();
 	UFUNCTION()
-	void HandleDangerChange(bool bIsInDanger);
+	void HandleDangerFound(bool IsInDanger);
 	void CountTimeInDanger(float DeltaTime);
 	void SetTimeDilation(float DeltaTime);
 	

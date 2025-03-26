@@ -2,6 +2,7 @@
 #include "../Entities/EyeCharacter.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
+#include "Eyeball/Widgets/EyeDangerWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -69,7 +70,7 @@ void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 	Eyeball->SetActorHiddenInGame(true);
 	Controller->Possess(Character);
 	GetNewPlayerReference();
-	HandleDangerChange(false);
+	HandleDangerFound(false);
 }
 
 void AEyeGameMode::EjectCurrentEntity()
@@ -86,13 +87,14 @@ void AEyeGameMode::HandlePlayerDeath()
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
-void AEyeGameMode::HandleDangerChange(bool IsInDanger)
+void AEyeGameMode::HandleDangerFound(bool IsInDanger)
 {
 	if (bIsInDanger == IsInDanger)
 		return;
 	
 	bIsInDanger = IsInDanger;
 	TargetTimeDilation = IsInDanger ? TimeDilationDanger : 1;
+	OnDangerChanged.Broadcast(IsInDanger);
 }
 
 void AEyeGameMode::CountTimeInDanger(float const DeltaTime)
@@ -114,7 +116,6 @@ void AEyeGameMode::SetTimeDilation(float DeltaTime)
 	float CurrentTimeDilation = UGameplayStatics::GetGlobalTimeDilation(GetWorld());
 	CurrentTimeDilation = FMath::Lerp(CurrentTimeDilation, TargetTimeDilation, TimeDilationTransitionSpeed * DeltaTime);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), CurrentTimeDilation);
-	UE_LOG(LogTemp, Log, TEXT("TimeDilation: %f"), UGameplayStatics::GetGlobalTimeDilation(GetWorld()));
 }
 
 void AEyeGameMode::GetNewPlayerReference()
@@ -126,7 +127,7 @@ void AEyeGameMode::GetNewPlayerReference()
 	{
 		PlayerCharacter->OnCharacterChanged.AddUniqueDynamic(this, &AEyeGameMode::ChangeEntity);
 		PlayerCharacter->OnEject.AddUniqueDynamic(this, &AEyeGameMode::EjectCurrentEntity);
-		PlayerCharacter->OnDangerChanged.AddUniqueDynamic(this, &AEyeGameMode::HandleDangerChange);
+		PlayerCharacter->OnDangerFound.AddUniqueDynamic(this, &AEyeGameMode::HandleDangerFound);
 		PlayerCharacter->OnDeath.AddUniqueDynamic(this, &AEyeGameMode::HandlePlayerDeath);
 		PlayerCharacter->OnCheckpointReached.AddUniqueDynamic(this, &AEyeGameMode::HandleCheckpointReached);
 	}
@@ -158,7 +159,13 @@ void AEyeGameMode::BeginPlay()
 		RestartWidgetRef->AddToViewport();
 		RestartWidgetRef->OnTransitionCompleted.AddUniqueDynamic(this, &AEyeGameMode::SetNewState);
 	}
-
+	
+	DangerWidgetRef = CreateWidget<UEyeDangerWidget>(GetWorld(), DangerWidget);
+	if (DangerWidgetRef)
+	{
+		DangerWidgetRef->AddToViewport();
+	}
+	
 	CurrentGameState = Egs_StartingGame;
 	OnChangedState.Broadcast(CurrentGameState);
 	

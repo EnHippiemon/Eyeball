@@ -77,7 +77,7 @@ void AEyeEntityEyeball::FindOverlap()
 
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
-	OnDangerChanged.Broadcast(bIsInDanger);
+	OnDangerFound.Broadcast(bIsInDanger);
 }
 
 void AEyeEntityEyeball::HandleActionInput()

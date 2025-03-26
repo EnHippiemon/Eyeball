@@ -7,7 +7,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDangerChanged, bool, IsInDanger);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FOnDangerFound, bool, IsInDanger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReached);
 
@@ -26,7 +26,7 @@ public:
 	UPROPERTY()
 	FOnEject OnEject;
 	UPROPERTY()
-	FOnDangerChanged OnDangerChanged;
+	FOnDangerChanged OnDangerFound;
 	UPROPERTY()
 	FOnDeath OnDeath;
 	UPROPERTY()
