@@ -1,4 +1,4 @@
-#include "../PuzzleComponents/EyeMoveableObject.h"
+#include "../MoveableObjects/EyeMoveableObject.h"
 
 #include "Components/BoxComponent.h"
 #include "Eyeball/DataAssets/EyeMoveableObjectDataAsset.h"
@@ -6,15 +6,15 @@
 
 AEyeMoveableObject::AEyeMoveableObject()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
 	Box = CreateDefaultSubobject<UBoxComponent>("RootComponent");
 	RootComponent = Box;
 	
-	CollisionBox = CreateDefaultSubobject<UBoxComponent>("CollisionComponent");
-	CollisionBox->SetupAttachment(Box);
-	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AEyeMoveableObject::HandleBeginOverlap);
-	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AEyeMoveableObject::HandleEndOverlap);
+	OverlapCollision = CreateDefaultSubobject<UBoxComponent>("CollisionComponent");
+	OverlapCollision->SetupAttachment(Box);
+	OverlapCollision->OnComponentBeginOverlap.AddDynamic(this, &AEyeMoveableObject::HandleBeginOverlap);
+	OverlapCollision->OnComponentEndOverlap.AddDynamic(this, &AEyeMoveableObject::HandleEndOverlap);
+
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AEyeMoveableObject::Activate()
@@ -90,6 +90,9 @@ void AEyeMoveableObject::BeginPlay()
 
 void AEyeMoveableObject::Tick(float DeltaTime)
 {
+	if (!ObjectData->bShouldTick)
+		return;
+	
 	Super::Tick(DeltaTime);
 
 	if (!ObjectData)

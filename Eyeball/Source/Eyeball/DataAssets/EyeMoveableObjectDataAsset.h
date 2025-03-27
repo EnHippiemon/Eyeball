@@ -11,6 +11,8 @@ class EYEBALL_API UEyeMoveableObjectDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere)
+	bool bShouldTick;
+	UPROPERTY(EditAnywhere)
 	bool bStartActivated;
 	UPROPERTY(EditAnywhere)
 	bool bShouldLoop;

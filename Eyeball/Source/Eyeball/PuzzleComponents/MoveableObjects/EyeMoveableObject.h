@@ -45,5 +45,5 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Box;
 	UPROPERTY(EditDefaultsOnly)
-	UBoxComponent* CollisionBox;
+	UBoxComponent* OverlapCollision;
 };

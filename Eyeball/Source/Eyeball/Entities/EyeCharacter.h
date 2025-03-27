@@ -36,7 +36,8 @@ public:
 	virtual void DamagePlayer();
 
 	void AddArtificialInput(FVector Direction);
-	
+	void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
+
 	FVector GetMovementDirection() const { return MovementDirection; }
 	
 protected:
@@ -44,7 +45,6 @@ protected:
 
 	/* Setters */
 		void AddJumpCount(const int Value) { JumpCount += Value; }
-		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
 
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../PuzzleComponents/EyeMoveableObject.h"
+#include "../MoveableObjects/EyeMoveableObject.h"
 #include "EyeMoveableDanger.generated.h"
 
 class UEyeDangerComponent;

@@ -1,4 +1,4 @@
-#include "../PuzzleComponents/EyeMoveableDanger.h"
+#include "../MoveableObjects/EyeMoveableDanger.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 
 void AEyeMoveableDanger::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

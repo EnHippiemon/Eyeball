@@ -143,10 +143,14 @@ void AEyeGameMode::GetNewPlayerReference()
 void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 {
 	if (bScreenIsBlack)
+	{
 		ResetLocations();
+		PlayerCharacter->AddArtificialInput(FVector(0, 0, 0));
+		PlayerCharacter->SetMoveDirection(FVector(0, 0, 0));
+	}
 	else
 		CurrentGameState = Egs_Playing;
-	
+
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
