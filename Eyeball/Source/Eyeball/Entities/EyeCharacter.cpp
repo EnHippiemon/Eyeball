@@ -22,7 +22,7 @@ void AEyeCharacter::HandleSidewaysInput(const float Value)
 	bInputIsAllowed ? MovementInput.X = Value : MovementInput.X = 0;
 }
 
-void AEyeCharacter::SetMovementDirection(const float DeltaTime)
+void AEyeCharacter::SmoothenMovementDirection(const float DeltaTime)
 {
 	FVector VectorTranslation = FVector(0, GetMovementInput().X, GetMovementInput().Y);
 	MovementDirection = FMath::Lerp(MovementDirection, VectorTranslation, DeltaTime * EntityData->MovementAcceleration);
@@ -105,7 +105,7 @@ void AEyeCharacter::Force2DMovement()
 	SetActorLocation(FVector(EntityData->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
-void AEyeCharacter::AddArtificialInput(FVector Direction)
+void AEyeCharacter::SetArtificialInput(FVector Direction)
 {
 	ArtificialInput = Direction * EntityData->InputMultiplier;
 }
@@ -210,6 +210,6 @@ void AEyeCharacter::Tick(float DeltaTime)
 	Force2DMovement();
 	ResetJumpCount();
 	SlideDownWall();
-	SetMovementDirection(DeltaTime);
+	SmoothenMovementDirection(DeltaTime);
 	MakeArtificialInput(DeltaTime);
 }

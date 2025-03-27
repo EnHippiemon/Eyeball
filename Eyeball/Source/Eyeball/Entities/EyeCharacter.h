@@ -35,10 +35,12 @@ public:
 	virtual void OnSpawned();
 	virtual void DamagePlayer();
 
-	void AddArtificialInput(FVector Direction);
-	void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
+	/* Setters */
+		void SetArtificialInput(FVector Direction);
+		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
 
-	FVector GetMovementDirection() const { return MovementDirection; }
+	/* Getters */
+		FVector GetMovementDirection() const { return MovementDirection; }
 	
 protected:
 	AEyeCharacter();
@@ -109,7 +111,7 @@ private:
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
 
-	void SetMovementDirection(float DeltaTime);
+	void SmoothenMovementDirection(float DeltaTime);
 
 	void HandleJumpInput();
 	void HandleJumpReleased();

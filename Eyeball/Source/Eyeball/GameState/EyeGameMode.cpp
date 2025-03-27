@@ -73,13 +73,13 @@ void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)
 	Controller->Possess(Character);
 	GetNewPlayerReference();
 	HandleDangerFound(false);
-	Character->AddArtificialInput(CurrentVelocity);
+	Character->SetArtificialInput(CurrentVelocity);
 }
 
 void AEyeGameMode::EjectCurrentEntity()
 {
 	const auto CurrentVelocity = FVector(0, PlayerCharacter->GetVelocity().Y, PlayerCharacter->GetVelocity().Z);
-	Eyeball->AddArtificialInput(CurrentVelocity);
+	Eyeball->SetArtificialInput(CurrentVelocity);
 	Eyeball->SetActorLocation(PlayerCharacter->GetActorLocation());
 	Eyeball->SetActorHiddenInGame(false);
 	Controller->Possess(Eyeball);
@@ -145,7 +145,7 @@ void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 	if (bScreenIsBlack)
 	{
 		ResetLocations();
-		PlayerCharacter->AddArtificialInput(FVector(0, 0, 0));
+		PlayerCharacter->SetArtificialInput(FVector(0, 0, 0));
 		PlayerCharacter->SetMoveDirection(FVector(0, 0, 0));
 	}
 	else
