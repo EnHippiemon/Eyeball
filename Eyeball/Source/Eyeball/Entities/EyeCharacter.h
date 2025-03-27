@@ -72,7 +72,7 @@ protected:
 	virtual void ResetJumpCount();
 	virtual void TakeFallDamage();
 
-	virtual void SlideDownWall();
+	virtual void DetectWall();
 
 	virtual void HandleActionInput();
 	virtual void HandleEjectInput();
@@ -95,6 +95,7 @@ protected:
 
 private:
 	FVector MovementInput;
+	FVector MovementDirection;
 
 	bool bInputIsAllowed = true;
 	
@@ -105,9 +106,10 @@ private:
 	bool bIsOnFloor = false;
 	float FloorTraceDistance;
 
-	float SlideTraceDistance;
-	FVector MovementDirection;
-
+	bool bFoundLeftWall;
+	bool bFoundRightWall;
+	float WallTraceDistance;
+	
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);
 
@@ -116,6 +118,8 @@ private:
 	void HandleJumpInput();
 	void HandleJumpReleased();
 	void JumpHeldTimer(float DeltaTime);
+
+	void SlideDownWall();
 
 	void CalculateTraceDistances();
 

@@ -50,7 +50,7 @@ private:
 	virtual void MakeReleaseJump() override;
 	virtual void ResetJumpCount() override;
 
-	virtual void SlideDownWall() override {}
+	virtual void DetectWall() override {}
 
 	virtual void MakeMovement(const float DeltaTime) override;
 	

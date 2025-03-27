@@ -23,14 +23,3 @@ void AEyeOneWayPlatform::HandleBeginOverlap(UPrimitiveComponent* OverlappedCompo
 			BlockingCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	}
 }
-
-void AEyeOneWayPlatform::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void AEyeOneWayPlatform::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}

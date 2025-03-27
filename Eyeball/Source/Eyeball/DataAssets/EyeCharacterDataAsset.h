@@ -55,20 +55,23 @@ public:
 		UPROPERTY(EditAnywhere, Category="FloorTrace")
 		FVector FloorTraceDirection = FVector(0, 0, 1);
 
-	/* Sliding */
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Speed")
+	/* Wall tracing */
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces|Sliding")
+		bool bShouldSlideDownWall;
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces|Sliding")
 		float SlidingSpeed = 3.f;
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+	
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		int SlidingTraceAmount = 4;
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		float SlidingTraceLength = 3.f;
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		float SlidingTraceHeight;
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		FVector SlidingTraceOffset;
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		FVector SlidingLineDirection = FVector(0, 0, 1);
-		UPROPERTY(EditDefaultsOnly, Category="Sliding|Traces")
+		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		FVector SlidingTraceDirection = FVector(0, 1, 0);
 
 	/* Positioning */
