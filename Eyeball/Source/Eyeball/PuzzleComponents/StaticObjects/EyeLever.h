@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "EyeLever.generated.h"
 
+class AEyeCamera;
 class AEyeMoveableObject;
 
 UCLASS()
@@ -19,4 +20,7 @@ public:
 protected:
 	UPROPERTY(EditInstanceOnly)
 	TObjectPtr<AEyeMoveableObject> MoveableObject;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AEyeCamera> CameraClass;
 };

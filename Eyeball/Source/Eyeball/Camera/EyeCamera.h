@@ -22,6 +22,14 @@ private:
 #pragma endregion 
 
 #pragma region -- REFERENCES --
+
+	UPROPERTY()
+	TArray<AActor*> FocusedActors;
+	
+	UPROPERTY()
+	AActor* Target1;
+	UPROPERTY()
+	AActor* Target2;
 	
 	UPROPERTY()
 	AEyeCharacter* PlayerCharacter;
@@ -35,13 +43,18 @@ private:
 
 public:
 	void OnSpawned();
+	void AddActorToFocus(AActor* ActorToAdd);
+	void RemoveActorFromFocus(AActor* ActorToRemove);
 
 private:
-	void MoveTowardsTarget(const float DeltaTime);
-	void ChangePrimaryFocus();
+	void MoveTowardsTarget(float const DeltaTime);
+	void ChangeFocus(const TArray<AActor*>& NewActors);
 	UFUNCTION()
 	void GetNewPlayerReference(AEyeCharacter* NewCharacter);
 
+	FTimerHandle TimerHandle;
+	void OnTimerActivated();
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	

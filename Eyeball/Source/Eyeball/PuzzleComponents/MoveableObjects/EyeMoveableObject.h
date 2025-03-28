@@ -17,6 +17,7 @@ public:
 	
 	void Activate();
 	FVector GetTargetLocation() const { return TargetLocation; }
+	bool GetIsActivated() const { return bIsActivated; }
 
 protected:
 	UFUNCTION()
