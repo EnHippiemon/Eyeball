@@ -1,5 +1,5 @@
 #include "EyeLever.h"
-#include "MoveableObjects/EyeMoveableObject.h"
+#include "../MoveableObjects/EyeMoveableObject.h"
 
 AEyeLever::AEyeLever()
 {

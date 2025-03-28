@@ -1,4 +1,4 @@
-#include "../PuzzleComponents/EyeDanger.h"
+#include "../StaticObjects/EyeDanger.h"
 
 #include "Components/BoxComponent.h"
 #include "Eyeball/Entities/EyeCharacter.h"

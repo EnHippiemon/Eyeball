@@ -14,9 +14,9 @@ class EYEBALL_API AEyeLever : public AActor
 public:	
 	AEyeLever();
 
-	void InteractWith() const;
+	virtual void InteractWith() const;
 
-private:
+protected:
 	UPROPERTY(EditInstanceOnly)
 	TObjectPtr<AEyeMoveableObject> MoveableObject;
 };

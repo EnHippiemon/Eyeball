@@ -112,6 +112,8 @@ void AEyeCharacter::OnSpawned()
 void AEyeCharacter::DamagePlayer()
 {
 	OnDeath.Broadcast();
+	SetArtificialInput(FVector(0, 0, 0));
+	SetMoveDirection(FVector(0, 0, 0));
 }
 
 void AEyeCharacter::Force2DMovement()

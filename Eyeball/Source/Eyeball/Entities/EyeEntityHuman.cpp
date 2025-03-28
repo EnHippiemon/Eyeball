@@ -1,8 +1,7 @@
 #include "EyeEntityHuman.h"
 #include "Components/CapsuleComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
-#include "Eyeball/PuzzleComponents/EyeLever.h"
-#include "Kismet/GameplayStatics.h"
+#include "../PuzzleComponents/StaticObjects/EyeLever.h"
 
 AEyeEntityHuman::AEyeEntityHuman()
 {

@@ -13,7 +13,6 @@ class EYEBALL_API AEyeEntityEyeball : public AEyeCharacter
 
 public:
 	virtual void OnSpawned() override;
-	virtual void DamagePlayer() override {}
 
 	USphereComponent* GetSphereComponent() { return SphereComponent; }
 
@@ -34,8 +33,7 @@ private:
 	FVector DashDirection;
 	FVector Dash(const float DeltaTime);
 	FVector Move(const float DeltaTime);
-
-
+	
 	UPROPERTY()
 	AActor* FoundActor;
 	UPROPERTY()
