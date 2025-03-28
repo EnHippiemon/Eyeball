@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class AEyeCamera;
 class UEyeDangerWidget;
 class UEyeRestartWidget;
 class AEyeEntityEyeball;
@@ -19,6 +20,7 @@ enum EGameState
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedState, EGameState, NewState);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDangerChanged, bool, IsInDanger);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEntityChanged, AEyeCharacter*, NewEntity);
 UCLASS()
 class EYEBALL_API AEyeGameMode : public AGameModeBase
 {
@@ -29,6 +31,8 @@ public:
 	FOnChangedState OnChangedState;
 	UPROPERTY()
 	FOnDangerChanged OnDangerChanged;
+	UPROPERTY()
+	FOnEntityChanged OnEntityChanged;
 	
 private:
 	EGameState CurrentGameState;
@@ -56,6 +60,8 @@ private:
 	AEyeCharacter* PlayerCharacter;
 	UPROPERTY()
 	AController* Controller;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AEyeCamera> MainCamera;
 
 	/* Widgets */
 		/* Game over */
@@ -105,6 +111,8 @@ private:
 	void SetTimeDilation(float DeltaTime);
 	
 	void GetNewPlayerReference();
+
+	void SpawnCamera() const;
 
 	UFUNCTION()
 	void SetNewState(bool bScreenIsBlack);

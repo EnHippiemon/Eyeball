@@ -1,6 +1,7 @@
 #include "EyeGameMode.h"
 #include "../Entities/EyeCharacter.h"
 #include "Components/SphereComponent.h"
+#include "Eyeball/Camera/EyeCamera.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
@@ -136,8 +137,16 @@ void AEyeGameMode::GetNewPlayerReference()
 		PlayerCharacter->OnDeath.AddUniqueDynamic(this, &AEyeGameMode::HandlePlayerDeath);
 		PlayerCharacter->OnCheckpointReached.AddUniqueDynamic(this, &AEyeGameMode::HandleCheckpointReached);
 	}
-
+	
 	PlayerCharacter->OnSpawned();
+	OnEntityChanged.Broadcast(PlayerCharacter);
+}
+
+void AEyeGameMode::SpawnCamera() const
+{
+	const auto Camera = GetWorld()->SpawnActor<AEyeCamera>(MainCamera, PlayerCharacter->GetTransform());
+	Camera->OnSpawned();
+	OnEntityChanged.Broadcast(PlayerCharacter);
 }
 
 void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
@@ -175,11 +184,13 @@ void AEyeGameMode::BeginPlay()
 		DangerWidgetRef->AddToViewport();
 	}
 	
-	CurrentGameState = Egs_StartingGame;
-	OnChangedState.Broadcast(CurrentGameState);
-	
 	GetNewPlayerReference();
 	FindAllReferences();
+
+	SpawnCamera();
+	
+	CurrentGameState = Egs_StartingGame;
+	OnChangedState.Broadcast(CurrentGameState);
 }
 
 void AEyeGameMode::Tick(float DeltaTime)
