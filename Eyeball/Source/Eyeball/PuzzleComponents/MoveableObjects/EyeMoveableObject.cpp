@@ -23,6 +23,14 @@ void AEyeMoveableObject::Activate()
 	bHasReachedTarget = false;
 }
 
+void AEyeMoveableObject::ResetLocation()
+{
+	if (!ObjectData->bStartActivated)
+		bIsActivated = false;
+	bHasReachedTarget = true;
+	SetActorLocation(StartLocation);
+}
+
 void AEyeMoveableObject::MoveToTarget()
 {
 	if (!bIsActivated)

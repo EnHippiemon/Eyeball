@@ -4,6 +4,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class AEyeMoveableDanger;
+class AEyeMoveableObject;
 class AEyeCamera;
 class UEyeDangerWidget;
 class UEyeRestartWidget;
@@ -87,6 +89,12 @@ private:
 		AEyeCharacter* PossessedAtCheckpoint;
 
 		TArray<FVector> CharacterLocations;
+
+		/* Moveable objects */
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<AEyeMoveableObject> MoveableObject;
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<AEyeMoveableDanger> MoveableDanger;
 	
 		bool bEyeballHiddenAtCheckpoint = false;
 	
@@ -96,7 +104,9 @@ private:
 		void FindAllReferences();
 		void SaveLocations();
 		void ResetLocations();
-	
+
+		void ResetMoveableObjects(const TSubclassOf<AEyeMoveableObject>& MoveableObjectClass) const;
+
 	UFUNCTION()
 	void ChangeEntity(AEyeCharacter* Character);
 

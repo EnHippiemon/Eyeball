@@ -1,17 +1,12 @@
 #include "EyeGameMode.h"
 #include "../Entities/EyeCharacter.h"
-#include "Components/SphereComponent.h"
 #include "Eyeball/Camera/EyeCamera.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
+#include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
+#include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableDanger.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
-
-// void AEyeGameMode::InitGameState()
-// {
-// 	Super::InitGameState();
-// }
 
 AEyeGameMode::AEyeGameMode()
 {
@@ -54,6 +49,11 @@ void AEyeGameMode::SaveLocations()
 
 void AEyeGameMode::ResetLocations()
 {
+	// Reset MoveableObjects
+	ResetMoveableObjects(MoveableObject);
+	ResetMoveableObjects(MoveableDanger);
+
+	// Reset entity locations
 	if (bEyeballHiddenAtCheckpoint)
 		ChangeEntity(PossessedAtCheckpoint);
 	else
@@ -65,6 +65,18 @@ void AEyeGameMode::ResetLocations()
 	}
 	
 	CurrentGameState = Egs_StartingGame;
+}
+
+void AEyeGameMode::ResetMoveableObjects(const TSubclassOf<AEyeMoveableObject>& MoveableObjectClass) const
+{
+	TArray<AActor*> MoveableObjects;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObjectClass, MoveableObjects);
+	for (int i = 0; i < MoveableObjects.Num(); ++i)
+	{
+		AEyeMoveableObject* Object = Cast<AEyeMoveableObject>(MoveableObjects[i]);
+		if (Object)
+			Object->ResetLocation();
+	}
 }
 
 void AEyeGameMode::ChangeEntity(AEyeCharacter* Character)

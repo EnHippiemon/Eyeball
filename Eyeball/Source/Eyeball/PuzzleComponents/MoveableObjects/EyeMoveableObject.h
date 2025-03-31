@@ -16,6 +16,7 @@ public:
 	AEyeMoveableObject();
 	
 	void Activate();
+	virtual void ResetLocation();
 	FVector GetTargetLocation() const { return TargetLocation; }
 	bool GetIsActivated() const { return bIsActivated; }
 

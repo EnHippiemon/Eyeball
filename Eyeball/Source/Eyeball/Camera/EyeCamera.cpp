@@ -113,7 +113,9 @@ void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 		}
 	});
 
-	if (TimerDelay < 0)
+	if (TimerDelay <= 0)
+		return;
+	
 	GetWorldTimerManager().SetTimer(TimerHandle, Delegate, TimerDelay, false, TimerDelay);
 }
 
