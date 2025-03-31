@@ -43,6 +43,7 @@ private:
 	FTimerHandle TimerHandle;
 
 	void MoveTowardsTarget(float const DeltaTime);
+	float FindDistanceBetweenActors();
 	void ChangeFocus(const TArray<AActor*>& NewActors);
 	UFUNCTION()
 	void GetNewPlayerReference(AEyeCharacter* NewCharacter);

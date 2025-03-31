@@ -14,4 +14,6 @@ public:
 	float MoveSpeed = 15.f;
 	UPROPERTY(EditDefaultsOnly)
 	FVector CameraOffset = FVector(-200, 0, 0);
+	UPROPERTY(EditDefaultsOnly)
+	float XStrength = 1.f;
 };
