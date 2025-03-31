@@ -37,14 +37,15 @@ private:
 
 public:
 	void OnSpawned();
+	// If TimerDelay is 0 or less, focus will stay until RemoveActorFromFocus is called. 
 	void AddActorToFocus(AActor* ActorToAdd, float const TimerDelay);
-
+	void RemoveActorFromFocus(AActor* ActorToRemove);
+	
 private:
 	FTimerHandle TimerHandle;
 
 	void MoveTowardsTarget(float const DeltaTime);
 	float FindDistanceBetweenActors();
-	void ChangeFocus(const TArray<AActor*>& NewActors);
 	UFUNCTION()
 	void GetNewPlayerReference(AEyeCharacter* NewCharacter);
 	

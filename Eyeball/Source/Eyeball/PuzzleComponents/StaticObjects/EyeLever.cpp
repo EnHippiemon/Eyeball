@@ -11,15 +11,6 @@ AEyeLever::AEyeLever()
 void AEyeLever::InteractWith() 
 {
 	StartEvent(MoveableObject);
-	// if ((MoveableObject->GetActorLocation() - MoveableObject->GetTargetLocation()).Length() < 10.f
-	// 	|| MoveableObject->GetIsActivated())
-	// 	return;
-	//
-	// MoveableObject->Activate();
-	//
-	// CameraRef = Cast<AEyeCamera>(UGameplayStatics::GetActorOfClass(GetWorld(), CameraClass));
-	// if (GetCamera())
-	// 	GetCamera()->AddActorToFocus(MoveableObject, TimeToFocusCameraOnActor);
 }
 
 void AEyeLever::StartEvent(TObjectPtr<AEyeMoveableObject> ObjectToMove)

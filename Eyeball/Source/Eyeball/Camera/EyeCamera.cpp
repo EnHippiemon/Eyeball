@@ -69,12 +69,6 @@ float AEyeCamera::FindDistanceBetweenActors()
 	return DistanceY > DistanceZ ? DistanceY : DistanceZ;
 }
 
-void AEyeCamera::ChangeFocus(const TArray<AActor*>& NewActors)
-{
-	FocusedActors.Empty();
-	FocusedActors = NewActors;
-}
-
 void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)
 {
 	if (!FocusedActors.IsValidIndex(0))
@@ -119,7 +113,13 @@ void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 		}
 	});
 
+	if (TimerDelay < 0)
 	GetWorldTimerManager().SetTimer(TimerHandle, Delegate, TimerDelay, false, TimerDelay);
+}
+
+void AEyeCamera::RemoveActorFromFocus(AActor* ActorToRemove)
+{
+	FocusedActors.Remove(ActorToRemove);
 }
 
 void AEyeCamera::BeginPlay()
