@@ -1,13 +1,19 @@
 #include "EyeLeverTwo.h"
 
+#include "Eyeball/Camera/EyeCamera.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 
-void AEyeLeverTwo::InteractWith() const
+void AEyeLeverTwo::InteractWith()
 {
 	Super::InteractWith();
 
-	if ((MoveableObjectTwo->GetActorLocation() - MoveableObjectTwo->GetTargetLocation()).Length() < 10.f)
-		return;
-	
-	MoveableObjectTwo->Activate();
+	StartEvent(MoveableObjectTwo);
+	// if ((MoveableObjectTwo->GetActorLocation() - MoveableObjectTwo->GetTargetLocation()).Length() < 10.f
+	// 	|| MoveableObjectTwo->GetIsActivated())
+	// 	return;
+	//
+	// MoveableObjectTwo->Activate();
+	//
+	// if (GetCamera())
+	// 	GetCamera()->AddActorToFocus(MoveableObjectTwo, TimeToFocusCameraOnActor);
 }

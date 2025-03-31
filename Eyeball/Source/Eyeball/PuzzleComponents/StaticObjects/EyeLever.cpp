@@ -8,15 +8,29 @@ AEyeLever::AEyeLever()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void AEyeLever::InteractWith() const
+void AEyeLever::InteractWith() 
 {
-	if ((MoveableObject->GetActorLocation() - MoveableObject->GetTargetLocation()).Length() < 10.f
-		|| MoveableObject->GetIsActivated())
+	StartEvent(MoveableObject);
+	// if ((MoveableObject->GetActorLocation() - MoveableObject->GetTargetLocation()).Length() < 10.f
+	// 	|| MoveableObject->GetIsActivated())
+	// 	return;
+	//
+	// MoveableObject->Activate();
+	//
+	// CameraRef = Cast<AEyeCamera>(UGameplayStatics::GetActorOfClass(GetWorld(), CameraClass));
+	// if (GetCamera())
+	// 	GetCamera()->AddActorToFocus(MoveableObject, TimeToFocusCameraOnActor);
+}
+
+void AEyeLever::StartEvent(TObjectPtr<AEyeMoveableObject> ObjectToMove)
+{
+	if ((ObjectToMove->GetActorLocation() - ObjectToMove->GetTargetLocation()).Length() < 10.f
+	|| ObjectToMove->GetIsActivated())
 		return;
 	
-	MoveableObject->Activate();
-	
-	const auto Camera = Cast<AEyeCamera>(UGameplayStatics::GetActorOfClass(GetWorld(), CameraClass));
-	if (Camera)
-		Camera->AddActorToFocus(MoveableObject);
+	ObjectToMove->Activate();
+
+	CameraRef = Cast<AEyeCamera>(UGameplayStatics::GetActorOfClass(GetWorld(), CameraClass));
+	if (CameraRef)
+		CameraRef->AddActorToFocus(ObjectToMove, TimeToFocusCameraOnActor);
 }

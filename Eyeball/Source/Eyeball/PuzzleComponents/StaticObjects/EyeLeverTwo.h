@@ -10,9 +10,9 @@ class EYEBALL_API AEyeLeverTwo : public AEyeLever
 	GENERATED_BODY()
 
 public:
-	virtual void InteractWith() const override;
+	virtual void InteractWith() override;
 	
-protected:
+private:
 	UPROPERTY(EditInstanceOnly)
 	TObjectPtr<AEyeMoveableObject> MoveableObjectTwo;
 };
