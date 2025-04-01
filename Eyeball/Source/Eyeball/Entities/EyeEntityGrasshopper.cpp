@@ -39,17 +39,31 @@ void AEyeEntityGrasshopper::DecideMovementSpeed()
 	CurrentMovementSpeed = MovementSpeed;
 }
 
+void AEyeEntityGrasshopper::DecideJumpHeight(float const DeltaTime)
+{
+	if (!GetJumpDepressed() || !GetIsOnFloor() || !GetCanJump())
+		return;
+
+	JumpHeight += DeltaTime * JumpTimeDirection;
+	if (JumpHeight <= 0 || JumpHeight >= TimerInterval)
+		JumpTimeDirection *= -1;
+	JumpHeight = FMath::Clamp(JumpHeight, 0.f, TimerInterval);
+
+	UE_LOG(LogTemp, Log, TEXT("Jump height: %f"), JumpHeight);
+}
+
 void AEyeEntityGrasshopper::MakeReleaseJump()
 {
 	Super::MakeReleaseJump();
 
 	if (!GetIsOnFloor() || !GetCanJump())
 		return;
+	
+	const auto Impulse = JumpHeight * EntityData->JumpForce;
+	Box->AddImpulse(EntityData->JumpDirection * Impulse);
 
 	AddJumpCount(1);
-
-	auto Impulse = CheckIsJumpHeld(EntityData->HeldJumpThreshold) ? EntityData->JumpForce : EntityData->JumpForce * 0.25f;
-	Box->AddImpulse(EntityData->JumpDirection * Impulse);
+	JumpHeight = 0.f;
 }
 
 void AEyeEntityGrasshopper::OnSpawned()
@@ -73,4 +87,5 @@ void AEyeEntityGrasshopper::Tick(float DeltaTime)
 	
 	MakeMovement(DeltaTime);
 	DecideMovementSpeed();
+	DecideJumpHeight(DeltaTime);
 }
