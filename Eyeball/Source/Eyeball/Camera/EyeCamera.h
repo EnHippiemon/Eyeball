@@ -4,6 +4,7 @@
 #include "Camera/CameraActor.h"
 #include "EyeCamera.generated.h"
 
+class USpotLightComponent;
 class UEyeMainCameraDataAsset;
 class AEyeGameMode;
 class AEyeCharacter;
@@ -18,6 +19,7 @@ private:
 
 #pragma region -- Variables --
 
+	float CameraFOVCompensation = 1.f;
 	
 #pragma endregion 
 
@@ -31,6 +33,8 @@ private:
 	AEyeGameMode* GameMode;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
 	UEyeMainCameraDataAsset* Data;
+	UPROPERTY(EditDefaultsOnly)
+	USpotLightComponent* SpotLight;
 	
 #pragma endregion 
 #pragma region -- FUNCTIONS --
@@ -48,6 +52,9 @@ private:
 	float FindDistanceBetweenActors();
 	UFUNCTION()
 	void GetNewPlayerReference(AEyeCharacter* NewCharacter);
+
+	void SetRotation();
+	void CameraOffsetCompensationForFOV();
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

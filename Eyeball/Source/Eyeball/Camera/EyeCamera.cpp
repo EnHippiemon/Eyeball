@@ -1,5 +1,7 @@
 #include "EyeCamera.h"
 
+#include "Camera/CameraComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "Eyeball/DataAssets/CameraDataAssets/EyeMainCameraDataAsset.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,6 +10,9 @@
 AEyeCamera::AEyeCamera()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpotLight = CreateDefaultSubobject<USpotLightComponent>("SpotLight");
+	SpotLight->SetupAttachment(GetRootComponent());
 }
 
 void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
@@ -35,7 +40,7 @@ float AEyeCamera::FindDistanceBetweenActors()
 {
 	// If player character is the only actor in focus, return
 	if (FocusedActors.Num() <= 1)
-		return GetActorLocation().X + Data->CameraOffset.X;
+		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
 
 	// Find the smallest and largest values of Y and Z among the actor locations 
 	FVector FurthestUpRight = FVector(0, FLT_MIN, FLT_MIN);
@@ -63,10 +68,10 @@ float AEyeCamera::FindDistanceBetweenActors()
 	// If the actor distance is too small, return the regular offset
 	if (DistanceY < GetActorLocation().X + Data->CameraOffset.X
 		&& DistanceZ < GetActorLocation().X + Data->CameraOffset.X)
-		return GetActorLocation().X + Data->CameraOffset.X;
+		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
 
 	// Return the greatest distance of Y and Z
-	return DistanceY > DistanceZ ? DistanceY : DistanceZ;
+	return DistanceY > DistanceZ ? DistanceY * CameraFOVCompensation : DistanceZ * CameraFOVCompensation;
 }
 
 void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)
@@ -79,6 +84,17 @@ void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)
 	FocusedActors[0] = NewCharacter;
 }
 
+void AEyeCamera::SetRotation()
+{
+	SetActorRotation(FRotator(0, 0, 0));
+}
+
+void AEyeCamera::CameraOffsetCompensationForFOV()
+{
+	// 90 is original FOV. This makes sure that any FOV used, all actors in focus will still be visible.
+	CameraFOVCompensation = 90 / GetCameraComponent()->FieldOfView; 
+}
+
 void AEyeCamera::OnSpawned()
 {
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -86,6 +102,9 @@ void AEyeCamera::OnSpawned()
 		{ UE_LOG(LogTemp, Error, TEXT("AEyeCamera.cpp: GameMode is null")); }
 	else
 		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeCamera::GetNewPlayerReference);
+
+	SetRotation();
+	CameraOffsetCompensationForFOV();
 }
 
 void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
