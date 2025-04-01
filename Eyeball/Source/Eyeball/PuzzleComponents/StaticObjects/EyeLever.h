@@ -11,7 +11,7 @@ UCLASS()
 class EYEBALL_API AEyeLever : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	AEyeLever();
 
@@ -25,7 +25,7 @@ protected:
 
 private:
 	UPROPERTY(EditInstanceOnly)
-	TObjectPtr<AEyeMoveableObject> MoveableObject;
+	TArray<TObjectPtr<AEyeMoveableObject>> MoveableObject;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEyeCamera> CameraClass;

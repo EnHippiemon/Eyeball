@@ -10,7 +10,10 @@ AEyeLever::AEyeLever()
 
 void AEyeLever::InteractWith() 
 {
-	StartEvent(MoveableObject);
+	for (int i = 0; i < MoveableObject.Num(); ++i)
+	{
+		StartEvent(MoveableObject[i]);
+	}
 }
 
 void AEyeLever::StartEvent(TObjectPtr<AEyeMoveableObject> ObjectToMove)
