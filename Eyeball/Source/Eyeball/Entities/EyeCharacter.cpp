@@ -10,6 +10,7 @@
 AEyeCharacter::AEyeCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bIsUnPossessed = true;
 }
 
 void AEyeCharacter::HandleUpwardsInput(const float Value)
@@ -214,7 +215,8 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OnSpawned();
+	if (!bIsUnPossessed)
+		OnSpawned();
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

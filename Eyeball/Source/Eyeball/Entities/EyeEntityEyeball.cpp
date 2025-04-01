@@ -14,6 +14,8 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 	RootComponent = SphereComponent;
 
 	SphereComponent->SetEnableGravity(false);
+
+	bIsUnPossessed = false;
 }
 
 FVector AEyeEntityEyeball::Dash(const float DeltaTime)

@@ -1,10 +1,13 @@
 #include "Eyeball/Entities/EyeEntityGrasshopper.h"
+
+#include "Blueprint/UserWidget.h"
 #include "Components/BoxComponent.h"
-#include "Kismet/GameplayStatics.h"
+#include "Eyeball/Widgets/EyeGrasshopperJumpWidget.h"
 
 AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 {
-	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(TEXT("/Game/Characters/Player/DataAssets/Grasshopper_DataAsset"));
+	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(
+		TEXT("/Game/Characters/Player/DataAssets/Grasshopper_DataAsset"));
 	if (EntityDataAsset.Object)
 		EntityData = EntityDataAsset.Object;
 
@@ -13,15 +16,17 @@ AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 
 	Box->SetEnableGravity(true);
 	Box->SetSimulatePhysics(true);
+
+	bIsUnPossessed = true;
 }
 
 void AEyeEntityGrasshopper::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);
-	
-	auto OutputMovement = FVector(0, GetMovementInput().X, 0) ;
+
+	auto OutputMovement = FVector(0, GetMovementInput().X, 0);
 	OutputMovement.Normalize();
-	
+
 	auto NewLocation = GetActorLocation() + OutputMovement * CurrentMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
@@ -50,6 +55,9 @@ void AEyeEntityGrasshopper::DecideJumpHeight(float const DeltaTime)
 	JumpHeight = FMath::Clamp(JumpHeight, 0.f, TimerInterval);
 
 	UE_LOG(LogTemp, Log, TEXT("Jump height: %f"), JumpHeight);
+
+	if (JumpWidgetRef)
+		JumpWidgetRef->RenderJumpBar(JumpHeight);
 }
 
 void AEyeEntityGrasshopper::MakeReleaseJump()
@@ -58,24 +66,46 @@ void AEyeEntityGrasshopper::MakeReleaseJump()
 
 	if (!GetIsOnFloor() || !GetCanJump())
 		return;
-	
+
 	const auto Impulse = JumpHeight * EntityData->JumpForce;
 	Box->AddImpulse(EntityData->JumpDirection * Impulse);
 
 	AddJumpCount(1);
 	JumpHeight = 0.f;
+	if (JumpWidgetRef)
+		JumpWidgetRef->RenderJumpBar(JumpHeight);
+}
+
+void AEyeEntityGrasshopper::HandleEjectInput()
+{
+	Super::HandleEjectInput();
+
+	if (JumpWidgetRef)
+	{
+		JumpWidgetRef->RemoveFromParent();
+		JumpWidgetRef = nullptr;
+	}
 }
 
 void AEyeEntityGrasshopper::OnSpawned()
 {
 	Super::OnSpawned();
+
+	if (bIsUnPossessed)
+		return;
+
+	if (!JumpWidgetRef)
+	{
+		JumpWidgetRef = CreateWidget<UEyeGrasshopperJumpWidget>(GetWorld(), JumpWidget);
+		if (JumpWidgetRef)
+			JumpWidgetRef->AddToViewport();
+		JumpWidgetRef->RenderJumpBar(0);
+	}
 }
 
 void AEyeEntityGrasshopper::BeginPlay()
 {
 	Super::BeginPlay();
-
-	OnSpawned();
 }
 
 void AEyeEntityGrasshopper::Tick(float DeltaTime)
@@ -84,7 +114,7 @@ void AEyeEntityGrasshopper::Tick(float DeltaTime)
 
 	if (bIsUnPossessed)
 		return;
-	
+
 	MakeMovement(DeltaTime);
 	DecideMovementSpeed();
 	DecideJumpHeight(DeltaTime);

@@ -59,7 +59,7 @@ protected:
 		ECollisionChannel GetEntityBody() const { return EntityData->EntityBody; }
 
 	float CurrentMovementSpeed;
-	bool bIsUnPossessed;
+	bool bIsUnPossessed = true;
 	
 	virtual void MakeMovement(const float DeltaTime) {}
 	virtual void Force2DMovement();
@@ -83,7 +83,9 @@ protected:
 
 	UFUNCTION()
 	virtual void ChangeState(EGameState NewState);
-	
+
+	virtual void UnPossessed() override;
+
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	
@@ -123,6 +125,5 @@ private:
 
 	void CalculateTraceDistances();
 
-	virtual void UnPossessed() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

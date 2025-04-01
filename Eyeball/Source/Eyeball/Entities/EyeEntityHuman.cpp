@@ -81,8 +81,6 @@ void AEyeEntityHuman::OnSpawned()
 void AEyeEntityHuman::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	OnSpawned();
 }
 
 void AEyeEntityHuman::Tick(float DeltaTime)
