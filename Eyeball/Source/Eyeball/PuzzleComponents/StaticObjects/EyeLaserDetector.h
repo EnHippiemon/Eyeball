@@ -26,7 +26,7 @@ private:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditInstanceOnly)
-	TObjectPtr<AActor> ObjectToFollow;
+	TObjectPtr<AEyeMoveableObject> ObjectToFollow;
 	UPROPERTY(EditInstanceOnly)
 	UEyeLaserDetectorDataAsset* Data;
 };

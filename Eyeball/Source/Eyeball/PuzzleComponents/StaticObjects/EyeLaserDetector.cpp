@@ -1,6 +1,7 @@
 #include "EyeLaserDetector.h"
 #include "Eyeball/StaticFunctionLibrary.h"
 #include "Eyeball/DataAssets/PuzzleComponentsDataAssets/EyeLaserDetectorDataAsset.h"
+#include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 
 AEyeLaserDetector::AEyeLaserDetector()
 {
@@ -9,6 +10,9 @@ AEyeLaserDetector::AEyeLaserDetector()
 
 void AEyeLaserDetector::SearchForVictim()
 {
+	if (ObjectToFollow->GetIsActivated())
+		return;
+	
 	const auto FoundVictim = UStaticFunctionLibrary::TracesAlongLine(this, Data->LineDirection, Data->TraceDirection,
 	                                                                 Data->TraceOffset, Data->TraceAmount,
 	                                                                 Data->DistanceBetweenTraces, TraceLength,
@@ -19,7 +23,7 @@ void AEyeLaserDetector::SearchForVictim()
 
 void AEyeLaserDetector::FollowObject()
 {
-	if (!ObjectToFollow)
+	if (!ObjectToFollow || !ObjectToFollow->GetHasReachedTarget() && !ObjectToFollow->GetIsActivated())
 		return;
 	
 	SetActorLocation(ObjectToFollow->GetActorLocation());
@@ -35,8 +39,9 @@ void AEyeLaserDetector::BeginPlay()
 
 	if (!ObjectToFollow)
 		return;
-	
-	StartPoint = ObjectToFollow->GetActorLocation();
+
+	SetActorLocation(ObjectToFollow->GetActorLocation());
+	StartPoint = GetActorLocation();
 }
 
 void AEyeLaserDetector::Tick(float DeltaTime)

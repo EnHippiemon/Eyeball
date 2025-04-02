@@ -19,6 +19,7 @@ public:
 	virtual void ResetLocation();
 	FVector GetTargetLocation() const { return TargetLocation; }
 	bool GetIsActivated() const { return bIsActivated; }
+	bool GetHasReachedTarget() const { return bHasReachedTarget; }
 
 protected:
 	UFUNCTION()
