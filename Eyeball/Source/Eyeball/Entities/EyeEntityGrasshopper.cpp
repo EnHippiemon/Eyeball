@@ -53,9 +53,7 @@ void AEyeEntityGrasshopper::DecideJumpHeight(float const DeltaTime)
 	if (JumpHeight <= 0 || JumpHeight >= TimerInterval)
 		JumpTimeDirection *= -1;
 	JumpHeight = FMath::Clamp(JumpHeight, 0.f, TimerInterval);
-
-	UE_LOG(LogTemp, Log, TEXT("Jump height: %f"), JumpHeight);
-
+	
 	if (JumpWidgetRef)
 		JumpWidgetRef->RenderJumpBar(JumpHeight);
 }

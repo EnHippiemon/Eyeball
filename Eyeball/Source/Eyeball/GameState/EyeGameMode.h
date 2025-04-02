@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyeControlsWidget;
 class AEyeMoveableDanger;
 class AEyeMoveableObject;
 class AEyeCamera;
@@ -76,7 +77,11 @@ private:
 			// TSubclassOf<UDangerWidget> DangerWidget;
 			TSubclassOf<UEyeDangerWidget> DangerWidget;
 			TObjectPtr<UEyeDangerWidget> DangerWidgetRef;
-	
+
+		/* Controls */
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<UEyeControlsWidget> ControlsWidget;
+			TObjectPtr<UEyeControlsWidget> ControlsWidgetRef;
 	
 	/* Checkpoint */
 		UPROPERTY(EditDefaultsOnly)

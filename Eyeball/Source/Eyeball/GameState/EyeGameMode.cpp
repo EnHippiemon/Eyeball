@@ -6,6 +6,7 @@
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableDanger.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
+#include "Eyeball/Widgets/EyeControlsWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 AEyeGameMode::AEyeGameMode()
@@ -192,9 +193,11 @@ void AEyeGameMode::BeginPlay()
 	
 	DangerWidgetRef = CreateWidget<UEyeDangerWidget>(GetWorld(), DangerWidget);
 	if (DangerWidgetRef)
-	{
 		DangerWidgetRef->AddToViewport();
-	}
+
+	ControlsWidgetRef = CreateWidget<UEyeControlsWidget>(GetWorld(), ControlsWidget);
+	if (ControlsWidgetRef)
+		ControlsWidgetRef->AddToViewport();
 	
 	GetNewPlayerReference();
 	FindAllReferences();
