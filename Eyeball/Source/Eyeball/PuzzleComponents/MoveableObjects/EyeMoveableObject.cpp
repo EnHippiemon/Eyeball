@@ -1,7 +1,7 @@
 #include "../MoveableObjects/EyeMoveableObject.h"
 
 #include "Components/BoxComponent.h"
-#include "Eyeball/DataAssets/EyeMoveableObjectDataAsset.h"
+#include "Eyeball/DataAssets/PuzzleComponentsDataAssets/EyeMoveableObjectDataAsset.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 
 AEyeMoveableObject::AEyeMoveableObject()

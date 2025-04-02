@@ -23,11 +23,13 @@ protected:
 	
 	virtual void StartEvent(TObjectPtr<AEyeMoveableObject> ObjectToMove);
 
-private:
 	UPROPERTY(EditInstanceOnly)
 	TArray<TObjectPtr<AEyeMoveableObject>> MoveableObject;
-	
-	UPROPERTY(EditDefaultsOnly)
+
+	// If no camera hint is wanted, leave empty
+	UPROPERTY(EditAnywhere)
 	TSubclassOf<AEyeCamera> CameraClass;
 	TObjectPtr<AEyeCamera> CameraRef;
+	
+private:
 };
