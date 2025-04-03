@@ -41,6 +41,7 @@ public:
 
 	/* Getters */
 		FVector GetMovementDirection() const { return MovementDirection; }
+		bool GetIsPossessed() const { return !bIsUnPossessed; }
 	
 protected:
 	AEyeCharacter();

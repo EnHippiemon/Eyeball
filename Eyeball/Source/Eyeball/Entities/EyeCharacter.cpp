@@ -82,6 +82,7 @@ void AEyeCharacter::UnPossessed()
 	Super::UnPossessed();
 
 	bIsUnPossessed = true;
+	SetActorLocation(FVector(EntityData->OffsetUnpossessedActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -169,17 +170,23 @@ void AEyeCharacter::TakeFallDamage()
 void AEyeCharacter::DetectWall()
 {
 	const bool RightFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->SlidingLineDirection,
-	                                                               EntityData->SlidingTraceDirection,
-	                                                               EntityData->SlidingTraceOffset,
-	                                                               EntityData->SlidingTraceAmount, WallTraceDistance,
-	                                                               EntityData->SlidingTraceLength, EntityData->Floor,
-	                                                               true);
+	                                                                    EntityData->SlidingTraceDirection,
+	                                                                    EntityData->SlidingTraceOffset,
+	                                                                    EntityData->SlidingTraceAmount,
+	                                                                    WallTraceDistance,
+	                                                                    EntityData->SlidingTraceLength,
+	                                                                    EntityData->Floor,
+	                                                                    true);
 	const bool LeftFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->SlidingLineDirection,
-	                                                               -EntityData->SlidingTraceDirection,
-	                                                               -EntityData->SlidingTraceOffset,
-	                                                               EntityData->SlidingTraceAmount, WallTraceDistance,
-	                                                               EntityData->SlidingTraceLength, EntityData->Floor,
-	                                                               true);
+	                                                                   -EntityData->SlidingTraceDirection,
+	                                                                   FVector(EntityData->SlidingTraceOffset.X,
+	                                                                           -EntityData->SlidingTraceOffset.Y,
+	                                                                           EntityData->SlidingTraceOffset.Z),
+	                                                                   EntityData->SlidingTraceAmount,
+	                                                                   WallTraceDistance,
+	                                                                   EntityData->SlidingTraceLength,
+	                                                                   EntityData->Floor,
+	                                                                   true);
 
 	bFoundLeftWall = LeftFoundWall;
 	bFoundRightWall = RightFoundWall;
@@ -215,7 +222,9 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!bIsUnPossessed)
+	if (bIsUnPossessed)
+		UnPossessed();
+	else
 		OnSpawned();
 }
 

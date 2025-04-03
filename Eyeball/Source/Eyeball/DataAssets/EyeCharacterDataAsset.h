@@ -77,6 +77,8 @@ public:
 	/* Positioning */
 		UPROPERTY(EditDefaultsOnly, Category="Positioning")
 		FVector OffsetActorPlacement = FVector(0, 0, 0);
+		UPROPERTY(EditDefaultsOnly, Category="Positioning")
+		FVector OffsetUnpossessedActorPlacement = FVector(0, 0, 0);
 
 	/* Collisions */
 		UPROPERTY(EditDefaultsOnly, Category="Collision")
