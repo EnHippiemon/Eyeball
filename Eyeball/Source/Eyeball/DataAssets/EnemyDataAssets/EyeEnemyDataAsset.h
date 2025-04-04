@@ -30,18 +30,17 @@ public:
 	TSubclassOf<AActor> Projectile;
 
 	// How far the enemy will move after player gets too close. 
-	UPROPERTY(EditDefaultsOnly, Category = "Move | Evade")
+	UPROPERTY(EditDefaultsOnly, Category = "Move|Evade")
 	FVector DistanceForEvasion;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Move|Evade")
+	float MarginForReachingTarget;
 
 	// The speed the enemy moves at. 
 	UPROPERTY(EditDefaultsOnly, Category = "Move")
 	float MovementSpeed;
 
-	// Decides if this actor can move upward. 
-	UPROPERTY(EditDefaultsOnly, Category = "Move")
-	bool bCanFly;
-
 	// The permanent offset position of the enemy in the level. 
-	UPROPERTY(EditDefaultsOnly, Category = "Move | Positioning")
+	UPROPERTY(EditDefaultsOnly, Category = "Move|Positioning")
 	FVector PositionOffset;
 };

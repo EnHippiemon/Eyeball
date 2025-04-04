@@ -6,6 +6,7 @@
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "Eyeball/Weapons/EyeProjectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEyeEnemy::AEyeEnemy()
 {
@@ -35,7 +36,7 @@ void AEyeEnemy::PrepareAttack(float const DeltaTime)
 	if (CurrentState != Ees_PreparingAttack)
 		return;
 
-	// UE_LOG(LogTemp, Log, TEXT("Preparing attack"));
+	UE_LOG(LogTemp, Log, TEXT("Preparing attack"));
 	
 	AttackPreparationTime += DeltaTime;
 	if (AttackPreparationTime >= Data->AttackDelay)
@@ -67,23 +68,12 @@ void AEyeEnemy::Move(float const DeltaTime)
 {
 	if (CurrentState != Ees_Moving)
 		return;
-
-	// UE_LOG(LogTemp, Log, TEXT("Moving"));
-
-
-	// FVector MoveOffsetY = FMath::Abs(GetActorLocation() + Data->DistanceForEvasion);
-	
-	const FVector TargetLocation = FVector(TargetMoveOffset.X, TargetMoveOffset.Y, Data->bCanFly ? TargetMoveOffset.Z : GetActorLocation().Z);
-
-	UE_LOG(LogTemp, Log, TEXT("Final Target Location: %s"), *TargetLocation.ToString());
 	
 	auto NewLocation = GetActorLocation();
-	NewLocation = FMath::Lerp(NewLocation, TargetLocation, DeltaTime * Data->MovementSpeed);
+	NewLocation = UKismetMathLibrary::VLerp(NewLocation, TargetMoveOffset, DeltaTime * Data->MovementSpeed);
 	SetActorLocation(NewLocation);
-
-	DrawDebugLine(GetWorld(), NewLocation, TargetLocation, FColor::Purple, false, -1, 0, 5);
-
-	if (!FMath::IsNearlyZero((TargetLocation - NewLocation).Length()))
+	
+	if ((TargetMoveOffset - NewLocation).Length() > Data->MarginForReachingTarget)
 		return;
 
 	if (bIsThreatened)
@@ -98,7 +88,6 @@ void AEyeEnemy::SetNewMoveTarget()
 	const int DirectionZ = CharacterRef->GetActorLocation().Z < GetActorLocation().Z ? 1 : -1;
 	
 	TargetMoveOffset = GetActorLocation() + FVector(Data->DistanceForEvasion.X, Data->DistanceForEvasion.Y * DirectionY, Data->DistanceForEvasion.Z * DirectionZ);
-	UE_LOG(LogTemp, Log, TEXT("Setting New Move Target: %s"), *TargetMoveOffset.ToString());
 	CurrentState = Ees_Moving;
 }
 
@@ -133,10 +122,7 @@ void AEyeEnemy::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 		UE_LOG(LogTemp, Log, TEXT("Idle"));
 	}
 	else if (OverlappedComponent == EvasionSphere)
-	{
 		SetIsThreatened(false);
-		CurrentState = Ees_PreparingAttack;
-	}
 }
 
 void AEyeEnemy::BeginPlay()
