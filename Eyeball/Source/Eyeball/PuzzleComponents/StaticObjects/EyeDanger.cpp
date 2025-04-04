@@ -1,6 +1,8 @@
 #include "../StaticObjects/EyeDanger.h"
 
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
+#include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 
 AEyeDanger::AEyeDanger()
@@ -16,9 +18,15 @@ AEyeDanger::AEyeDanger()
 void AEyeDanger::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	const auto FoundActor = Cast<AEyeCharacter>(OtherActor);
-	if (!FoundActor)
+	if (const auto FoundActor = Cast<AEyeCharacter>(OtherActor))
+	{
+		FoundActor->TakeDamage();
 		return;
-
-	FoundActor->DamagePlayer();
+	}
+	if (const auto FoundActor = Cast<AEyeEnemy>(OtherActor))
+	{
+		if (OtherComp == Cast<UPrimitiveComponent>(FoundActor->GetDamageComponent()))
+			FoundActor->TakeDamage();
+		return;
+	}
 }

@@ -26,7 +26,8 @@ class EYEBALL_API AEyeEnemy : public AActor
 	GENERATED_BODY()
 
 public:
-	void KillThisActor();
+	void TakeDamage();
+	USphereComponent* GetDamageComponent() { return EvasionSphere; }
 	
 protected:
 	AEyeEnemy();

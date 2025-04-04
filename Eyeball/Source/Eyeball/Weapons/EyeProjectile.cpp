@@ -55,7 +55,7 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		return;
 	if (!FoundActor->GetIsPossessed())
 		return;
-	FoundActor->DamagePlayer();
+	FoundActor->TakeDamage();
 
 	DestroyProjectile();
 }

@@ -10,5 +10,5 @@ void AEyeMoveableDanger::HandleBeginOverlap(UPrimitiveComponent* OverlappedCompo
 	if (!FoundActor)
 		return;
 
-	FoundActor->DamagePlayer();
+	FoundActor->TakeDamage();
 }

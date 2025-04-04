@@ -33,7 +33,7 @@ public:
 	FOnCheckpointReached OnCheckpointReached;
 
 	virtual void OnSpawned();
-	virtual void DamagePlayer();
+	virtual void TakeDamage();
 
 	/* Setters */
 		void SetArtificialInput(const FVector& Direction);

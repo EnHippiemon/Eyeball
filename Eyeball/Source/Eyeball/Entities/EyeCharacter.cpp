@@ -111,7 +111,7 @@ void AEyeCharacter::OnSpawned()
 	CalculateTraceDistances();
 }
 
-void AEyeCharacter::DamagePlayer()
+void AEyeCharacter::TakeDamage()
 {
 	OnDeath.Broadcast();
 	SetArtificialInput(FVector(0, 0, 0));
@@ -164,7 +164,7 @@ void AEyeCharacter::ResetJumpCount()
 void AEyeCharacter::TakeFallDamage()
 {
 	// UE_LOG(LogTemp, Display, TEXT("TakeFallDamage | Velocity: %s"), *GetVelocity().ToString());
-	DamagePlayer();
+	TakeDamage();
 }
 
 void AEyeCharacter::DetectWall()

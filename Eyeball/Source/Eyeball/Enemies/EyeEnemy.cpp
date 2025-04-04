@@ -27,7 +27,7 @@ AEyeEnemy::AEyeEnemy()
 	EvasionSphere->OnComponentEndOverlap.AddDynamic(this, &AEyeEnemy::HandleEndOverlap);
 }
 
-void AEyeEnemy::KillThisActor()
+void AEyeEnemy::TakeDamage()
 {
 	Destroy();
 }
