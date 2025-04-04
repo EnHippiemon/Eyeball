@@ -21,7 +21,6 @@ private:
 	float Speed;
 	
 	FVector TargetLocation;
-	// float Speed;
 
 	void MoveToTargetLocation(float const DeltaTime);
 	void DestroyProjectile();

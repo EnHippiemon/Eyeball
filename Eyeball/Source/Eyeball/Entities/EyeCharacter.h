@@ -36,7 +36,7 @@ public:
 	virtual void DamagePlayer();
 
 	/* Setters */
-		void SetArtificialInput(FVector Direction);
+		void SetArtificialInput(const FVector& Direction);
 		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
 
 	/* Getters */

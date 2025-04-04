@@ -123,7 +123,7 @@ void AEyeCharacter::Force2DMovement()
 	SetActorLocation(FVector(EntityData->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
-void AEyeCharacter::SetArtificialInput(FVector Direction)
+void AEyeCharacter::SetArtificialInput(const FVector& Direction)
 {
 	ArtificialInput = Direction * EntityData->InputMultiplier;
 }

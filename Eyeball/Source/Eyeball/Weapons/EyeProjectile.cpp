@@ -15,7 +15,6 @@ AEyeProjectile::AEyeProjectile()
 void AEyeProjectile::SetTarget(const FVector& NewTarget)
 {
 	TargetLocation = NewTarget;
-	// Speed = ProjectileSpeed;
 }
 
 void AEyeProjectile::MoveToTargetLocation(float const DeltaTime)
