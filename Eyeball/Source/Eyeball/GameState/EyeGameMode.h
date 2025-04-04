@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class AEyeProjectile;
 class UEyeControlsWidget;
 class AEyeMoveableDanger;
 class AEyeMoveableObject;
@@ -84,22 +85,31 @@ private:
 			TObjectPtr<UEyeControlsWidget> ControlsWidgetRef;
 	
 	/* Checkpoint */
-		UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<AEyeCharacter> EyeCharacter;
-		UPROPERTY()
-		AEyeEntityEyeball* Eyeball;
-		UPROPERTY()
-		TArray<AActor*> CharacterArray;
-		UPROPERTY()
-		AEyeCharacter* PossessedAtCheckpoint;
-
-		TArray<FVector> CharacterLocations;
-
-		/* Moveable objects */
+		/* Player characters */
 			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AEyeMoveableObject> MoveableObject;
+			TSubclassOf<AEyeCharacter> EyeCharacter;
+			UPROPERTY()
+			AEyeEntityEyeball* Eyeball;
+			UPROPERTY()
+			TArray<AActor*> CharacterArray;
+			UPROPERTY()
+			AEyeCharacter* PossessedAtCheckpoint;
+			TArray<FVector> CharacterLocations;
+
+		/* Enemy characters */
 			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AEyeMoveableDanger> MoveableDanger;
+			TSubclassOf<AActor> EnemyCharacter;
+			UPROPERTY()
+			TArray<AActor*> EnemyArray;
+			TArray<FVector> EnemyLocations;
+
+		/* Actors to handle on death and checkpoint objects */
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<AActor> MoveableObject;
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<AActor> MoveableDanger;
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<AActor> Projectile;
 	
 		bool bEyeballHiddenAtCheckpoint = false;
 	
@@ -109,9 +119,12 @@ private:
 		void FindAllReferences();
 		void SaveLocations();
 		void ResetLocations();
-
-		void ResetMoveableObjects(const TSubclassOf<AEyeMoveableObject>& MoveableObjectClass) const;
-
+	
+		void SaveArrayOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
+		void ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
+		void ResetMoveableObjects(const TSubclassOf<AActor>& MoveableObjectClass) const;
+		void RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete) const;
+	
 	UFUNCTION()
 	void ChangeEntity(AEyeCharacter* Character);
 

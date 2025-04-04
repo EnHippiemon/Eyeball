@@ -42,9 +42,7 @@ void AEyeEnemy::PrepareAttack(float const DeltaTime)
 		CurrentState = Ees_Idle;
 		return;
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("Preparing attack"));
-
+	
 	AttackPreparationTime += DeltaTime;
 	if (AttackPreparationTime >= Data->AttackDelay)
 		CurrentState = Ees_Attacking;
@@ -54,18 +52,18 @@ void AEyeEnemy::Attack()
 {
 	if (CurrentState != Ees_Attacking)
 		return;
+	
+	for (int i = 0; i < Data->ProjectilesPerAttack; ++i)
+	{
+		const auto AccuracyOffset = FVector(0, FMath::FRandRange(-Data->AttackAccuracy.Y, Data->AttackAccuracy.Y),
+		                                    FMath::FRandRange(-Data->AttackAccuracy.Z, Data->AttackAccuracy.Z));
+		const auto Target = AccuracyOffset + CharacterRef->GetActorLocation();
 
-	UE_LOG(LogTemp, Log, TEXT("Attacking"));
+		const auto ThisProjectile = GetWorld()->SpawnActor<AEyeProjectile>(Data->Projectile, GetTransform());
 
-	// for (int i = 0; i < Data->ProjectilesPerAttack; ++i)
-	// {
-	// 	const auto AccuracyOffset = FVector(0, FMath::FRandRange(-Data->AttackAccuracy.Y, Data->AttackAccuracy.Y),
-	// 	                                    FMath::FRandRange(-Data->AttackAccuracy.Z, Data->AttackAccuracy.Z));
-	// 	const auto Target = AccuracyOffset + CharacterRef->GetActorLocation();
-	//
-	// 	auto ThisProjectile = Cast<AEyeProjectile>(GetWorld()->SpawnActor(Data->Projectile));
-	// 	ThisProjectile->SetTarget(Target);
-	// }
+		ThisProjectile->OnSpawned();
+		ThisProjectile->SetTarget(Target);
+	}
 
 	AttackPreparationTime = 0;
 	CurrentState = Ees_PreparingAttack;
@@ -149,7 +147,6 @@ void AEyeEnemy::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	{
 		CurrentState = Ees_Idle;
 		AttackPreparationTime = 0;
-		UE_LOG(LogTemp, Log, TEXT("Idle"));
 	}
 	else if (OverlappedComponent == EvasionSphere)
 		SetIsThreatened(false);
@@ -161,7 +158,10 @@ void AEyeEnemy::BeginPlay()
 
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
+	{
 		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeEnemy::UpdateTarget);
+		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeEnemy::OnPlayerDeath);
+	}
 
 	CurrentState = Ees_Idle;
 }
@@ -186,4 +186,10 @@ void AEyeEnemy::UpdateTarget(AEyeCharacter* NewEntity)
 	}
 
 	CheckOverlaps();
+}
+
+void AEyeEnemy::OnPlayerDeath(const EGameState NewState)
+{
+	if (NewState == Egs_StartingGame)
+		CurrentState = Ees_Idle;
 }

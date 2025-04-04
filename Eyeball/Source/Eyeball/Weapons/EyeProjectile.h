@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "EyeProjectile.generated.h"
 
+class UEyeProjectileDataAsset;
 class USphereComponent;
 
 UCLASS()
@@ -14,14 +15,12 @@ class EYEBALL_API AEyeProjectile : public AActor
 public:
 	AEyeProjectile();
 
+	void OnSpawned();
 	void SetTarget(const FVector& NewTarget);
 
 private:
-	UPROPERTY(EditDefaultsOnly)
-	float Speed;
-	
 	FVector TargetLocation;
-
+	
 	void MoveToTargetLocation(float const DeltaTime);
 	void DestroyProjectile();
 	
@@ -30,6 +29,9 @@ private:
 
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditDefaultsOnly)
+	UEyeProjectileDataAsset* Data;
+	
 	UPROPERTY(EditDefaultsOnly)
 	USphereComponent* DangerSphere;
 };

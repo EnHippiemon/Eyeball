@@ -26,6 +26,7 @@ void AEyeGameMode::FindAllReferences()
 	
 	bEyeballHiddenAtCheckpoint = Eyeball->IsHidden();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EnemyCharacter, EnemyArray);
 	SaveLocations();
 }
 
@@ -35,14 +36,24 @@ void AEyeGameMode::SaveLocations()
 		return;
 	
 	PossessedAtCheckpoint = PlayerCharacter;
-	
-	for (int i = 0; i < CharacterArray.Num(); ++i)
-	{
-		if (!CharacterLocations.IsValidIndex(i))
-			CharacterLocations.Insert(CharacterArray[i]->GetActorLocation(), i);
-		else
-			CharacterLocations[i] = CharacterArray[i]->GetActorLocation();
-	}
+
+	SaveArrayOfActors(CharacterArray, CharacterLocations);
+	SaveArrayOfActors(EnemyArray, EnemyLocations);
+	// for (int i = 0; i < CharacterArray.Num(); ++i)
+	// {
+	// 	if (!CharacterLocations.IsValidIndex(i))
+	// 		CharacterLocations.Insert(CharacterArray[i]->GetActorLocation(), i);
+	// 	else
+	// 		CharacterLocations[i] = CharacterArray[i]->GetActorLocation();
+	// }
+	//
+	// for (int i = 0; i < EnemyArray.Num(); ++i)
+	// {
+	// 	if (!EnemyLocations.IsValidIndex(i))
+	// 		EnemyLocations.Insert(EnemyArray[i]->GetActorLocation(), i);
+	// 	else
+	// 		EnemyLocations[i] = EnemyArray[i]->GetActorLocation();
+	// }
 
 	if (CharacterLocations.Num() > CharacterArray.Num())
 		UE_LOG(LogTemp, Warning, TEXT("Potential memory leak: EyeGameMode.cpp | CharacterLocations Array Size: %d"), CharacterLocations.Num());
@@ -54,21 +65,44 @@ void AEyeGameMode::ResetLocations()
 	ResetMoveableObjects(MoveableObject);
 	ResetMoveableObjects(MoveableDanger);
 
+	RemoveObjects(Projectile);
+
 	// Reset entity locations
 	if (bEyeballHiddenAtCheckpoint)
 		ChangeEntity(PossessedAtCheckpoint);
 	else
 		EjectCurrentEntity();
 	
-	for (int i = 0; i < CharacterArray.Num(); ++i)
-	{
-		CharacterArray[i]->SetActorLocation(CharacterLocations[i]);
-	}
+	// for (int i = 0; i < CharacterArray.Num(); ++i)
+	// {
+	// 	CharacterArray[i]->SetActorLocation(CharacterLocations[i]);
+	// }
+	ResetActorLocations(CharacterArray, CharacterLocations);
+	ResetActorLocations(EnemyArray, EnemyLocations);
 	
 	CurrentGameState = Egs_StartingGame;
 }
 
-void AEyeGameMode::ResetMoveableObjects(const TSubclassOf<AEyeMoveableObject>& MoveableObjectClass) const
+void AEyeGameMode::SaveArrayOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations)
+{
+	for (int i = 0; i < ArrayOfActors.Num(); ++i)
+	{
+		if (!ArrayOfLocations.IsValidIndex(i))
+			ArrayOfLocations.Insert(ArrayOfActors[i]->GetActorLocation(), i);
+		else
+			ArrayOfLocations[i] = ArrayOfActors[i]->GetActorLocation();
+	}
+}
+
+void AEyeGameMode::ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations)
+{
+	for (int i = 0; i < ArrayOfActors.Num(); ++i)
+	{
+		ArrayOfActors[i]->SetActorLocation(ArrayOfLocations[i]);
+	}
+}
+
+void AEyeGameMode::ResetMoveableObjects(const TSubclassOf<AActor>& MoveableObjectClass) const
 {
 	TArray<AActor*> MoveableObjects;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObjectClass, MoveableObjects);
@@ -77,6 +111,16 @@ void AEyeGameMode::ResetMoveableObjects(const TSubclassOf<AEyeMoveableObject>& M
 		AEyeMoveableObject* Object = Cast<AEyeMoveableObject>(MoveableObjects[i]);
 		if (Object)
 			Object->ResetLocation();
+	}
+}
+
+void AEyeGameMode::RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete) const
+{
+	TArray<AActor*> ObjectsToDelete;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ObjectClassToDelete, ObjectsToDelete);
+	for (int i = 0; i < ObjectsToDelete.Num(); ++i)
+	{
+		ObjectsToDelete[i]->Destroy();
 	}
 }
 

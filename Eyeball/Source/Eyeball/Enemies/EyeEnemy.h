@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Eyeball/GameState/EyeGameMode.h"
 #include "GameFramework/Actor.h"
 #include "EyeEnemy.generated.h"
 
@@ -69,4 +70,6 @@ protected:
 private:
 	UFUNCTION()
 	void UpdateTarget(AEyeCharacter* NewEntity);
+	UFUNCTION()
+	void OnPlayerDeath(EGameState NewState);
 };
