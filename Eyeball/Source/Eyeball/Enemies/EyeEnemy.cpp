@@ -1,4 +1,6 @@
 #include "EyeEnemy.h"
+
+#include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Eyeball/DataAssets/EnemyDataAssets/EyeEnemyDataAsset.h"
@@ -15,6 +17,9 @@ AEyeEnemy::AEyeEnemy()
 
 	RootCollider = CreateDefaultSubobject<UCapsuleComponent>("RootCollider");
 	RootComponent = RootCollider;
+
+	DamageComponent = CreateDefaultSubobject<UBoxComponent> ("DamageComponent");
+	DamageComponent->SetupAttachment(RootCollider);
 
 	DetectionSphere = CreateDefaultSubobject<USphereComponent>("DetectionSphere");
 	DetectionSphere->SetupAttachment(RootCollider);
@@ -108,18 +113,26 @@ void AEyeEnemy::CheckOverlaps()
 	DetectionSphere->GetOverlappingActors(OverlappingActors);
 	for (int i = 0; i < OverlappingActors.Num(); ++i)
 	{
-		if (Cast<AEyeCharacter>(OverlappingActors[i]))
-			CurrentState = Ees_PreparingAttack;
+		const auto Actor = Cast<AEyeCharacter>(OverlappingActors[i]);
+		if (!Actor)
+			continue;
+		if (!Actor->GetIsPossessed())
+			continue;
+
+		CurrentState = Ees_PreparingAttack;
 	}
 	
 	EvasionSphere->GetOverlappingActors(OverlappingActors);
 	for (int i = 0; i < OverlappingActors.Num(); ++i)
 	{
-		if (Cast<AEyeCharacter>(OverlappingActors[i]))
-		{
-			SetIsThreatened(true);
-			SetNewMoveTarget();
-		}
+		const auto Actor = Cast<AEyeCharacter>(OverlappingActors[i]);
+		if (!Actor)
+			continue;
+		if (!Actor->GetIsPossessed())
+			continue;
+		
+		SetIsThreatened(true);
+		SetNewMoveTarget();
 	}
 }
 

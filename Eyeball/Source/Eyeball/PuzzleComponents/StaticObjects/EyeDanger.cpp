@@ -1,7 +1,6 @@
 #include "../StaticObjects/EyeDanger.h"
 
 #include "Components/BoxComponent.h"
-#include "Components/SphereComponent.h"
 #include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 

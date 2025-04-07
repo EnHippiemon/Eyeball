@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "EyeEnemy.generated.h"
 
+class UBoxComponent;
 class AEyeGameMode;
 class AEyeCharacter;
 class AEyeProjectile;
@@ -27,7 +28,7 @@ class EYEBALL_API AEyeEnemy : public AActor
 
 public:
 	void TakeDamage();
-	USphereComponent* GetDamageComponent() { return EvasionSphere; }
+	UBoxComponent* GetDamageComponent() { return DamageComponent; }
 	
 protected:
 	AEyeEnemy();
@@ -60,6 +61,8 @@ protected:
 	UEyeEnemyDataAsset* Data;
 	UPROPERTY(EditDefaultsOnly)
 	UCapsuleComponent* RootCollider;
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* DamageComponent;
 	UPROPERTY(EditDefaultsOnly)
 	USphereComponent* DetectionSphere;
 	UPROPERTY(EditDefaultsOnly)
