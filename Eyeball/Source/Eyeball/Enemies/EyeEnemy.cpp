@@ -65,7 +65,7 @@ void AEyeEnemy::Attack()
 		const auto Target = AccuracyOffset + CharacterRef->GetActorLocation();
 
 		const auto ThisProjectile = GetWorld()->SpawnActor<AEyeProjectile>(Data->Projectile, GetTransform());
-
+		ThisProjectile->SetActorScale3D(FVector(1, 1, 1));
 		ThisProjectile->OnSpawned();
 		ThisProjectile->SetTarget(Target);
 	}
@@ -168,14 +168,14 @@ void AEyeEnemy::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 void AEyeEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
 	{
 		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeEnemy::UpdateTarget);
 		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeEnemy::OnPlayerDeath);
 	}
-
+	
 	CurrentState = Ees_Idle;
 }
 

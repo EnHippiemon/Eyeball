@@ -41,7 +41,7 @@ protected:
 	void SetIsThreatened(bool IsThreatened);
 
 	void CheckOverlaps();
-
+	
 	UFUNCTION()
 	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
@@ -50,6 +50,7 @@ protected:
 	FVector TargetMoveOffset;
 	bool bIsThreatened;
 	float AttackPreparationTime = 0;
+	FVector ProjectileTransform;
 
 	EEnemyState CurrentState;
 
