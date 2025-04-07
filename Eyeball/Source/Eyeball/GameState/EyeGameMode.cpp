@@ -1,6 +1,7 @@
 #include "EyeGameMode.h"
 #include "../Entities/EyeCharacter.h"
 #include "Eyeball/Camera/EyeCamera.h"
+#include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableDanger.h"
@@ -27,10 +28,10 @@ void AEyeGameMode::FindAllReferences()
 	bEyeballHiddenAtCheckpoint = Eyeball->IsHidden();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EnemyCharacter, EnemyArray);
-	SaveLocations();
+	SaveStates();
 }
 
-void AEyeGameMode::SaveLocations()
+void AEyeGameMode::SaveStates()
 {
 	if (CurrentGameState == Egs_GameOver)
 		return;
@@ -39,27 +40,14 @@ void AEyeGameMode::SaveLocations()
 
 	SaveArrayOfActors(CharacterArray, CharacterLocations);
 	SaveArrayOfActors(EnemyArray, EnemyLocations);
-	// for (int i = 0; i < CharacterArray.Num(); ++i)
-	// {
-	// 	if (!CharacterLocations.IsValidIndex(i))
-	// 		CharacterLocations.Insert(CharacterArray[i]->GetActorLocation(), i);
-	// 	else
-	// 		CharacterLocations[i] = CharacterArray[i]->GetActorLocation();
-	// }
-	//
-	// for (int i = 0; i < EnemyArray.Num(); ++i)
-	// {
-	// 	if (!EnemyLocations.IsValidIndex(i))
-	// 		EnemyLocations.Insert(EnemyArray[i]->GetActorLocation(), i);
-	// 	else
-	// 		EnemyLocations[i] = EnemyArray[i]->GetActorLocation();
-	// }
+
+	SaveEnemyHealth(EnemyArray, EnemyHealths);
 
 	if (CharacterLocations.Num() > CharacterArray.Num())
 		UE_LOG(LogTemp, Warning, TEXT("Potential memory leak: EyeGameMode.cpp | CharacterLocations Array Size: %d"), CharacterLocations.Num());
 }
 
-void AEyeGameMode::ResetLocations()
+void AEyeGameMode::ResetStates()
 {
 	// Reset MoveableObjects
 	ResetMoveableObjects(MoveableObject);
@@ -73,12 +61,11 @@ void AEyeGameMode::ResetLocations()
 	else
 		EjectCurrentEntity();
 	
-	// for (int i = 0; i < CharacterArray.Num(); ++i)
-	// {
-	// 	CharacterArray[i]->SetActorLocation(CharacterLocations[i]);
-	// }
 	ResetActorLocations(CharacterArray, CharacterLocations);
+
+	// Reset enemies
 	ResetActorLocations(EnemyArray, EnemyLocations);
+	ResetEnemyHealth(EnemyArray, EnemyHealths);
 	
 	CurrentGameState = Egs_StartingGame;
 }
@@ -121,6 +108,33 @@ void AEyeGameMode::RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete)
 	for (int i = 0; i < ObjectsToDelete.Num(); ++i)
 	{
 		ObjectsToDelete[i]->Destroy();
+	}
+}
+
+void AEyeGameMode::SaveEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth)
+{
+	for (int i = 0; i < ArrayOfActors.Num(); ++i)
+	{
+		const auto Actor = Cast<AEyeEnemy>(ArrayOfActors[i]);
+		if (!Actor)
+			continue;
+		
+		if (!ArrayOfHealth.IsValidIndex(i))
+			ArrayOfHealth.Add(Actor->GetHealth());
+		else
+			ArrayOfHealth[i] = Actor->GetHealth();
+	}
+}
+
+void AEyeGameMode::ResetEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth)
+{
+	for (int i = 0; i < ArrayOfActors.Num(); ++i)
+	{
+		const auto Actor = Cast<AEyeEnemy>(ArrayOfActors[i]);
+		if (!Actor)
+			continue;
+		
+		Actor->SetHealth(ArrayOfHealth[i]);
 	}
 }
 
@@ -210,7 +224,7 @@ void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 {
 	if (bScreenIsBlack)
 	{
-		ResetLocations();
+		ResetStates();
 		PlayerCharacter->SetArtificialInput(FVector(0, 0, 0));
 		PlayerCharacter->SetMoveDirection(FVector(0, 0, 0));
 	}

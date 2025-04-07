@@ -18,8 +18,8 @@ AEyeEnemy::AEyeEnemy()
 	RootCollider = CreateDefaultSubobject<UCapsuleComponent>("RootCollider");
 	RootComponent = RootCollider;
 
-	DamageComponent = CreateDefaultSubobject<UBoxComponent> ("DamageComponent");
-	DamageComponent->SetupAttachment(RootCollider);
+	DamageBox = CreateDefaultSubobject<UBoxComponent>("DamageBox");
+	DamageBox->SetupAttachment(RootCollider);
 
 	DetectionSphere = CreateDefaultSubobject<USphereComponent>("DetectionSphere");
 	DetectionSphere->SetupAttachment(RootCollider);
@@ -32,9 +32,16 @@ AEyeEnemy::AEyeEnemy()
 	EvasionSphere->OnComponentEndOverlap.AddDynamic(this, &AEyeEnemy::HandleEndOverlap);
 }
 
-void AEyeEnemy::TakeDamage()
+void AEyeEnemy::SetHealth(int const NewHealth)
 {
-	Destroy();
+	Health = NewHealth;
+	DetermineDeath();
+}
+
+void AEyeEnemy::ChangeHealth(int const HealthToAdd)
+{
+	Health += HealthToAdd;
+	DetermineDeath();
 }
 
 void AEyeEnemy::PrepareAttack(float const DeltaTime)
@@ -47,7 +54,7 @@ void AEyeEnemy::PrepareAttack(float const DeltaTime)
 		CurrentState = Ees_Idle;
 		return;
 	}
-	
+
 	AttackPreparationTime += DeltaTime;
 	if (AttackPreparationTime >= Data->AttackDelay)
 		CurrentState = Ees_Attacking;
@@ -57,7 +64,7 @@ void AEyeEnemy::Attack()
 {
 	if (CurrentState != Ees_Attacking)
 		return;
-	
+
 	for (int i = 0; i < Data->ProjectilesPerAttack; ++i)
 	{
 		const auto AccuracyOffset = FVector(0, FMath::FRandRange(-Data->AttackAccuracy.Y, Data->AttackAccuracy.Y),
@@ -97,18 +104,38 @@ void AEyeEnemy::SetNewMoveTarget()
 	const int DirectionY = CharacterRef->GetActorLocation().Y < GetActorLocation().Y ? 1 : -1;
 	const int DirectionZ = CharacterRef->GetActorLocation().Z < GetActorLocation().Z ? 1 : -1;
 
-	TargetMoveOffset = GetActorLocation() + FVector(Data->DistanceForEvasion.X, Data->DistanceForEvasion.Y * DirectionY,
+	TargetMoveOffset = GetActorLocation() + FVector(Data->DistanceForEvasion.X + Data->PositionOffset.X,
+	                                                Data->DistanceForEvasion.Y * DirectionY,
 	                                                Data->DistanceForEvasion.Z * DirectionZ);
 	CurrentState = Ees_Moving;
 }
 
 void AEyeEnemy::SetIsThreatened(bool const IsThreatened)
 {
+	if (CurrentState == Ees_IsDead)
+		return;
+
 	bIsThreatened = IsThreatened;
+}
+
+void AEyeEnemy::DetermineDeath()
+{
+	const bool ShouldBeDead = Health <= 0;
+	SetActorHiddenInGame(ShouldBeDead);
+	DamageBox->SetActive(!ShouldBeDead);
+	DetectionSphere->SetActive(!ShouldBeDead);
+	EvasionSphere->SetActive(!ShouldBeDead);
+	bIsThreatened = ShouldBeDead ? false : bIsThreatened;
+	CurrentState = ShouldBeDead ? Ees_IsDead : CurrentState;
+	SetActorEnableCollision(!ShouldBeDead);
+	RootCollider->SetSimulatePhysics(ShouldBeDead);
 }
 
 void AEyeEnemy::CheckOverlaps()
 {
+	if (CurrentState == Ees_IsDead)
+		return;
+
 	TArray<AActor*> OverlappingActors;
 	DetectionSphere->GetOverlappingActors(OverlappingActors);
 	for (int i = 0; i < OverlappingActors.Num(); ++i)
@@ -121,7 +148,7 @@ void AEyeEnemy::CheckOverlaps()
 
 		CurrentState = Ees_PreparingAttack;
 	}
-	
+
 	EvasionSphere->GetOverlappingActors(OverlappingActors);
 	for (int i = 0; i < OverlappingActors.Num(); ++i)
 	{
@@ -130,7 +157,7 @@ void AEyeEnemy::CheckOverlaps()
 			continue;
 		if (!Actor->GetIsPossessed())
 			continue;
-		
+
 		SetIsThreatened(true);
 		SetNewMoveTarget();
 	}
@@ -140,6 +167,8 @@ void AEyeEnemy::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
                                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                    const FHitResult& SweepResult)
 {
+	if (CurrentState == Ees_IsDead)
+		return;
 	if (OtherActor != CharacterRef || Cast<AEyeEntityEyeball>(OtherActor))
 		return;
 	if (OverlappedComponent == DetectionSphere)
@@ -154,6 +183,8 @@ void AEyeEnemy::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 void AEyeEnemy::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (CurrentState == Ees_IsDead)
+		return;
 	if (OtherActor != CharacterRef || Cast<AEyeEntityEyeball>(OtherActor))
 		return;
 	if (OverlappedComponent == DetectionSphere)
@@ -168,19 +199,22 @@ void AEyeEnemy::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 void AEyeEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
 	{
 		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeEnemy::UpdateTarget);
 		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeEnemy::OnPlayerDeath);
 	}
-	
+
 	CurrentState = Ees_Idle;
 }
 
 void AEyeEnemy::Tick(float DeltaTime)
 {
+	if (CurrentState == Ees_IsDead)
+		return;
+
 	Super::Tick(DeltaTime);
 
 	PrepareAttack(DeltaTime);
@@ -188,8 +222,16 @@ void AEyeEnemy::Tick(float DeltaTime)
 	Move(DeltaTime);
 }
 
+void AEyeEnemy::ForceSetLocation(FVector const& NewLocation)
+{
+	SetActorLocation(NewLocation);
+}
+
 void AEyeEnemy::UpdateTarget(AEyeCharacter* NewEntity)
 {
+	if (CurrentState == Ees_IsDead)
+		return;
+
 	CharacterRef = NewEntity;
 
 	if (Cast<AEyeEntityEyeball>(CharacterRef))

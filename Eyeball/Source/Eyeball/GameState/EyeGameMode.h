@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class AEyeEnemy;
 class AEyeProjectile;
 class UEyeControlsWidget;
 class AEyeMoveableDanger;
@@ -102,6 +103,7 @@ private:
 			UPROPERTY()
 			TArray<AActor*> EnemyArray;
 			TArray<FVector> EnemyLocations;
+			TArray<int> EnemyHealths;
 
 		/* Actors to handle on death and checkpoint objects */
 			UPROPERTY(EditDefaultsOnly)
@@ -117,14 +119,21 @@ private:
 		void HandleCheckpointReached();
 	
 		void FindAllReferences();
-		void SaveLocations();
-		void ResetLocations();
+		void SaveStates();
+		void ResetStates();
+
+		// Save logic
+			void SaveArrayOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
+			void SaveEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth);
+
+		// Reset logic
+			void ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
+			void ResetMoveableObjects(const TSubclassOf<AActor>& MoveableObjectClass) const;
+			void ResetEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth);
 	
-		void SaveArrayOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
-		void ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
-		void ResetMoveableObjects(const TSubclassOf<AActor>& MoveableObjectClass) const;
-		void RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete) const;
-	
+		// Remove logic 
+			void RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete) const;
+		
 	UFUNCTION()
 	void ChangeEntity(AEyeCharacter* Character);
 

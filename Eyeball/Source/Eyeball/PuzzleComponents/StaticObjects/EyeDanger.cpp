@@ -25,7 +25,7 @@ void AEyeDanger::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	if (const auto FoundActor = Cast<AEyeEnemy>(OtherActor))
 	{
 		if (OtherComp == Cast<UPrimitiveComponent>(FoundActor->GetDamageComponent()))
-			FoundActor->TakeDamage();
+			FoundActor->ChangeHealth(-1);
 		return;
 	}
 }

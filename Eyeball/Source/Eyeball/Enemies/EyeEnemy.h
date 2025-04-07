@@ -18,7 +18,8 @@ enum EEnemyState
 	Ees_Idle,
 	Ees_PreparingAttack,
 	Ees_Attacking,
-	Ees_Moving
+	Ees_Moving,
+	Ees_IsDead
 };
 
 UCLASS()
@@ -27,8 +28,10 @@ class EYEBALL_API AEyeEnemy : public AActor
 	GENERATED_BODY()
 
 public:
-	void TakeDamage();
-	UBoxComponent* GetDamageComponent() { return DamageComponent; }
+	int GetHealth() const { return Health; }
+	void SetHealth(int const NewHealth);
+	void ChangeHealth(int HealthToAdd);
+	UBoxComponent* GetDamageComponent() const { return DamageBox; }
 	
 protected:
 	AEyeEnemy();
@@ -40,12 +43,16 @@ protected:
 	void SetNewMoveTarget();
 	void SetIsThreatened(bool IsThreatened);
 
+	void DetermineDeath();
+
 	void CheckOverlaps();
 	
 	UFUNCTION()
 	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	int Health = 1;
 	
 	FVector TargetMoveOffset;
 	bool bIsThreatened;
@@ -63,7 +70,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UCapsuleComponent* RootCollider;
 	UPROPERTY(EditDefaultsOnly)
-	UBoxComponent* DamageComponent;
+	UBoxComponent* DamageBox;
 	UPROPERTY(EditDefaultsOnly)
 	USphereComponent* DetectionSphere;
 	UPROPERTY(EditDefaultsOnly)
@@ -73,6 +80,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	void ForceSetLocation(FVector const& NewLocation);
 	UFUNCTION()
 	void UpdateTarget(AEyeCharacter* NewEntity);
 	UFUNCTION()
