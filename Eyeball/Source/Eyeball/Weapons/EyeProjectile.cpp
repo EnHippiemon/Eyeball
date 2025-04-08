@@ -2,6 +2,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Eyeball/DataAssets/EnemyDataAssets/EyeProjectileDataAsset.h"
+#include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 
 AEyeProjectile::AEyeProjectile()
@@ -42,8 +43,8 @@ void AEyeProjectile::MoveToTargetLocation(float const DeltaTime)
 	auto NewPosition = GetActorLocation() + TargetOffset * TargetDirection * Data->Speed * DeltaTime;
 	SetActorRelativeLocation(NewPosition);
 
-	if ((NewPosition - TargetLocation).Length() < Data->MarginToTargetReached)
-		DestroyProjectile();
+	// if ((NewPosition - TargetLocation).Length() < Data->MarginToTargetReached)
+	// 	DestroyProjectile();
 }
 
 void AEyeProjectile::DestroyProjectile()
@@ -57,12 +58,17 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                         const FHitResult& SweepResult)
 {
-	AEyeCharacter* FoundActor = Cast<AEyeCharacter>(OtherActor);
-	if (!FoundActor)
-		return;
-	if (!FoundActor->GetIsPossessed())
-		return;
-	FoundActor->TakeDamage();
+	if (AEyeEnemy* FoundActor = Cast<AEyeEnemy>(OtherActor))
+	{
+		FoundActor->ChangeHealth(-1);
+	}
+	
+	if (AEyeCharacter* FoundActor = Cast<AEyeCharacter>(OtherActor))
+	{
+		if (!FoundActor->GetIsPossessed())
+			return;
+		FoundActor->TakeDamage();
+	}
 
 	DestroyProjectile();
 }
