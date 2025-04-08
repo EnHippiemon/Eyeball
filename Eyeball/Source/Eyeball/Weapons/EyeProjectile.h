@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "EyeProjectile.generated.h"
 
+class UCapsuleComponent;
 class UEyeProjectileDataAsset;
 class USphereComponent;
 
@@ -41,5 +42,7 @@ private:
 	UEyeProjectileDataAsset* Data;
 	
 	UPROPERTY(EditDefaultsOnly)
-	USphereComponent* DangerSphere;
+	USphereComponent* RootSphere;
+	UPROPERTY(EditDefaultsOnly)
+	UCapsuleComponent* DangerCapsule;
 };

@@ -1,5 +1,6 @@
 #include "EyeProjectile.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Eyeball/DataAssets/EnemyDataAssets/EyeProjectileDataAsset.h"
 #include "Eyeball/Enemies/EyeEnemy.h"
@@ -9,9 +10,12 @@ AEyeProjectile::AEyeProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	DangerSphere = CreateDefaultSubobject<USphereComponent>("DangerSphere");
-	DangerSphere->SetupAttachment(GetRootComponent());
-	DangerSphere->OnComponentBeginOverlap.AddDynamic(this, &AEyeProjectile::HandleBeginOverlap);
+	RootSphere = CreateDefaultSubobject<USphereComponent>("DangerSphere");
+	RootSphere->SetupAttachment(GetRootComponent());
+
+	DangerCapsule = CreateDefaultSubobject<UCapsuleComponent>("DangerCapsule");
+	DangerCapsule->SetupAttachment(RootSphere);
+	DangerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AEyeProjectile::HandleBeginOverlap);
 }
 
 void AEyeProjectile::OnSpawned()
@@ -60,12 +64,19 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                         const FHitResult& SweepResult)
 {
+	if (!bCanMove)
+		return;
+	if (OverlappedComponent != DangerCapsule)
+		return;
 	if (OtherActor == ShootingActor || !ShootingActor)
+		return;
+	if (Cast<AEyeProjectile>(OtherActor))
 		return;
 	
 	if (AEyeEnemy* FoundActor = Cast<AEyeEnemy>(OtherActor))
 	{
 		FoundActor->ChangeHealth(-1);
+		return;
 	}
 	
 	if (AEyeCharacter* FoundActor = Cast<AEyeCharacter>(OtherActor))
@@ -73,7 +84,10 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		if (!FoundActor->GetIsPossessed())
 			return;
 		FoundActor->TakeDamage();
+		return;
 	}
+	
+	bCanMove = false;
 }
 
 void AEyeProjectile::Tick(float DeltaTime)
