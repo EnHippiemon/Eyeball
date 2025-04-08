@@ -72,6 +72,7 @@ void AEyeEnemy::Attack()
 		const auto Target = AccuracyOffset + CharacterRef->GetActorLocation();
 
 		const auto ThisProjectile = GetWorld()->SpawnActor<AEyeProjectile>(Data->Projectile, GetTransform());
+		ThisProjectile->SetShootingActor(this);
 		ThisProjectile->SetActorScale3D(FVector(1, 1, 1));
 		ThisProjectile->OnSpawned();
 		ThisProjectile->SetTarget(Target);

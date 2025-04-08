@@ -38,13 +38,15 @@ void AEyeProjectile::SetTarget(const FVector& NewTarget)
 	TargetDirection = FVector(0, DirectionY, DirectionZ);
 }
 
+void AEyeProjectile::SetShootingActor(const TObjectPtr<AActor>& NewActor)
+{
+	ShootingActor = NewActor;
+}
+
 void AEyeProjectile::MoveToTargetLocation(float const DeltaTime)
 {
 	auto NewPosition = GetActorLocation() + TargetOffset * TargetDirection * Data->Speed * DeltaTime;
 	SetActorRelativeLocation(NewPosition);
-
-	// if ((NewPosition - TargetLocation).Length() < Data->MarginToTargetReached)
-	// 	DestroyProjectile();
 }
 
 void AEyeProjectile::DestroyProjectile()
@@ -58,6 +60,9 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                         const FHitResult& SweepResult)
 {
+	if (OtherActor == ShootingActor || !ShootingActor)
+		return;
+	
 	if (AEyeEnemy* FoundActor = Cast<AEyeEnemy>(OtherActor))
 	{
 		FoundActor->ChangeHealth(-1);
@@ -69,12 +74,13 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 			return;
 		FoundActor->TakeDamage();
 	}
-
-	DestroyProjectile();
 }
 
 void AEyeProjectile::Tick(float DeltaTime)
 {
+	if (!bCanMove)
+		return;
+	
 	Super::Tick(DeltaTime);
 	MoveToTargetLocation(DeltaTime);
 }

@@ -17,11 +17,17 @@ public:
 
 	void OnSpawned();
 	void SetTarget(const FVector& NewTarget);
+	void SetShootingActor(const TObjectPtr<AActor>& NewActor);
 
 private:
 	FVector TargetLocation;
 	FVector TargetOffset;
 	FVector TargetDirection;
+
+	UPROPERTY()
+	TObjectPtr<AActor> ShootingActor;
+	
+	bool bCanMove = true;
 	
 	void MoveToTargetLocation(float const DeltaTime);
 	void DestroyProjectile();
