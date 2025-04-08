@@ -86,13 +86,15 @@ void AEyeEnemy::Move(float const DeltaTime)
 	if (CurrentState != Ees_Moving)
 		return;
 
-	auto NewLocation = GetActorLocation();
-	NewLocation = UKismetMathLibrary::VLerp(NewLocation, TargetMoveOffset, DeltaTime * Data->MovementSpeed);
-	SetActorLocation(NewLocation);
+	auto NewLocation = GetActorLocation() + TargetMoveOffset * MoveDirection * Data->MovementSpeed * DeltaTime;
+	SetActorRelativeLocation(NewLocation);
 
-	if ((TargetMoveOffset - NewLocation).Length() > Data->MarginForReachingTarget)
+	const auto CurrentLocation = FVector(0, NewLocation.Y, Data->bCanFly ? NewLocation.Z : 0);
+	const auto TargetLocation = FVector(0, TargetMoveLocation.Y, Data->bCanFly ? TargetMoveLocation.Z : 0);
+
+	if ((CurrentLocation - TargetLocation).Length() > Data->MarginForReachingTarget)
 		return;
-
+	
 	if (bIsThreatened)
 		SetNewMoveTarget();
 	else
@@ -103,10 +105,14 @@ void AEyeEnemy::SetNewMoveTarget()
 {
 	const int DirectionY = CharacterRef->GetActorLocation().Y < GetActorLocation().Y ? 1 : -1;
 	const int DirectionZ = CharacterRef->GetActorLocation().Z < GetActorLocation().Z ? 1 : -1;
-
-	TargetMoveOffset = GetActorLocation() + FVector(Data->DistanceForEvasion.X + Data->PositionOffset.X,
-	                                                Data->DistanceForEvasion.Y * DirectionY,
-	                                                Data->DistanceForEvasion.Z * DirectionZ);
+	MoveDirection = FVector(0, DirectionY, Data->bCanFly ? DirectionZ : 0);
+	
+	TargetMoveLocation = GetActorLocation() + Data->DistanceForEvasion * MoveDirection;
+	
+	TargetMoveOffset = FVector(0, FMath::Abs(TargetMoveLocation.Y - GetActorLocation().Y),
+	                           FMath::Abs(TargetMoveLocation.Z - GetActorLocation().Z));
+	TargetMoveOffset.Normalize();
+	
 	CurrentState = Ees_Moving;
 }
 

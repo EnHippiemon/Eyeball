@@ -43,4 +43,8 @@ public:
 	// The permanent offset position of the enemy in the level. 
 	UPROPERTY(EditDefaultsOnly, Category = "Move|Positioning")
 	FVector PositionOffset;
+
+	// The enemy can fly on the Z axis. 
+	UPROPERTY(EditDefaultsOnly, Category = "Move")
+	bool bCanFly;
 };

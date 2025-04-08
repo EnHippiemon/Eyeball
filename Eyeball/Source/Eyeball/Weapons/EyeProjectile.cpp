@@ -27,13 +27,20 @@ void AEyeProjectile::OnSpawned()
 void AEyeProjectile::SetTarget(const FVector& NewTarget)
 {
 	TargetLocation = FVector(Data->PositioningOffset.X, NewTarget.Y, NewTarget.Z);
+
+	TargetOffset = FVector(0, FMath::Abs(TargetLocation.Y - GetActorLocation().Y),
+	                       FMath::Abs(TargetLocation.Z - GetActorLocation().Z));
+	TargetOffset.Normalize();
+	
+	const int DirectionY = TargetLocation.Y > GetActorLocation().Y ? 1 : -1;
+	const int DirectionZ = TargetLocation.Z > GetActorLocation().Z ? 1 : -1;
+	TargetDirection = FVector(0, DirectionY, DirectionZ);
 }
 
 void AEyeProjectile::MoveToTargetLocation(float const DeltaTime)
 {
-	auto NewPosition = GetActorLocation();
-	NewPosition = FMath::Lerp(NewPosition, TargetLocation, Data->Speed * DeltaTime);
-	SetActorLocation(NewPosition);
+	auto NewPosition = GetActorLocation() + TargetOffset * TargetDirection * Data->Speed * DeltaTime;
+	SetActorRelativeLocation(NewPosition);
 
 	if ((NewPosition - TargetLocation).Length() < Data->MarginToTargetReached)
 		DestroyProjectile();

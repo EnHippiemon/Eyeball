@@ -53,8 +53,12 @@ protected:
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	int Health = 1;
-	
+
+
+	FVector TargetMoveLocation;
 	FVector TargetMoveOffset;
+	FVector MoveDirection;
+	
 	bool bIsThreatened;
 	float AttackPreparationTime = 0;
 	FVector ProjectileTransform;

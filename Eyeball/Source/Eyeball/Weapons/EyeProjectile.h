@@ -20,6 +20,8 @@ public:
 
 private:
 	FVector TargetLocation;
+	FVector TargetOffset;
+	FVector TargetDirection;
 	
 	void MoveToTargetLocation(float const DeltaTime);
 	void DestroyProjectile();

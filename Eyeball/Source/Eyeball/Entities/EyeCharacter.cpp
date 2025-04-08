@@ -30,7 +30,7 @@ void AEyeCharacter::HandleSidewaysInput(const float Value)
 
 void AEyeCharacter::SmoothenMovementDirection(const float DeltaTime)
 {
-	FVector VectorTranslation = FVector(0, GetMovementInput().X, GetMovementInput().Y);
+	const FVector VectorTranslation = FVector(0, GetMovementInput().X, GetMovementInput().Y);
 	MovementDirection = FMath::Lerp(MovementDirection, VectorTranslation, DeltaTime * EntityData->MovementAcceleration);
 }
 
