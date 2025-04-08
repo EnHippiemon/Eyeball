@@ -90,6 +90,8 @@ void AEyeMoveableObject::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("No Object data in: %s"), *GetActorNameOrLabel())
 		return;
 	}
+
+	SetActorLocation(FVector(100, GetActorLocation().Y, GetActorLocation().Z));
 	
 	StartLocation = GetActorLocation();
 	TargetLocation = GetActorLocation() + ObjectData->TargetOffset;

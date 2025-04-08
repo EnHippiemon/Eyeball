@@ -23,7 +23,7 @@ void AEyeLaserDetector::SearchForVictim()
 
 void AEyeLaserDetector::FollowObject()
 {
-	if (!ObjectToFollow || !ObjectToFollow->GetHasReachedTarget() && !ObjectToFollow->GetIsActivated())
+	if (ObjectToFollow->GetActorLocation() == GetActorLocation())
 		return;
 	
 	SetActorLocation(ObjectToFollow->GetActorLocation());
