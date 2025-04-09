@@ -5,6 +5,7 @@
 #include "Eyeball/DataAssets/EnemyDataAssets/EyeProjectileDataAsset.h"
 #include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeCharacter.h"
+#include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 
 AEyeProjectile::AEyeProjectile()
 {
@@ -84,6 +85,12 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		if (!FoundActor->GetIsPossessed())
 			return;
 		FoundActor->TakeDamage();
+		return;
+	}
+
+	if (Cast<AEyeMoveableObject>(OtherActor))
+	{
+		DestroyProjectile();
 		return;
 	}
 	
