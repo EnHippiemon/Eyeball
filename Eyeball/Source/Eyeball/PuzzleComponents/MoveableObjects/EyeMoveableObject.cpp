@@ -1,7 +1,6 @@
 #include "../MoveableObjects/EyeMoveableObject.h"
 
 #include "Components/BoxComponent.h"
-#include "Eyeball/DataAssets/PuzzleComponentsDataAssets/EyeMoveableObjectDataAsset.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 
 AEyeMoveableObject::AEyeMoveableObject()
@@ -25,7 +24,7 @@ void AEyeMoveableObject::Activate()
 
 void AEyeMoveableObject::ResetLocation()
 {
-	if (!ObjectData->bStartActivated)
+	if (!bStartActivated)
 		bIsActivated = false;
 	bHasReachedTarget = true;
 	SetActorLocation(StartLocation);
@@ -40,26 +39,28 @@ void AEyeMoveableObject::MoveToTarget()
 	{
 		bIsActivated = false;
 		bHasReachedTarget = true;
+		if (!ReturnToStartLocation)
+			PrimaryActorTick.bCanEverTick = false;
 	}
 
-	const auto NewLocation = GetActorLocation() + ObjectData->MoveDirection * ObjectData->MoveSpeed * GetWorld()->DeltaTimeSeconds;
+	const auto NewLocation = GetActorLocation() + MoveDirection * MoveSpeed * GetWorld()->DeltaTimeSeconds;
 	SetActorRelativeLocation(NewLocation);
 }
 
 void AEyeMoveableObject::MoveToStart()
 {
-	if (!ObjectData->ReturnToStartLocation || !bHasReachedTarget || bIsHindered)
+	if (!ReturnToStartLocation || !bHasReachedTarget || bIsHindered)
 		return;
 
 	if ((GetActorLocation() - StartLocation).Length() < 5.f)
 	{
 		bHasReachedTarget = false;
 
-		if (ObjectData->bShouldLoop)
+		if (bShouldLoop)
 			bIsActivated = true;
 	}
 	
-	const auto NewLocation = GetActorLocation() - ObjectData->MoveDirection * ObjectData->MoveSpeed * GetWorld()->DeltaTimeSeconds;
+	const auto NewLocation = GetActorLocation() - MoveDirection * MoveSpeed * GetWorld()->DeltaTimeSeconds;
 	SetActorRelativeLocation(NewLocation);
 }
 
@@ -85,28 +86,19 @@ void AEyeMoveableObject::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!ObjectData)
-	{
-		UE_LOG(LogTemp, Error, TEXT("No Object data in: %s"), *GetActorNameOrLabel())
-		return;
-	}
-
 	SetActorLocation(FVector(100, GetActorLocation().Y, GetActorLocation().Z));
 	
 	StartLocation = GetActorLocation();
-	TargetLocation = GetActorLocation() + ObjectData->TargetOffset;
-	bIsActivated = ObjectData->bStartActivated;
+	TargetLocation = GetActorLocation() + TargetOffset;
+	bIsActivated = bStartActivated;
 }
 
 void AEyeMoveableObject::Tick(float DeltaTime)
 {
-	if (!ObjectData->bShouldTick)
+	if (!bShouldTick)
 		return;
 	
 	Super::Tick(DeltaTime);
-
-	if (!ObjectData)
-		return;
 	
 	MoveToTarget();
 	MoveToStart();

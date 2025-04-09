@@ -27,6 +27,21 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditAnywhere)
+	bool bShouldTick;
+	UPROPERTY(EditAnywhere)
+	bool bStartActivated;
+	UPROPERTY(EditAnywhere)
+	bool bShouldLoop;
+	UPROPERTY(EditAnywhere)
+	FVector MoveDirection;
+	UPROPERTY(EditAnywhere)
+	float MoveSpeed;
+	UPROPERTY(EditAnywhere)
+	FVector TargetOffset;
+	UPROPERTY(EditAnywhere)
+	bool ReturnToStartLocation;
 	
 private:	
 	bool bIsActivated = false;
@@ -41,9 +56,6 @@ private:
 
 	UFUNCTION()
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	UPROPERTY(EditInstanceOnly)
-	UEyeMoveableObjectDataAsset* ObjectData;
 	
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* Box;
