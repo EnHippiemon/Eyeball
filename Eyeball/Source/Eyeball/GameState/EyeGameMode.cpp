@@ -4,7 +4,6 @@
 #include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
-#include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableDanger.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
 #include "Eyeball/Widgets/EyeControlsWidget.h"
@@ -28,6 +27,7 @@ void AEyeGameMode::FindAllReferences()
 	bEyeballHiddenAtCheckpoint = Eyeball->IsHidden();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EnemyCharacter, EnemyArray);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObject, MoveableObjectArray);
 	SaveStates();
 }
 
@@ -38,8 +38,10 @@ void AEyeGameMode::SaveStates()
 	
 	PossessedAtCheckpoint = PlayerCharacter;
 
-	SaveArrayOfActors(CharacterArray, CharacterLocations);
-	SaveArrayOfActors(EnemyArray, EnemyLocations);
+	SaveLocationsOfActors(CharacterArray, CharacterLocations);
+	SaveLocationsOfActors(EnemyArray, EnemyLocations);
+	SaveLocationsOfActors(MoveableObjectArray, MoveableObjectLocations);
+	SaveMoveableObjectStates();
 
 	SaveEnemyHealth(EnemyArray, EnemyHealths);
 
@@ -50,11 +52,9 @@ void AEyeGameMode::SaveStates()
 void AEyeGameMode::ResetStates()
 {
 	// Reset MoveableObjects
-	ResetMoveableObjects(MoveableObject);
-	ResetMoveableObjects(MoveableDanger);
-
-	RemoveObjects(Projectile);
-
+	ResetMoveableObjects(MoveableObjectArray);
+	ResetActorLocations(MoveableObjectArray, MoveableObjectLocations);
+	
 	// Reset entity locations
 	if (bEyeballHiddenAtCheckpoint)
 		ChangeEntity(PossessedAtCheckpoint);
@@ -67,10 +67,13 @@ void AEyeGameMode::ResetStates()
 	ResetActorLocations(EnemyArray, EnemyLocations);
 	ResetEnemyHealth(EnemyArray, EnemyHealths);
 	
+	// Delete objects 
+	RemoveObjects(Projectile);
+	
 	CurrentGameState = Egs_StartingGame;
 }
 
-void AEyeGameMode::SaveArrayOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations)
+void AEyeGameMode::SaveLocationsOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations)
 {
 	for (int i = 0; i < ArrayOfActors.Num(); ++i)
 	{
@@ -89,15 +92,17 @@ void AEyeGameMode::ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVe
 	}
 }
 
-void AEyeGameMode::ResetMoveableObjects(const TSubclassOf<AActor>& MoveableObjectClass) const
+void AEyeGameMode::ResetMoveableObjects(const TArray<AActor*> ArrayOfActors) const
 {
-	TArray<AActor*> MoveableObjects;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObjectClass, MoveableObjects);
-	for (int i = 0; i < MoveableObjects.Num(); ++i)
+	for (int i = 0; i < ArrayOfActors.Num(); ++i)
 	{
-		AEyeMoveableObject* Object = Cast<AEyeMoveableObject>(MoveableObjects[i]);
-		if (Object)
-			Object->ResetLocation();
+		AEyeMoveableObject* Object = Cast<AEyeMoveableObject>(ArrayOfActors[i]);
+		if (!Object)
+			continue;
+		
+		Object->ResetLocation();
+		Object->SetActivated(MoveableObjectsActivated[i]);
+		Object->SetReachedTarget(MoveableObjectsReachedTarget[i]);
 	}
 }
 
@@ -123,6 +128,26 @@ void AEyeGameMode::SaveEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& A
 			ArrayOfHealth.Add(Actor->GetHealth());
 		else
 			ArrayOfHealth[i] = Actor->GetHealth();
+	}
+}
+
+void AEyeGameMode::SaveMoveableObjectStates()
+{
+	for (int i = 0; i < MoveableObjectArray.Num(); ++i)
+	{
+		const auto Actor = Cast<AEyeMoveableObject>(MoveableObjectArray[i]);
+		if (!Actor)
+			continue;
+		
+		if (!MoveableObjectsActivated.IsValidIndex(i))
+			MoveableObjectsActivated.Add(Actor->GetIsActivated());
+		else
+			MoveableObjectsActivated[i] = Actor->GetIsActivated();
+
+		if (!MoveableObjectsReachedTarget.IsValidIndex(i))
+			MoveableObjectsReachedTarget.Add(Actor->GetHasReachedTarget());
+		else
+			MoveableObjectsReachedTarget[i] = Actor->GetHasReachedTarget();
 	}
 }
 

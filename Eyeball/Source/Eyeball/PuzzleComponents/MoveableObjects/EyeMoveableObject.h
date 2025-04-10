@@ -17,6 +17,12 @@ public:
 	
 	void Activate();
 	virtual void ResetLocation();
+
+	// Setters 
+	void SetActivated(const bool Value) { bIsActivated = Value; }
+	void SetReachedTarget(const bool Value) { bHasReachedTarget = Value; }
+
+	// Getters 
 	FVector GetTargetLocation() const { return TargetLocation; }
 	bool GetIsActivated() const { return bIsActivated; }
 	bool GetHasReachedTarget() const { return bHasReachedTarget; }

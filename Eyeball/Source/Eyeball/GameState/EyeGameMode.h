@@ -50,17 +50,14 @@ private:
 	float MaxDangerTime = 2.f;
 	UPROPERTY(EditDefaultsOnly)
 	float TimeDilationTransitionSpeed = 25.f;
-	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<APawn> EntityEyeball;
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<APawn> EntityHuman;
 
 	bool bIsInDanger = true;
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
 	float TargetTimeDilation = 1.f;
-
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<APawn> EntityEyeball;
 	UPROPERTY()
 	AEyeCharacter* PlayerCharacter;
 	UPROPERTY()
@@ -68,6 +65,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEyeCamera> MainCamera;
 
+#pragma region --- Widgets ---
 	/* Widgets */
 		/* Game over */
 			UPROPERTY(EditDefaultsOnly)
@@ -84,7 +82,9 @@ private:
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<UEyeControlsWidget> ControlsWidget;
 			TObjectPtr<UEyeControlsWidget> ControlsWidgetRef;
-	
+#pragma endregion
+
+#pragma region --- Checkpoint ---
 	/* Checkpoint */
 		/* Player characters */
 			UPROPERTY(EditDefaultsOnly)
@@ -106,10 +106,13 @@ private:
 			TArray<int> EnemyHealths;
 
 		/* Actors to handle on death and checkpoint objects */
+			UPROPERTY()
+			TArray<AActor*> MoveableObjectArray;
+			TArray<FVector> MoveableObjectLocations;
+			TArray<bool> MoveableObjectsActivated;
+			TArray<bool> MoveableObjectsReachedTarget;
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<AActor> MoveableObject;
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AActor> MoveableDanger;
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<AActor> Projectile;
 	
@@ -123,17 +126,19 @@ private:
 		void ResetStates();
 
 		// Save logic
-			void SaveArrayOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
+			void SaveLocationsOfActors(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
 			void SaveEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth);
-
+			void SaveMoveableObjectStates();
+	
 		// Reset logic
 			void ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
-			void ResetMoveableObjects(const TSubclassOf<AActor>& MoveableObjectClass) const;
+			void ResetMoveableObjects(const TArray<AActor*> ArrayOfActors) const;
 			void ResetEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth);
 	
 		// Remove logic 
 			void RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete) const;
-		
+#pragma endregion
+	
 	UFUNCTION()
 	void ChangeEntity(AEyeCharacter* Character);
 
