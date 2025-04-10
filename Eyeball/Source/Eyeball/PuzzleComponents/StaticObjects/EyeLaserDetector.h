@@ -13,20 +13,16 @@ class EYEBALL_API AEyeLaserDetector : public AEyeLever
 {
 	GENERATED_BODY()
 
-private:
+protected:
 	AEyeLaserDetector();
 
-	FVector StartPoint;
 	float TraceLength;
-	
-	void SearchForVictim();
-	void FollowObject();
+
+	virtual void SearchForVictim();
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditInstanceOnly)
-	TObjectPtr<AEyeMoveableObject> ObjectToFollow;
+	
 	UPROPERTY(EditInstanceOnly)
 	UEyeLaserDetectorDataAsset* Data;
 };

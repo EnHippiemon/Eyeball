@@ -106,7 +106,6 @@ void AEyeGameMode::ResetMoveableObjects() const
 	for (int i = 0; i < MoveableObjectArray.Num(); ++i)
 	{
 		MoveableObjectArray[i]->SetActorLocation(MoveableObjectLocations[i]);
-		MoveableObjectArray[i]->ResetLocation();
 		MoveableObjectArray[i]->SetActivated(MoveableObjectsActivated[i]);
 		MoveableObjectArray[i]->SetReachedTarget(MoveableObjectsReachedTarget[i]);
 	}

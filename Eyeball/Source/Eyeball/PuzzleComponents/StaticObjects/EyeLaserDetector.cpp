@@ -10,9 +10,6 @@ AEyeLaserDetector::AEyeLaserDetector()
 
 void AEyeLaserDetector::SearchForVictim()
 {
-	if (ObjectToFollow->GetIsActivated())
-		return;
-	
 	const auto FoundVictim = UStaticFunctionLibrary::TracesAlongLine(this, Data->LineDirection, Data->TraceDirection,
 	                                                                 Data->TraceOffset, Data->TraceAmount,
 	                                                                 Data->DistanceBetweenTraces, TraceLength,
@@ -21,27 +18,11 @@ void AEyeLaserDetector::SearchForVictim()
 		InteractWith();
 }
 
-void AEyeLaserDetector::FollowObject()
-{
-	if (ObjectToFollow->GetActorLocation() == GetActorLocation())
-		return;
-	
-	SetActorLocation(ObjectToFollow->GetActorLocation());
-	const float LengthDifference = (StartPoint - ObjectToFollow->GetActorLocation()).Length();
-	TraceLength = Data->TraceLength + LengthDifference;
-}
-
 void AEyeLaserDetector::BeginPlay()
 {
 	Super::BeginPlay();
 
 	TraceLength = Data->TraceLength;
-
-	if (!ObjectToFollow)
-		return;
-
-	SetActorLocation(ObjectToFollow->GetActorLocation());
-	StartPoint = GetActorLocation();
 }
 
 void AEyeLaserDetector::Tick(float DeltaTime)
@@ -49,5 +30,4 @@ void AEyeLaserDetector::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SearchForVictim();
-	FollowObject();
 }

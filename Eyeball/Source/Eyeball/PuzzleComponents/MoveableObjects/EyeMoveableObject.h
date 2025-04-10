@@ -16,7 +16,6 @@ public:
 	AEyeMoveableObject();
 	
 	void Activate();
-	virtual void ResetLocation();
 
 	// Setters 
 	void SetActivated(const bool Value) { bIsActivated = Value; }

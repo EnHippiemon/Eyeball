@@ -22,13 +22,6 @@ void AEyeMoveableObject::Activate()
 	bHasReachedTarget = false;
 }
 
-void AEyeMoveableObject::ResetLocation()
-{
-	// if (!bStartActivated)
-	// 	bIsActivated = false;
-	// bHasReachedTarget = true;
-}
-
 void AEyeMoveableObject::MoveToTarget()
 {
 	if (!bIsActivated)
@@ -85,7 +78,7 @@ void AEyeMoveableObject::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetActorLocation(FVector(100, GetActorLocation().Y, GetActorLocation().Z));
+	// SetActorLocation(FVector(100, GetActorLocation().Y, GetActorLocation().Z));
 	
 	StartLocation = GetActorLocation();
 	TargetLocation = GetActorLocation() + TargetOffset;
