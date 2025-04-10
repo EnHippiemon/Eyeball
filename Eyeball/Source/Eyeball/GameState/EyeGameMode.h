@@ -132,8 +132,8 @@ private:
 	
 		// Reset logic
 			void ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
-			void ResetMoveableObjects() const;
 			void ResetEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth);
+			void ResetMoveableObjects() const;
 	
 		// Remove logic 
 			void RemoveObjects(const TSubclassOf<AActor>& ObjectClassToDelete) const;
