@@ -27,7 +27,18 @@ void AEyeGameMode::FindAllReferences()
 	bEyeballHiddenAtCheckpoint = Eyeball->IsHidden();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EnemyCharacter, EnemyArray);
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObject, MoveableObjectArray);
+
+	// Find all MoveableObjects in the scene 
+	TArray<AActor*> Objects;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObject, Objects);
+	for (int i = 0; i < Objects.Num(); ++i)
+	{
+		if (!MoveableObjectArray.IsValidIndex(i))
+			MoveableObjectArray.Insert(Cast<AEyeMoveableObject>(Objects[i]), i);
+		else
+			MoveableObjectArray[i] = Cast<AEyeMoveableObject>(Objects[i]);
+	}
+	
 	SaveStates();
 }
 
@@ -40,7 +51,6 @@ void AEyeGameMode::SaveStates()
 
 	SaveLocationsOfActors(CharacterArray, CharacterLocations);
 	SaveLocationsOfActors(EnemyArray, EnemyLocations);
-	SaveLocationsOfActors(MoveableObjectArray, MoveableObjectLocations);
 	SaveMoveableObjectStates();
 
 	SaveEnemyHealth(EnemyArray, EnemyHealths);
@@ -52,8 +62,7 @@ void AEyeGameMode::SaveStates()
 void AEyeGameMode::ResetStates()
 {
 	// Reset MoveableObjects
-	ResetMoveableObjects(MoveableObjectArray);
-	ResetActorLocations(MoveableObjectArray, MoveableObjectLocations);
+	ResetMoveableObjects();
 	
 	// Reset entity locations
 	if (bEyeballHiddenAtCheckpoint)
@@ -92,17 +101,14 @@ void AEyeGameMode::ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVe
 	}
 }
 
-void AEyeGameMode::ResetMoveableObjects(const TArray<AActor*> ArrayOfActors) const
+void AEyeGameMode::ResetMoveableObjects() const
 {
-	for (int i = 0; i < ArrayOfActors.Num(); ++i)
+	for (int i = 0; i < MoveableObjectArray.Num(); ++i)
 	{
-		AEyeMoveableObject* Object = Cast<AEyeMoveableObject>(ArrayOfActors[i]);
-		if (!Object)
-			continue;
-		
-		Object->ResetLocation();
-		Object->SetActivated(MoveableObjectsActivated[i]);
-		Object->SetReachedTarget(MoveableObjectsReachedTarget[i]);
+		MoveableObjectArray[i]->SetActorLocation(MoveableObjectLocations[i]);
+		MoveableObjectArray[i]->ResetLocation();
+		MoveableObjectArray[i]->SetActivated(MoveableObjectsActivated[i]);
+		MoveableObjectArray[i]->SetReachedTarget(MoveableObjectsReachedTarget[i]);
 	}
 }
 
@@ -135,19 +141,23 @@ void AEyeGameMode::SaveMoveableObjectStates()
 {
 	for (int i = 0; i < MoveableObjectArray.Num(); ++i)
 	{
-		const auto Actor = Cast<AEyeMoveableObject>(MoveableObjectArray[i]);
-		if (!Actor)
-			continue;
-		
-		if (!MoveableObjectsActivated.IsValidIndex(i))
-			MoveableObjectsActivated.Add(Actor->GetIsActivated());
+		// Location 
+		if (!MoveableObjectLocations.IsValidIndex(i))
+			MoveableObjectLocations.Insert(MoveableObjectArray[i]->GetActorLocation(), i);
 		else
-			MoveableObjectsActivated[i] = Actor->GetIsActivated();
+			MoveableObjectLocations[i] = MoveableObjectArray[i]->GetActorLocation();
 
-		if (!MoveableObjectsReachedTarget.IsValidIndex(i))
-			MoveableObjectsReachedTarget.Add(Actor->GetHasReachedTarget());
+		// Activation state 
+		if (!MoveableObjectsActivated.IsValidIndex(i))
+			MoveableObjectsActivated.Add(MoveableObjectArray[i]->GetIsActivated());
 		else
-			MoveableObjectsReachedTarget[i] = Actor->GetHasReachedTarget();
+			MoveableObjectsActivated[i] = MoveableObjectArray[i]->GetIsActivated();
+
+		// Has reached end position state
+		if (!MoveableObjectsReachedTarget.IsValidIndex(i))
+			MoveableObjectsReachedTarget.Add(MoveableObjectArray[i]->GetHasReachedTarget());
+		else
+			MoveableObjectsReachedTarget[i] = MoveableObjectArray[i]->GetHasReachedTarget();
 	}
 }
 

@@ -107,12 +107,12 @@ private:
 
 		/* Actors to handle on death and checkpoint objects */
 			UPROPERTY()
-			TArray<AActor*> MoveableObjectArray;
+			TArray<AEyeMoveableObject*> MoveableObjectArray;
 			TArray<FVector> MoveableObjectLocations;
 			TArray<bool> MoveableObjectsActivated;
 			TArray<bool> MoveableObjectsReachedTarget;
 			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AActor> MoveableObject;
+			TSubclassOf<AEyeMoveableObject> MoveableObject;
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<AActor> Projectile;
 	
@@ -132,7 +132,7 @@ private:
 	
 		// Reset logic
 			void ResetActorLocations(TArray<AActor*> ArrayOfActors, TArray<FVector>& ArrayOfLocations);
-			void ResetMoveableObjects(const TArray<AActor*> ArrayOfActors) const;
+			void ResetMoveableObjects() const;
 			void ResetEnemyHealth(TArray<AActor*> ArrayOfActors, TArray<int>& ArrayOfHealth);
 	
 		// Remove logic 
