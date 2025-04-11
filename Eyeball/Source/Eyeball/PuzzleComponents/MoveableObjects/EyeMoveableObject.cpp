@@ -2,6 +2,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Eyeball/Entities/EyeCharacter.h"
+#include "Eyeball/Entities/EyeEntityEyeball.h"
 
 AEyeMoveableObject::AEyeMoveableObject()
 {
@@ -59,19 +60,24 @@ void AEyeMoveableObject::MoveToStart()
 void AEyeMoveableObject::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OtherActor->IsA<AEyeEntityEyeball>())
+		return;
 	if (OtherActor->IsA<AEyeCharacter>())
-	{
 		bIsHindered = true;
-	}
 }
 
 void AEyeMoveableObject::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (OtherActor->IsA<AEyeEntityEyeball>())
+		return;
 	if (OtherActor->IsA<AEyeCharacter>())
-	{
 		bIsHindered = false;
-	}
+	
+	// if (OtherActor->IsA<AEyeCharacter>())
+	// {
+	// 	bIsHindered = false;
+	// }
 }
 
 void AEyeMoveableObject::BeginPlay()
