@@ -17,6 +17,7 @@ AEyeCamera::AEyeCamera()
 
 void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 {
+	// Calculate the mean value of all focused actors
 	FVector MiddleLocation;
 	int ValidActors = 0;
 	for (int i = 0; i < FocusedActors.Num(); ++i)
@@ -29,6 +30,7 @@ void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 	}
 	MiddleLocation /= ValidActors;
 
+	// Move towards the mean value 
 	auto NewLocation = GetActorLocation();
 	NewLocation = UKismetMathLibrary::VLerp(NewLocation,
 	                                        FVector(-FindDistanceBetweenActors(), MiddleLocation.Y, MiddleLocation.Z),

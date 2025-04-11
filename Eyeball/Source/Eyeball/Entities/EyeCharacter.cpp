@@ -128,6 +128,11 @@ void AEyeCharacter::SetArtificialInput(const FVector& Direction)
 	ArtificialInput = Direction * EntityData->InputMultiplier;
 }
 
+void AEyeCharacter::ResetPosition()
+{
+	SetActorLocation(StartPosition);
+}
+
 void AEyeCharacter::MakeArtificialInput(float const DeltaTime)
 {
 	if (ArtificialInput.Size() <= 0)
@@ -226,6 +231,8 @@ void AEyeCharacter::BeginPlay()
 		UnPossessed();
 	else
 		OnSpawned();
+
+	StartPosition = GetActorLocation();
 }
 
 void AEyeCharacter::Tick(float DeltaTime)

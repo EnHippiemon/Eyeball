@@ -30,6 +30,4 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AEyeCamera> CameraClass;
 	TObjectPtr<AEyeCamera> CameraRef;
-	
-private:
 };

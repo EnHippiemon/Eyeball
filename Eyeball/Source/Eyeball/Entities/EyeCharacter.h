@@ -38,6 +38,7 @@ public:
 	/* Setters */
 		void SetArtificialInput(const FVector& Direction);
 		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
+		void ResetPosition();
 
 	/* Getters */
 		FVector GetMovementDirection() const { return MovementDirection; }
@@ -112,6 +113,8 @@ private:
 	bool bFoundLeftWall;
 	bool bFoundRightWall;
 	float WallTraceDistance;
+
+	FVector StartPosition;
 	
 	void HandleUpwardsInput(float Value);
 	void HandleSidewaysInput(float Value);

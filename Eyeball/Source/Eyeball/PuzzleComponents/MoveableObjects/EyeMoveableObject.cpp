@@ -77,8 +77,6 @@ void AEyeMoveableObject::HandleEndOverlap(UPrimitiveComponent* OverlappedCompone
 void AEyeMoveableObject::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// SetActorLocation(FVector(100, GetActorLocation().Y, GetActorLocation().Z));
 	
 	StartLocation = GetActorLocation();
 	TargetLocation = GetActorLocation() + TargetOffset;

@@ -20,8 +20,10 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEyeCamera> CameraClass;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 	UBoxComponent* BoxComponent;
+	UPROPERTY(EditAnywhere)
+	UBoxComponent* UnfocusBoxComponent;
 	
 	UFUNCTION()
 	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
