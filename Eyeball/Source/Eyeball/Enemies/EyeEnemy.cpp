@@ -252,6 +252,10 @@ void AEyeEnemy::UpdateTarget(AEyeCharacter* NewEntity)
 
 void AEyeEnemy::OnPlayerDeath(const EGameState NewState)
 {
-	if (NewState == Egs_StartingGame)
-		CurrentState = Ees_Idle;
+	if (NewState != Egs_StartingGame)
+		return;
+	
+	CurrentState = Ees_Idle;
+	AttackPreparationTime = 0;
+	CheckOverlaps();
 }

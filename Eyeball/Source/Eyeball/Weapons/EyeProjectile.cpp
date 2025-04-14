@@ -2,10 +2,13 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "Eyeball/Camera/EyeCameraFocusAdder.h"
 #include "Eyeball/DataAssets/EnemyDataAssets/EyeProjectileDataAsset.h"
 #include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeCharacter.h"
+#include "Eyeball/GameState/EyeCheckpoint.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
+#include "Eyeball/PuzzleComponents/StaticObjects/EyeLaserDetector.h"
 
 AEyeProjectile::AEyeProjectile()
 {
@@ -23,11 +26,6 @@ void AEyeProjectile::OnSpawned()
 {
 	SetActorLocation(FVector(Data->PositioningOffset.X, GetActorLocation().Y + Data->PositioningOffset.Y,
 	                         GetActorLocation().Z + Data->PositioningOffset.Z));
-
-	FTimerDelegate Delegate;
-	Delegate.BindLambda([&]() { DestroyProjectile(); });
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, Delegate, Data->LifeSpan, false, Data->LifeSpan);
 }
 
 void AEyeProjectile::SetTarget(const FVector& NewTarget)
@@ -48,17 +46,17 @@ void AEyeProjectile::SetShootingActor(const TObjectPtr<AActor>& NewActor)
 	ShootingActor = NewActor;
 }
 
+void AEyeProjectile::DestructionCountdown(float const DeltaTime)
+{
+	TimeSinceSpawned += DeltaTime;
+	if (TimeSinceSpawned >= Data->LifeSpan)
+		Destroy();
+}
+
 void AEyeProjectile::MoveToTargetLocation(float const DeltaTime)
 {
 	auto NewPosition = GetActorLocation() + TargetOffset * TargetDirection * Data->Speed * DeltaTime;
 	SetActorRelativeLocation(NewPosition);
-}
-
-void AEyeProjectile::DestroyProjectile()
-{
-	// Got a crash once because it tried to destroy when it was already destroyed.
-	if (this)
-		Destroy();
 }
 
 void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -71,7 +69,10 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		return;
 	if (OtherActor == ShootingActor || !ShootingActor)
 		return;
-	if (Cast<AEyeProjectile>(OtherActor))
+	if (Cast<AEyeProjectile>(OtherActor)
+		|| Cast<AEyeCheckpoint>(OtherActor)
+		|| Cast<AEyeCameraFocusAdder>(OtherActor)
+		|| Cast<AEyeLaserDetector>(OtherActor))
 		return;
 	
 	if (AEyeEnemy* FoundActor = Cast<AEyeEnemy>(OtherActor))
@@ -90,7 +91,7 @@ void AEyeProjectile::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 
 	if (Cast<AEyeMoveableObject>(OtherActor))
 	{
-		DestroyProjectile();
+		Destroy();
 		return;
 	}
 	
@@ -103,5 +104,7 @@ void AEyeProjectile::Tick(float DeltaTime)
 		return;
 	
 	Super::Tick(DeltaTime);
+
+	DestructionCountdown(DeltaTime);
 	MoveToTargetLocation(DeltaTime);
 }

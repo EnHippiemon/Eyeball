@@ -29,7 +29,9 @@ private:
 	TObjectPtr<AActor> ShootingActor;
 	
 	bool bCanMove = true;
+	float TimeSinceSpawned = 0;
 	
+	void DestructionCountdown(float const DeltaTime);
 	void MoveToTargetLocation(float const DeltaTime);
 	void DestroyProjectile();
 	
