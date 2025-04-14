@@ -33,7 +33,6 @@ private:
 	
 	void DestructionCountdown(float const DeltaTime);
 	void MoveToTargetLocation(float const DeltaTime);
-	void DestroyProjectile();
 	
 	UFUNCTION()
 	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
