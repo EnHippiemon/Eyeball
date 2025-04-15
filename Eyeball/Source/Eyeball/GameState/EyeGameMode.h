@@ -64,6 +64,7 @@ private:
 	AController* Controller;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEyeCamera> MainCamera;
+	
 
 #pragma region --- Widgets ---
 	/* Widgets */
