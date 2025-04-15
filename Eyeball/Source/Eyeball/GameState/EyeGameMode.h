@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UNiagaraSystem;
 class AEyeEnemy;
 class AEyeProjectile;
 class UEyeControlsWidget;
@@ -64,8 +65,10 @@ private:
 	AController* Controller;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEyeCamera> MainCamera;
-	
 
+	UPROPERTY(EditDefaultsOnly)
+	UNiagaraSystem* SmokeEffect;
+	
 #pragma region --- Widgets ---
 	/* Widgets */
 		/* Game over */

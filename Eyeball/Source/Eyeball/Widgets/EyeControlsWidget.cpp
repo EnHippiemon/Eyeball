@@ -1,6 +1,7 @@
 #include "EyeControlsWidget.h"
 
 #include "Components/TextBlock.h"
+#include "Eyeball/Entities/EyeEntityBalloon.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/Entities/EyeEntityGrasshopper.h"
 #include "Eyeball/Entities/EyeEntityHuman.h"
@@ -28,7 +29,8 @@ void UEyeControlsWidget::ChangeText(AEyeCharacter* NewEntity)
 		RMBText->SetText(FText::FromString("Eject entity"));
 		return;
 	}
-	if (Cast<AEyeEntityGrasshopper>(NewEntity))
+	if (Cast<AEyeEntityGrasshopper>(NewEntity)
+		|| Cast<AEyeEntityBalloon>(NewEntity))
 	{
 		SpaceText->SetText(FText::FromString("Jump"));
 		LMBText->SetText(FText::FromString(""));

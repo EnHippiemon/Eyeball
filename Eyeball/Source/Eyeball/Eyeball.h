@@ -3,4 +3,5 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"

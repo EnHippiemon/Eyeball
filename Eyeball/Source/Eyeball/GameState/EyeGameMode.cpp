@@ -1,4 +1,6 @@
 #include "EyeGameMode.h"
+
+#include "NiagaraFunctionLibrary.h"
 #include "../Entities/EyeCharacter.h"
 #include "Eyeball/Camera/EyeCamera.h"
 #include "Eyeball/Enemies/EyeEnemy.h"
@@ -245,6 +247,12 @@ void AEyeGameMode::GetNewPlayerReference()
 	
 	PlayerCharacter->OnSpawned();
 	OnEntityChanged.Broadcast(PlayerCharacter);
+
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SmokeEffect,
+	                                               FVector(50, PlayerCharacter->GetActorLocation().Y,
+	                                                       PlayerCharacter->GetActorLocation().Z),
+	                                               FRotator::ZeroRotator, FVector(1, 1, 1), true,
+	                                               true);
 }
 
 void AEyeGameMode::SpawnCamera() const
