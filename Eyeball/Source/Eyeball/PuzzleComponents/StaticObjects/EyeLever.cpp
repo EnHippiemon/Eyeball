@@ -1,5 +1,4 @@
 #include "EyeLever.h"
-
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 
 
@@ -67,7 +66,8 @@ void AEyeLever::CheckShouldDeactivate()
 {
 	for (int i = 0; i < MoveableObject.Num(); ++i)
 	{
-		if (!MoveableObject[i]->GetShouldReturnToStart())
+		if (!MoveableObject[i]->GetShouldReturnToStart()
+			|| MoveableObject[i]->GetShouldLoop())
 			continue;
 		
 		bShouldDeactivate = true;

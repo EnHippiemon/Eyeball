@@ -27,9 +27,9 @@ private:
 
 	FRotator TargetRotation; 
 	UPROPERTY(EditDefaultsOnly)
-	FRotator BaseRotation = FRotator(50, 0, 0);
+	FRotator BaseRotation;
 	UPROPERTY(EditDefaultsOnly)
-	FRotator MaxRotation = FRotator(0, 0, 310);
+	FRotator MaxRotation;
 
 	bool bShouldDeactivate = false;
 	

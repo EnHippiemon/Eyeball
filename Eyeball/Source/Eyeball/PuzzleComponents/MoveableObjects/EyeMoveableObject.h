@@ -26,6 +26,7 @@ public:
 	bool GetIsActivated() const { return bIsActivated; }
 	bool GetHasReachedTarget() const { return bHasReachedTarget; }
 	bool GetShouldReturnToStart() const { return ReturnToStartLocation; }
+	bool GetShouldLoop() const { return bShouldLoop; }
 
 protected:
 	UFUNCTION()
