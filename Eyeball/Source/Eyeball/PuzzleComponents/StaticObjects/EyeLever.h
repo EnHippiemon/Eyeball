@@ -1,33 +1,50 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "EyeInteractableObject.h"
 #include "EyeLever.generated.h"
 
-class AEyeCamera;
-class AEyeMoveableObject;
+enum ELeverHandleState
+{
+	Elhs_Activated,
+	Elhs_Deactivated,
+	Elhs_Moving
+};
 
 UCLASS()
-class EYEBALL_API AEyeLever : public AActor
+class EYEBALL_API AEyeLever : public AEyeInteractableObject
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	AEyeLever();
 
-	virtual void InteractWith();
+	virtual void InteractWith() override;
 
-protected:
-	UPROPERTY(EditAnywhere)
-	float TimeToFocusCameraOnActor = 2.f;
+private:
+	UPROPERTY(EditDefaultsOnly)
+	float RotationSpeed;
+
+	FRotator TargetRotation; 
+	UPROPERTY(EditDefaultsOnly)
+	FRotator BaseRotation = FRotator(50, 0, 0);
+	UPROPERTY(EditDefaultsOnly)
+	FRotator MaxRotation = FRotator(0, 0, 310);
+
+	bool bShouldDeactivate = false;
 	
-	virtual void StartEvent(TObjectPtr<AEyeMoveableObject> ObjectToMove);
+	ELeverHandleState CurrentState;
+	
+	void MoveHandle(float const DeltaTime);
+	void Deactivate();
 
-	UPROPERTY(EditInstanceOnly)
-	TArray<TObjectPtr<AEyeMoveableObject>> MoveableObject;
+	void CheckShouldDeactivate();
+	
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
-	// If no camera hint is wanted, leave empty
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AEyeCamera> CameraClass;
-	TObjectPtr<AEyeCamera> CameraRef;
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* LeverBase;
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* LeverHandle;
 };

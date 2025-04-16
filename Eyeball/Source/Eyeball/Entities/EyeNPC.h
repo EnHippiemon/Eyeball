@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Eyeball/PuzzleComponents/StaticObjects/EyeLever.h"
+#include "Eyeball/PuzzleComponents/StaticObjects/EyeInteractableObject.h"
 #include "GameFramework/Actor.h"
 #include "EyeNPC.generated.h"
 
@@ -10,7 +10,7 @@ class UCapsuleComponent;
 class UBoxComponent;
 
 UCLASS()
-class EYEBALL_API AEyeNPC : public AEyeLever
+class EYEBALL_API AEyeNPC : public AEyeInteractableObject
 {
 	GENERATED_BODY()
 

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EyeLever.h"
+#include "EyeInteractableObject.h"
 #include "EyeCollisionDetector.generated.h"
 
 class UBoxComponent;
 
 UCLASS()
-class EYEBALL_API AEyeCollisionDetector : public AEyeLever
+class EYEBALL_API AEyeCollisionDetector : public AEyeInteractableObject
 {
 	GENERATED_BODY()
 

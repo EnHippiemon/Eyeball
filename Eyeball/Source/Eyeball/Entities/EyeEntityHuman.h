@@ -4,7 +4,7 @@
 #include "EyeCharacter.h"
 #include "EyeEntityHuman.generated.h"
 
-class AEyeLever;
+class AEyeInteractableObject;
 class UCapsuleComponent;
 
 UCLASS()
@@ -21,7 +21,7 @@ private:
 	bool FoundInteractableObject();
 
 	UPROPERTY()
-	AEyeLever* InteractableObject;
+	AEyeInteractableObject* InteractableObject;
 	
 	virtual void HandleActionInput() override;
 	virtual void MakeMovement(const float DeltaTime) override;

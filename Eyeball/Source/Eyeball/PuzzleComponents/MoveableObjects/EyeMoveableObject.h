@@ -25,6 +25,7 @@ public:
 	FVector GetTargetLocation() const { return TargetLocation; }
 	bool GetIsActivated() const { return bIsActivated; }
 	bool GetHasReachedTarget() const { return bHasReachedTarget; }
+	bool GetShouldReturnToStart() const { return ReturnToStartLocation; }
 
 protected:
 	UFUNCTION()

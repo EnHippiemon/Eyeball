@@ -1,7 +1,7 @@
 #include "EyeEntityHuman.h"
 #include "Components/CapsuleComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
-#include "../PuzzleComponents/StaticObjects/EyeLever.h"
+#include "../PuzzleComponents/StaticObjects/EyeInteractableObject.h"
 
 AEyeEntityHuman::AEyeEntityHuman()
 {
@@ -28,7 +28,7 @@ bool AEyeEntityHuman::FoundInteractableObject()
 	if (!Trace)
 		return false;
 
-	const auto Lever = Cast<AEyeLever>(HitResult.GetActor());
+	const auto Lever = Cast<AEyeInteractableObject>(HitResult.GetActor());
 	if (!Lever)
 		return false;
 
