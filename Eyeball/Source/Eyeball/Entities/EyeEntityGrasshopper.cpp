@@ -105,8 +105,10 @@ void AEyeEntityGrasshopper::OnSpawned()
 	{
 		JumpWidgetRef = CreateWidget<UEyeGrasshopperJumpWidget>(GetWorld(), JumpWidget);
 		if (JumpWidgetRef)
+		{
 			JumpWidgetRef->AddToViewport();
-		JumpWidgetRef->RenderJumpBar(0);
+			JumpWidgetRef->RenderJumpBar(0);
+		}
 	}
 }
 
