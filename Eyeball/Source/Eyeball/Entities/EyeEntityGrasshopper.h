@@ -30,6 +30,8 @@ private:
 	virtual void MakeReleaseJump() override;
 	virtual void TakeFallDamage() override {}
 
+	virtual void TakeDamage() override;
+	
 	virtual void HandleEjectInput() override;
 
 public:

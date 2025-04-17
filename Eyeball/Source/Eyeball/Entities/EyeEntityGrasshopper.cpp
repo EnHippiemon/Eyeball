@@ -62,16 +62,23 @@ void AEyeEntityGrasshopper::MakeReleaseJump()
 {
 	Super::MakeReleaseJump();
 
+	if (JumpWidgetRef)
+		JumpWidgetRef->RenderJumpBar(0);
+	
 	if (!GetIsOnFloor() || !GetCanJump())
 		return;
 
 	const auto Impulse = JumpHeight * EntityData->JumpForce;
 	Box->AddImpulse(EntityData->JumpDirection * Impulse);
-
 	AddJumpCount(1);
 	JumpHeight = 0.f;
-	if (JumpWidgetRef)
-		JumpWidgetRef->RenderJumpBar(JumpHeight);
+}
+
+void AEyeEntityGrasshopper::TakeDamage()
+{
+	Super::TakeDamage();
+
+	JumpHeight = 0.f;
 }
 
 void AEyeEntityGrasshopper::HandleEjectInput()
