@@ -15,6 +15,9 @@ AEyeLever::AEyeLever()
 
 void AEyeLever::InteractWith()
 {
+	if (CurrentState == Elhs_Disabled)
+		return;
+	
 	if (CurrentState == Elhs_Activated)
 		Super::InteractWith();
 	else if (CurrentState == Elhs_Deactivated)
@@ -26,7 +29,7 @@ void AEyeLever::InteractWith()
 
 void AEyeLever::MoveHandle(float const DeltaTime)
 {
-	if (CurrentState == Elhs_Activated)
+	if (CurrentState == Elhs_Activated || CurrentState == Elhs_Disabled)
 		return;
 
 	const float RotationalDifference = TargetRotation.Pitch - LeverHandle->GetRelativeRotation().Pitch;
@@ -43,12 +46,15 @@ void AEyeLever::MoveHandle(float const DeltaTime)
 	{
 		CurrentState = Elhs_Activated;
 		InteractWith();
+		if (bShouldDeactivate)
+			return;
+		CurrentState = Elhs_Disabled;
 	}
 }
 
 void AEyeLever::Deactivate()
 {
-	if (!bShouldDeactivate || CurrentState != Elhs_Activated)
+	if (!bShouldDeactivate || CurrentState != Elhs_Activated || CurrentState == Elhs_Disabled)
 		return;
 
 	for (int i = 0; i < MoveableObject.Num(); ++i)

@@ -8,7 +8,8 @@ enum ELeverHandleState
 {
 	Elhs_Activated,
 	Elhs_Deactivated,
-	Elhs_Moving
+	Elhs_Moving,
+	Elhs_Disabled
 };
 
 UCLASS()
