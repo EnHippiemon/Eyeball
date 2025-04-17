@@ -12,6 +12,11 @@
 #include "Eyeball/Widgets/EyeControlsWidget.h"
 #include "Kismet/GameplayStatics.h"
 
+void AEyeGameMode::SetGameWon(const bool HasWon)
+{
+	CurrentGameState = HasWon ? Egs_GameWon : Egs_StartingGame;
+}
+
 AEyeGameMode::AEyeGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;

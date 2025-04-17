@@ -25,3 +25,8 @@ void AEyeCheckpoint::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	
 	FoundActor->OnCheckpointReached.Broadcast();
 }
+
+void AEyeCheckpoint::OnOverlapSuccess()
+{
+	
+}

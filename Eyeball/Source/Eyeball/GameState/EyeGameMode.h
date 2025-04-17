@@ -22,7 +22,8 @@ enum EGameState
 {
 	Egs_Playing,
 	Egs_GameOver,
-	Egs_StartingGame
+	Egs_StartingGame,
+	Egs_GameWon
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedState, EGameState, NewState);
@@ -42,6 +43,9 @@ public:
 		UPROPERTY()
 		FOnEntityChanged OnEntityChanged;
 
+	// Setters
+		void SetGameWon(bool HasWon);
+	
 	// Getters
 		int GetDeathCount() const { return DeathCount; }
 	
