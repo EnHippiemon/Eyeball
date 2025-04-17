@@ -13,13 +13,23 @@ AEyeOneWayPlatform::AEyeOneWayPlatform()
 void AEyeOneWayPlatform::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<AEyeCharacter>())
-	{
-		const auto ActorLocationZ = OtherActor->GetActorLocation().Z;
-		const auto ComponentLocationZ = OverlappedComponent->GetComponentLocation().Z;
-		if (ActorLocationZ < ComponentLocationZ)
-			BlockingCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		else
-			BlockingCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	}
+	const auto FoundActor = Cast<AEyeCharacter>(OtherActor);
+	if (!FoundActor)
+		return;
+	if (!FoundActor->GetIsPossessed())
+		return;
+
+	BlockingCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AEyeOneWayPlatform::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	const auto FoundActor = Cast<AEyeCharacter>(OtherActor);
+	if (!FoundActor)
+		return;
+	if (!FoundActor->GetIsPossessed())
+		return;
+
+	BlockingCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }

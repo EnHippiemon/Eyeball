@@ -73,11 +73,6 @@ void AEyeMoveableObject::HandleEndOverlap(UPrimitiveComponent* OverlappedCompone
 		return;
 	if (OtherActor->IsA<AEyeCharacter>())
 		bIsHindered = false;
-	
-	// if (OtherActor->IsA<AEyeCharacter>())
-	// {
-	// 	bIsHindered = false;
-	// }
 }
 
 void AEyeMoveableObject::BeginPlay()
