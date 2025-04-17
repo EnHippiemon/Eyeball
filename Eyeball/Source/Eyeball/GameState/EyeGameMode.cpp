@@ -7,6 +7,7 @@
 #include "Eyeball/Entities/EyeEntityEyeball.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 #include "Eyeball/Widgets/EyeRestartWidget.h"
+#include "Eyeball/Widgets/EyeDeathCountWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
 #include "Eyeball/Widgets/EyeControlsWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -196,7 +197,11 @@ void AEyeGameMode::EjectCurrentEntity()
 
 void AEyeGameMode::HandlePlayerDeath()
 {
+	if (CurrentGameState != Egs_Playing)
+		return;
+	
 	CurrentGameState = Egs_GameOver;
+	++DeathCount;
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
@@ -276,6 +281,7 @@ void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
+
 void AEyeGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -294,10 +300,15 @@ void AEyeGameMode::BeginPlay()
 	DangerWidgetRef = CreateWidget<UEyeDangerWidget>(GetWorld(), DangerWidget);
 	if (DangerWidgetRef)
 		DangerWidgetRef->AddToViewport();
-
+	
 	ControlsWidgetRef = CreateWidget<UEyeControlsWidget>(GetWorld(), ControlsWidget);
 	if (ControlsWidgetRef)
 		ControlsWidgetRef->AddToViewport();
+
+	// Create last, so it's above other widgets in the hierarchy and always visible. 
+	DeathCountWidgetRef = CreateWidget<UEyeDeathCountWidget>(GetWorld(), DeathCountWidget);
+	if (DeathCountWidgetRef)
+		DeathCountWidgetRef->AddToViewport();
 	
 	GetNewPlayerReference();
 	FindAllReferences();

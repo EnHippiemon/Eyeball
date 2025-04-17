@@ -55,7 +55,6 @@ void AEyeEntityEyeball::FindOverlap()
 		FVector TraceStart = TraceOffset + PlayerRadius * GetActorUpVector().RotateAngleAxis(
 			360.f / TraceAmount * i + 1, FVector(1, 0, 0));
 		FVector TraceEnd = TraceStart + FVector(500, 0, 0);;
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red);
 
 		// Look for safe zone 
 		if (!SafetyTraces.IsValidIndex(i))

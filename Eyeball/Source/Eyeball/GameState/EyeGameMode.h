@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyeDeathCountWidget;
 class UNiagaraSystem;
 class AEyeEnemy;
 class AEyeProjectile;
@@ -33,12 +34,16 @@ class EYEBALL_API AEyeGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
-	FOnChangedState OnChangedState;
-	UPROPERTY()
-	FOnDangerChanged OnDangerChanged;
-	UPROPERTY()
-	FOnEntityChanged OnEntityChanged;
+	// Delegates 
+		UPROPERTY()
+		FOnChangedState OnChangedState;
+		UPROPERTY()
+		FOnDangerChanged OnDangerChanged;
+		UPROPERTY()
+		FOnEntityChanged OnEntityChanged;
+
+	// Getters
+		int GetDeathCount() const { return DeathCount; }
 	
 private:
 	EGameState CurrentGameState;
@@ -56,6 +61,8 @@ private:
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
 	float TargetTimeDilation = 1.f;
+
+	int DeathCount = 0;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> EntityEyeball;
@@ -75,10 +82,13 @@ private:
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<UEyeRestartWidget> RestartWidget;
 			TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
+
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<UEyeDeathCountWidget> DeathCountWidget;
+			TObjectPtr<UEyeDeathCountWidget> DeathCountWidgetRef;
 	
 		/* Danger */
 			UPROPERTY(EditDefaultsOnly)
-			// TSubclassOf<UDangerWidget> DangerWidget;
 			TSubclassOf<UEyeDangerWidget> DangerWidget;
 			TObjectPtr<UEyeDangerWidget> DangerWidgetRef;
 

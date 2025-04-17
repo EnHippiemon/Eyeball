@@ -157,7 +157,7 @@ void AEyeCharacter::ResetJumpCount()
 	                                                                EntityData->OffsetFloorCheck,
 	                                                                EntityData->FloorTraceAmount, FloorTraceDistance,
 	                                                                EntityData->LengthFloorCheck, EntityData->Floor,
-	                                                                true);
+	                                                                false);
 	
 	if (FoundFloor && GetVelocity().Z < EntityData->ThresholdFallDamageVelocity)
 		TakeFallDamage();
@@ -168,7 +168,6 @@ void AEyeCharacter::ResetJumpCount()
 
 void AEyeCharacter::TakeFallDamage()
 {
-	// UE_LOG(LogTemp, Display, TEXT("TakeFallDamage | Velocity: %s"), *GetVelocity().ToString());
 	TakeDamage();
 }
 
@@ -181,7 +180,7 @@ void AEyeCharacter::DetectWall()
 	                                                                    WallTraceDistance,
 	                                                                    EntityData->SlidingTraceLength,
 	                                                                    EntityData->Floor,
-	                                                                    true);
+	                                                                    false);
 	const bool LeftFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->SlidingLineDirection,
 	                                                                   -EntityData->SlidingTraceDirection,
 	                                                                   FVector(EntityData->SlidingTraceOffset.X,
@@ -191,7 +190,7 @@ void AEyeCharacter::DetectWall()
 	                                                                   WallTraceDistance,
 	                                                                   EntityData->SlidingTraceLength,
 	                                                                   EntityData->Floor,
-	                                                                   true);
+	                                                                   false);
 
 	bFoundLeftWall = LeftFoundWall;
 	bFoundRightWall = RightFoundWall;
