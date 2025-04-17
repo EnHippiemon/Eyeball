@@ -2,7 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "EyeInteractableObject.h"
+#include "Eyeball/GameState/EyeGameMode.h"
 #include "EyeLever.generated.h"
+
+class AEyeGameMode;
 
 enum ELeverHandleState
 {
@@ -40,6 +43,9 @@ private:
 	void Deactivate();
 
 	void CheckShouldDeactivate();
+
+	UFUNCTION()
+	void ResetState(EGameState NewState);
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -48,4 +54,6 @@ private:
 	UStaticMeshComponent* LeverBase;
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* LeverHandle;
+	UPROPERTY()
+	AEyeGameMode* GameMode;
 };

@@ -1,5 +1,8 @@
 #include "EyeLever.h"
+
+#include "Eyeball/GameState/EyeGameMode.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AEyeLever::AEyeLever()
@@ -81,10 +84,22 @@ void AEyeLever::CheckShouldDeactivate()
 	}
 }
 
+void AEyeLever::ResetState(EGameState NewState)
+{
+	if (NewState != Egs_StartingGame)
+		return;
+	CurrentState = Elhs_Deactivated;
+	LeverHandle->SetRelativeRotation(BaseRotation);
+}
+
 void AEyeLever::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode)
+		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeLever::ResetState);
+	
 	TargetRotation = BaseRotation;
 	LeverHandle->SetRelativeRotation(BaseRotation);
 	CurrentState = Elhs_Deactivated;
@@ -93,6 +108,9 @@ void AEyeLever::BeginPlay()
 
 void AEyeLever::Tick(float DeltaTime)
 {
+	if (CurrentState == Elhs_Disabled)
+		return;
+	
 	Super::Tick(DeltaTime);
 
 	MoveHandle(DeltaTime);
