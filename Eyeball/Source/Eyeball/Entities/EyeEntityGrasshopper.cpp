@@ -79,6 +79,8 @@ void AEyeEntityGrasshopper::TakeDamage()
 	Super::TakeDamage();
 
 	JumpHeight = 0.f;
+	if (JumpWidgetRef)
+		JumpWidgetRef->RenderJumpBar(0);
 }
 
 void AEyeEntityGrasshopper::HandleEjectInput()
