@@ -238,7 +238,7 @@ void AEyeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsUnPossessed)
+	if (bIsUnPossessed || GameMode->GetGameState() == Egs_GameWon)
 		return;
 	
 	JumpHeldTimer(DeltaTime);

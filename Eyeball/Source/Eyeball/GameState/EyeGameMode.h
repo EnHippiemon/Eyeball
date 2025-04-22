@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyeWonWidget;
 class UEyeDeathCountWidget;
 class UNiagaraSystem;
 class AEyeEnemy;
@@ -48,6 +49,8 @@ public:
 	
 	// Getters
 		int GetDeathCount() const { return DeathCount; }
+		EGameState GetGameState() const { return CurrentGameState;}
+		// FName GetMainLevelPath() const { return MainLevelPath; }
 	
 private:
 	EGameState CurrentGameState;
@@ -79,7 +82,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	UNiagaraSystem* SmokeEffect;
-	
+
 #pragma region --- Widgets ---
 	/* Widgets */
 		/* Game over */
@@ -90,6 +93,10 @@ private:
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<UEyeDeathCountWidget> DeathCountWidget;
 			TObjectPtr<UEyeDeathCountWidget> DeathCountWidgetRef;
+
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<UEyeWonWidget> WonWidget;
+			TObjectPtr<UEyeWonWidget> WonWidgetRef;
 	
 		/* Danger */
 			UPROPERTY(EditDefaultsOnly)

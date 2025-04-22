@@ -22,11 +22,11 @@ void AEyeCheckpoint::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 
 	if (!FoundActor->GetIsPossessed())
 		return;
-	
-	FoundActor->OnCheckpointReached.Broadcast();
+
+	OnOverlapSuccess(FoundActor);
 }
 
-void AEyeCheckpoint::OnOverlapSuccess()
+void AEyeCheckpoint::OnOverlapSuccess(AEyeCharacter* EyeCharacter)
 {
-	
+	EyeCharacter->OnCheckpointReached.Broadcast();
 }

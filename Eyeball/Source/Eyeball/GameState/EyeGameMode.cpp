@@ -10,11 +10,19 @@
 #include "Eyeball/Widgets/EyeDeathCountWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
 #include "Eyeball/Widgets/EyeControlsWidget.h"
+#include "Eyeball/Widgets/EyeWonWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 void AEyeGameMode::SetGameWon(const bool HasWon)
 {
 	CurrentGameState = HasWon ? Egs_GameWon : Egs_StartingGame;
+
+	if (!HasWon)
+		return;
+	
+	WonWidgetRef = CreateWidget<UEyeWonWidget>(GetWorld(), WonWidget);
+	if (WonWidgetRef)
+		WonWidgetRef->AddToViewport();
 }
 
 AEyeGameMode::AEyeGameMode()
@@ -286,7 +294,6 @@ void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
-
 void AEyeGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -294,7 +301,7 @@ void AEyeGameMode::BeginPlay()
 	Controller = GetWorld()->GetFirstPlayerController();
 	if (!IsValid(Controller))
 		UE_LOG(LogTemp, Error, TEXT("EyeGameMode.cpp: No valid player controller."));
-	
+
 	RestartWidgetRef = CreateWidget<UEyeRestartWidget>(GetWorld(), RestartWidget);
 	if (RestartWidgetRef)
 	{
@@ -309,6 +316,8 @@ void AEyeGameMode::BeginPlay()
 	ControlsWidgetRef = CreateWidget<UEyeControlsWidget>(GetWorld(), ControlsWidget);
 	if (ControlsWidgetRef)
 		ControlsWidgetRef->AddToViewport();
+
+	
 
 	// Create last, so it's above other widgets in the hierarchy and always visible. 
 	DeathCountWidgetRef = CreateWidget<UEyeDeathCountWidget>(GetWorld(), DeathCountWidget);
