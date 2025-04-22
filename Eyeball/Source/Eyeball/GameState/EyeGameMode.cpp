@@ -2,6 +2,7 @@
 
 #include "NiagaraFunctionLibrary.h"
 #include "../Entities/EyeCharacter.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Eyeball/Camera/EyeCamera.h"
 #include "Eyeball/Enemies/EyeEnemy.h"
 #include "Eyeball/Entities/EyeEntityEyeball.h"
@@ -305,13 +306,13 @@ void AEyeGameMode::PauseGame()
 	PauseWidgetRef->SetVisible(ShouldPause);
 	UGameplayStatics::SetGamePaused(GetWorld(), ShouldPause);
 	UGameplayStatics::SetViewportMouseCaptureMode(GetWorld(), ShouldPause ? EMouseCaptureMode::CapturePermanently : EMouseCaptureMode::NoCapture);
-
 	APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (PlayerController)
 	{
 		PlayerController->bShowMouseCursor = ShouldPause;
 		PlayerController->bEnableClickEvents = ShouldPause;
 		PlayerController->bEnableMouseOverEvents = ShouldPause;
+		ShouldPause ? UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController) : UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
 	}
 }
 
@@ -325,7 +326,11 @@ void AEyeGameMode::HandleMenuButtonPressed(FString ButtonName)
 		PauseGame();
 	}
 	else if (ButtonName == "RestartLevel")
+	{
+		APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
 		UGameplayStatics::OpenLevel(this, MainLevelPath, true);
+	}
 	else if (ButtonName == "Quit")
 		FGenericPlatformMisc::RequestExit(false);
 }
