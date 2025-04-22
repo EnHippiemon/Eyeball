@@ -10,6 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnDangerFound, bool, IsInDanger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReached);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPaused);
 
 class UEyeCharacterDataAsset;
 class UBoxComponent;
@@ -31,6 +32,8 @@ public:
 	FOnDeath OnDeath;
 	UPROPERTY()
 	FOnCheckpointReached OnCheckpointReached;
+	UPROPERTY()
+	FOnPaused OnPaused;
 
 	virtual void OnSpawned();
 	virtual void TakeDamage();
@@ -129,5 +132,7 @@ private:
 
 	void CalculateTraceDistances();
 
+	void HandlePauseInput();
+	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

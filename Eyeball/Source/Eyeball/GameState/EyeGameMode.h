@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyePauseWidget;
 class UEyeWonWidget;
 class UEyeDeathCountWidget;
 class UNiagaraSystem;
@@ -24,7 +25,7 @@ enum EGameState
 	Egs_Playing,
 	Egs_GameOver,
 	Egs_StartingGame,
-	Egs_GameWon
+	Egs_GameWon,
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedState, EGameState, NewState);
@@ -53,9 +54,10 @@ public:
 		// FName GetMainLevelPath() const { return MainLevelPath; }
 	
 private:
-	EGameState CurrentGameState;
-	
 	AEyeGameMode();
+	
+	EGameState CurrentGameState;
+	EGameState SavedState;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float TimeDilationDanger = 0.2f;
@@ -63,7 +65,8 @@ private:
 	float MaxDangerTime = 2.f;
 	UPROPERTY(EditDefaultsOnly)
 	float TimeDilationTransitionSpeed = 25.f;
-
+	float SavedTimeDilation;
+	
 	bool bIsInDanger = true;
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
@@ -83,6 +86,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UNiagaraSystem* SmokeEffect;
 
+	UPROPERTY(EditDefaultsOnly)
+	FName MainLevelPath;
+	
 #pragma region --- Widgets ---
 	/* Widgets */
 		/* Game over */
@@ -107,6 +113,12 @@ private:
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<UEyeControlsWidget> ControlsWidget;
 			TObjectPtr<UEyeControlsWidget> ControlsWidgetRef;
+
+		/* Pause */
+			UPROPERTY(EditDefaultsOnly)
+			TSubclassOf<UEyePauseWidget> PauseWidget;
+			TObjectPtr<UEyePauseWidget> PauseWidgetRef;
+	
 #pragma endregion
 
 #pragma region --- Checkpoint ---
@@ -183,6 +195,9 @@ private:
 
 	UFUNCTION()
 	void SetNewState(bool bScreenIsBlack);
+
+	UFUNCTION()
+	void PauseGame();
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

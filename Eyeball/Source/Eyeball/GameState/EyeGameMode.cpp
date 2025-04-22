@@ -11,6 +11,7 @@
 #include "Eyeball/Widgets/EyeDangerWidget.h"
 #include "Eyeball/Widgets/EyeControlsWidget.h"
 #include "Eyeball/Widgets/EyeWonWidget.h"
+#include "Eyeball/Widgets/EyePauseWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 void AEyeGameMode::SetGameWon(const bool HasWon)
@@ -261,6 +262,7 @@ void AEyeGameMode::GetNewPlayerReference()
 		PlayerCharacter->OnDangerFound.AddUniqueDynamic(this, &AEyeGameMode::HandleDangerFound);
 		PlayerCharacter->OnDeath.AddUniqueDynamic(this, &AEyeGameMode::HandlePlayerDeath);
 		PlayerCharacter->OnCheckpointReached.AddUniqueDynamic(this, &AEyeGameMode::HandleCheckpointReached);
+		PlayerCharacter->OnPaused.AddUniqueDynamic(this, &AEyeGameMode::PauseGame);
 	}
 	
 	PlayerCharacter->OnSpawned();
@@ -294,6 +296,27 @@ void AEyeGameMode::SetNewState(const bool bScreenIsBlack)
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
+void AEyeGameMode::PauseGame()
+{
+	if (!PauseWidgetRef)
+		return;
+
+	const bool ShouldPause = !UGameplayStatics::IsGamePaused(GetWorld());
+	PauseWidgetRef->SetVisible(ShouldPause);
+	UGameplayStatics::SetGamePaused(GetWorld(), ShouldPause);
+
+	// if (UGameplayStatics::IsGamePaused(GetWorld()))
+	// {
+	// 	PauseWidgetRef->RemoveFromParent();
+	// 	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	// }
+	// else
+	// {
+	// 	PauseWidgetRef->AddToViewport();
+	// 	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	// }
+}
+
 void AEyeGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -317,7 +340,9 @@ void AEyeGameMode::BeginPlay()
 	if (ControlsWidgetRef)
 		ControlsWidgetRef->AddToViewport();
 
-	
+	PauseWidgetRef = CreateWidget<UEyePauseWidget>(GetWorld(), PauseWidget);
+	if (PauseWidgetRef)
+		PauseWidgetRef->AddToViewport();
 
 	// Create last, so it's above other widgets in the hierarchy and always visible. 
 	DeathCountWidgetRef = CreateWidget<UEyeDeathCountWidget>(GetWorld(), DeathCountWidget);

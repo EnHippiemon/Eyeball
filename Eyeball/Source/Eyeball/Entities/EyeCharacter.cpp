@@ -77,6 +77,11 @@ void AEyeCharacter::CalculateTraceDistances()
 	WallTraceDistance = EntityData->SlidingTraceHeight / EntityData->SlidingTraceAmount;
 }
 
+void AEyeCharacter::HandlePauseInput()
+{
+	OnPaused.Broadcast();
+}
+
 void AEyeCharacter::UnPossessed()
 {
 	Super::UnPossessed();
@@ -220,6 +225,9 @@ void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	
 	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &AEyeCharacter::HandleActionInput);
 	PlayerInputComponent->BindAction("Eject", IE_Pressed, this, &AEyeCharacter::HandleEjectInput);
+
+	FInputActionBinding& TogglePause = PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AEyeCharacter::HandlePauseInput);
+	TogglePause.bExecuteWhenPaused = true;
 }
 
 void AEyeCharacter::BeginPlay()
