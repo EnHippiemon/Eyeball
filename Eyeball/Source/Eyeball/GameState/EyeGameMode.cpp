@@ -304,17 +304,30 @@ void AEyeGameMode::PauseGame()
 	const bool ShouldPause = !UGameplayStatics::IsGamePaused(GetWorld());
 	PauseWidgetRef->SetVisible(ShouldPause);
 	UGameplayStatics::SetGamePaused(GetWorld(), ShouldPause);
+	UGameplayStatics::SetViewportMouseCaptureMode(GetWorld(), ShouldPause ? EMouseCaptureMode::CapturePermanently : EMouseCaptureMode::NoCapture);
 
-	// if (UGameplayStatics::IsGamePaused(GetWorld()))
-	// {
-	// 	PauseWidgetRef->RemoveFromParent();
-	// 	UGameplayStatics::SetGamePaused(GetWorld(), false);
-	// }
-	// else
-	// {
-	// 	PauseWidgetRef->AddToViewport();
-	// 	UGameplayStatics::SetGamePaused(GetWorld(), true);
-	// }
+	APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (PlayerController)
+	{
+		PlayerController->bShowMouseCursor = ShouldPause;
+		PlayerController->bEnableClickEvents = ShouldPause;
+		PlayerController->bEnableMouseOverEvents = ShouldPause;
+	}
+}
+
+void AEyeGameMode::HandleMenuButtonPressed(FString ButtonName)
+{
+	if (ButtonName == "Continue")
+		PauseGame();
+	else if (ButtonName == "RestartCheckpoint")
+	{
+		HandlePlayerDeath();
+		PauseGame();
+	}
+	else if (ButtonName == "RestartLevel")
+		UGameplayStatics::OpenLevel(this, MainLevelPath, true);
+	else if (ButtonName == "Quit")
+		FGenericPlatformMisc::RequestExit(false);
 }
 
 void AEyeGameMode::BeginPlay()
@@ -342,7 +355,10 @@ void AEyeGameMode::BeginPlay()
 
 	PauseWidgetRef = CreateWidget<UEyePauseWidget>(GetWorld(), PauseWidget);
 	if (PauseWidgetRef)
+	{
 		PauseWidgetRef->AddToViewport();
+		PauseWidgetRef->OnButtonClicked.AddUniqueDynamic(this, &AEyeGameMode::HandleMenuButtonPressed);
+	}
 
 	// Create last, so it's above other widgets in the hierarchy and always visible. 
 	DeathCountWidgetRef = CreateWidget<UEyeDeathCountWidget>(GetWorld(), DeathCountWidget);

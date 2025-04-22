@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/Button.h"
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
@@ -198,7 +199,9 @@ private:
 
 	UFUNCTION()
 	void PauseGame();
-	
+
+	UFUNCTION()
+	void HandleMenuButtonPressed(FString ButtonName);
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };
