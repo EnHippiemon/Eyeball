@@ -9,7 +9,7 @@ AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(
 		TEXT("/Game/Characters/Player/DataAssets/Grasshopper_DataAsset"));
 	if (EntityDataAsset.Object)
-		EntityData = EntityDataAsset.Object;
+		Data = EntityDataAsset.Object;
 
 	Box = CreateDefaultSubobject<UBoxComponent>("Box");
 	RootComponent = Box;
@@ -37,11 +37,11 @@ void AEyeEntityGrasshopper::DecideMovementSpeed()
 {
 	float MovementSpeed;
 	if (!GetIsOnFloor())
-		MovementSpeed = EntityData->HighMovementSpeed;
+		MovementSpeed = Data->HighMovementSpeed;
 	else if (GetJumpDepressed())
 		MovementSpeed = 0.f;
 	else
-		MovementSpeed = EntityData->NormalMovementSpeed;
+		MovementSpeed = Data->NormalMovementSpeed;
 
 	CurrentMovementSpeed = MovementSpeed;
 }
@@ -70,8 +70,8 @@ void AEyeEntityGrasshopper::MakeReleaseJump()
 	if (!GetIsOnFloor() || !GetCanJump())
 		return;
 
-	const auto Impulse = JumpHeight * EntityData->JumpForce;
-	Box->AddImpulse(EntityData->JumpDirection * Impulse);
+	const auto Impulse = JumpHeight * Data->JumpForce;
+	Box->AddImpulse(Data->JumpDirection * Impulse);
 	AddJumpCount(1);
 	JumpHeight = 0.f;
 }

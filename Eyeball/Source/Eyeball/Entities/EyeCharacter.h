@@ -60,11 +60,11 @@ protected:
 		FVector GetMovementInput() const { return MovementInput; }
 		bool GetJumpDepressed() const { return bJumpDepressed; }
 		float GetJumpHeldTime() const { return JumpHeldTime; }
-		bool GetCanJump() const { return JumpCount < EntityData->MaxJumpCount;}
+		bool GetCanJump() const { return JumpCount < Data->MaxJumpCount;}
 		int GetJumpCount() const { return JumpCount; }
 		bool GetIsOnFloor() const { return bIsOnFloor; }
-		ECollisionChannel GetSafeZone() const { return EntityData->SafeZone; }
-		ECollisionChannel GetEntityBody() const { return EntityData->EntityBody; }
+		ECollisionChannel GetSafeZone() const { return Data->SafeZone; }
+		ECollisionChannel GetEntityBody() const { return Data->EntityBody; }
 
 	float CurrentMovementSpeed;
 	bool bIsUnPossessed = true;
@@ -87,6 +87,7 @@ protected:
 	
 	virtual bool CheckIsJumpHeld(float Threshold);
 
+	virtual void SearchForSwitchableEntity();
 	virtual void PossessNewEntity(AEyeCharacter* EntityToPossess);
 
 	UFUNCTION()
@@ -101,7 +102,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
-	UEyeCharacterDataAsset* EntityData;
+	UEyeCharacterDataAsset* Data;
 	
 	UPROPERTY()
 	AEyeGameMode* GameMode;

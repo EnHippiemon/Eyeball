@@ -6,7 +6,7 @@ AEyeEntityBalloon::AEyeEntityBalloon()
 {
 	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(TEXT("/Game/Characters/Player/DataAssets/Balloon_DataAsset"));
 	if (EntityDataAsset.Object)
-		EntityData = EntityDataAsset.Object;
+		Data = EntityDataAsset.Object;
 	
 	Sphere = CreateDefaultSubobject<USphereComponent>("RootSphere");
 	RootComponent = Sphere;
@@ -31,7 +31,7 @@ void AEyeEntityBalloon::MakeMovement(const float DeltaTime)
 	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), 0);
 
 	// Movement speed and set location
-	auto NewLocation = GetActorLocation() + OutputMovement * EntityData->NormalMovementSpeed * DeltaTime;
+	auto NewLocation = GetActorLocation() + OutputMovement * Data->NormalMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 
@@ -43,7 +43,7 @@ void AEyeEntityBalloon::MakeJump()
 		return;
 
 	AddJumpCount(1);
-	Sphere->AddImpulse(EntityData->JumpDirection * EntityData->JumpForce);
+	Sphere->AddImpulse(Data->JumpDirection * Data->JumpForce);
 }
 
 void AEyeEntityBalloon::OnSpawned()

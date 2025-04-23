@@ -8,7 +8,7 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(
 		TEXT("/Game/Characters/Player/DataAssets/Eyeball_DataAsset"));
 	if (EntityDataAsset.Object)
-		EntityData = EntityDataAsset.Object;
+		Data = EntityDataAsset.Object;
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	RootComponent = SphereComponent;
@@ -23,7 +23,7 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 
 FVector AEyeEntityEyeball::Dash(const float DeltaTime)
 {
-	const auto NewLocation = GetActorLocation() + DashDirection * EntityData->JumpForce * DeltaTime;
+	const auto NewLocation = GetActorLocation() + DashDirection * Data->JumpForce * DeltaTime;
 	return NewLocation;
 }
 
@@ -130,7 +130,7 @@ void AEyeEntityEyeball::ResetJumpCount()
 		return;
 
 	TimeSinceDashed += GetWorld()->DeltaTimeSeconds;
-	if (TimeSinceDashed >= EntityData->DashCooldown)
+	if (TimeSinceDashed >= Data->DashCooldown)
 	{
 		AddJumpCount(-1);
 		TimeSinceDashed = 0.f;
@@ -139,7 +139,7 @@ void AEyeEntityEyeball::ResetJumpCount()
 	if (!bIsDashing)
 		return;
 
-	bIsDashing = TimeSinceDashed < EntityData->DashDuration;
+	bIsDashing = TimeSinceDashed < Data->DashDuration;
 }
 
 void AEyeEntityEyeball::MakeMovement(const float DeltaTime)
@@ -154,7 +154,7 @@ void AEyeEntityEyeball::OnSpawned()
 {
 	Super::OnSpawned();
 
-	CurrentMovementSpeed = EntityData->NormalMovementSpeed;
+	CurrentMovementSpeed = Data->NormalMovementSpeed;
 	PlayerRadius = SphereComponent->GetScaledSphereRadius();
 }
 
