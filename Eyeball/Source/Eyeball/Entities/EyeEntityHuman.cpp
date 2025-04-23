@@ -7,7 +7,7 @@ AEyeEntityHuman::AEyeEntityHuman()
 {
 	static ConstructorHelpers::FObjectFinder<UEyeCharacterDataAsset> EntityDataAsset(TEXT("/Game/Characters/Player/DataAssets/Human_DataAsset"));
 	if (EntityDataAsset.Object)
-		EntityData = EntityDataAsset.Object;
+		Data = EntityDataAsset.Object;
 
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>("Capsule");
 	RootComponent = Capsule;
@@ -21,23 +21,23 @@ AEyeEntityHuman::AEyeEntityHuman()
 
 void AEyeEntityHuman::FindInteractableObject()
 {
-	FHitResult HitResult;
-	FCollisionQueryParams Params;
-
-	const auto TraceStart = GetActorLocation() + FVector(0, 20, 0);
-	const auto TraceEnd = TraceStart - FVector(0, 40, 0);
-
-	const auto Trace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, InteractableCollision, Params);
-	if (!Trace)
-	{
-		InteractableObject = nullptr;
-		OnInteractableFound.Broadcast(InteractableObject);
-		return;
-	}
-
-	const auto Lever = Cast<AEyeInteractableObject>(HitResult.GetActor());
-	InteractableObject = Lever;
-	OnInteractableFound.Broadcast(Lever);
+	// FHitResult HitResult;
+	// FCollisionQueryParams Params;
+	//
+	// const auto TraceStart = GetActorLocation() + FVector(0, 20, 0);
+	// const auto TraceEnd = TraceStart - FVector(0, 40, 0);
+	//
+	// const auto Trace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, InteractableCollision, Params);
+	// if (!Trace)
+	// {
+	// 	InteractableObject = nullptr;
+	// 	OnInteractableFound.Broadcast(InteractableObject);
+	// 	return;
+	// }
+	//
+	// const auto Lever = Cast<AEyeInteractableObject>(HitResult.GetActor());
+	// InteractableObject = Lever;
+	// OnInteractableFound.Broadcast(Lever);
 }
 
 void AEyeEntityHuman::HandleActionInput()
@@ -62,7 +62,7 @@ void AEyeEntityHuman::MakeMovement(const float DeltaTime)
 	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), 0);
 
 	// Movement speed and set location
-	auto NewLocation = GetActorLocation() + OutputMovement * EntityData->NormalMovementSpeed * DeltaTime;
+	auto NewLocation = GetActorLocation() + OutputMovement * Data->NormalMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 
@@ -74,7 +74,7 @@ void AEyeEntityHuman::MakeJump()
 		return;
 
 	AddJumpCount(1);
-	Capsule->AddImpulse(EntityData->JumpDirection * EntityData->JumpForce);
+	Capsule->AddImpulse(Data->JumpDirection * Data->JumpForce);
 }
 
 void AEyeEntityHuman::OnSpawned()

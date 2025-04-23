@@ -54,7 +54,8 @@ private:
 	virtual void MakeMovement(const float DeltaTime) override;
 
 	virtual void HandleCanBePossessed(AActor* Actor) override {}
-	
+	virtual void SearchForSwitchableEntity() override {}
+
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 

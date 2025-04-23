@@ -74,6 +74,12 @@ public:
 		UPROPERTY(EditDefaultsOnly, Category="WallTraces")
 		FVector SlidingTraceDirection = FVector(0, 1, 0);
 
+	/* Entity tracing */
+		UPROPERTY(EditDefaultsOnly, Category="EntityTrace")
+		FVector SwitchEntityTraceOffset = FVector(150, 0, 0);
+		UPROPERTY(EditDefaultsOnly, Category="EntityTrace")
+		float SwitchEntityTraceLength = 20.f;
+
 	/* Positioning */
 		UPROPERTY(EditDefaultsOnly, Category="Positioning")
 		FVector OffsetActorPlacement = FVector(0, 0, 0);

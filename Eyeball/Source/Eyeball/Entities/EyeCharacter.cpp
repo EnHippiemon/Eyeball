@@ -31,7 +31,7 @@ void AEyeCharacter::HandleSidewaysInput(const float Value)
 void AEyeCharacter::SmoothenMovementDirection(const float DeltaTime)
 {
 	const FVector VectorTranslation = FVector(0, GetMovementInput().X, GetMovementInput().Y);
-	MovementDirection = FMath::Lerp(MovementDirection, VectorTranslation, DeltaTime * EntityData->MovementAcceleration);
+	MovementDirection = FMath::Lerp(MovementDirection, VectorTranslation, DeltaTime * Data->MovementAcceleration);
 }
 
 void AEyeCharacter::HandleJumpInput()
@@ -64,17 +64,17 @@ void AEyeCharacter::JumpHeldTimer(float DeltaTime)
 
 void AEyeCharacter::SlideDownWall()
 {
-	if (!EntityData->bShouldSlideDownWall || !bFoundLeftWall && !bFoundRightWall || GetVelocity().Z >= 0.f)
+	if (!Data->bShouldSlideDownWall || !bFoundLeftWall && !bFoundRightWall || GetVelocity().Z >= 0.f)
 		return;
 	
 	RootComponent->SetRelativeLocation(
-		GetActorLocation() - FVector(0, 0, EntityData->SlidingSpeed) * GetWorld()->DeltaTimeSeconds);
+		GetActorLocation() - FVector(0, 0, Data->SlidingSpeed) * GetWorld()->DeltaTimeSeconds);
 }
 
 void AEyeCharacter::CalculateTraceDistances()
 {
-	FloorTraceDistance = EntityData->RadiusFloorCheck / EntityData->FloorTraceAmount;
-	WallTraceDistance = EntityData->SlidingTraceHeight / EntityData->SlidingTraceAmount;
+	FloorTraceDistance = Data->RadiusFloorCheck / Data->FloorTraceAmount;
+	WallTraceDistance = Data->SlidingTraceHeight / Data->SlidingTraceAmount;
 }
 
 void AEyeCharacter::HandlePauseInput()
@@ -87,7 +87,7 @@ void AEyeCharacter::UnPossessed()
 	Super::UnPossessed();
 
 	bIsUnPossessed = true;
-	SetActorLocation(FVector(EntityData->OffsetUnpossessedActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
+	SetActorLocation(FVector(Data->OffsetUnpossessedActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 	PossessedCharacter = Cast<AEyeCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	if (PossessedCharacter)
 		PossessedCharacter->OnInteractableFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
@@ -96,6 +96,24 @@ void AEyeCharacter::UnPossessed()
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
 {
 	return GetJumpHeldTime() > Threshold;
+}
+
+void AEyeCharacter::SearchForSwitchableEntity()
+{
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	const FVector TraceStart = GetActorLocation() + Data->SwitchEntityTraceOffset;
+	const FVector TraceEnd = TraceStart + FVector(Data->SwitchEntityTraceLength, 0, 0);
+	
+	auto Trace = GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, Data->EntityBody, Params, FCollisionResponseParams());
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue, false);
+	// if (Trace)
+	// 	FoundEntity = Cast<AEyeCharacter>(HitResult.GetActor());
+	//
+	const auto SwitchableEntity = Hit.GetActor();
+
+	OnInteractableFound.Broadcast(SwitchableEntity);
 }
 
 void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
@@ -138,12 +156,12 @@ void AEyeCharacter::TakeDamage()
 
 void AEyeCharacter::Force2DMovement()
 {
-	SetActorLocation(FVector(EntityData->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
+	SetActorLocation(FVector(Data->OffsetActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
 void AEyeCharacter::SetArtificialInput(const FVector& Direction)
 {
-	ArtificialInput = Direction * EntityData->InputMultiplier;
+	ArtificialInput = Direction * Data->InputMultiplier;
 }
 
 void AEyeCharacter::ResetPosition()
@@ -157,7 +175,7 @@ void AEyeCharacter::DecayMovementSpeed(float const DeltaTime)
 		return;
 
 	// Decrease input over time
-	ArtificialInput = UKismetMathLibrary::VLerp(ArtificialInput, FVector(0, 0, 0), EntityData->DecaySpeed * DeltaTime);
+	ArtificialInput = UKismetMathLibrary::VLerp(ArtificialInput, FVector(0, 0, 0), Data->DecaySpeed * DeltaTime);
 
 	// Movement speed and set location
 	const auto NewLocation = GetActorLocation() + ArtificialInput * DeltaTime;
@@ -170,14 +188,14 @@ void AEyeCharacter::MakeJump()
 
 void AEyeCharacter::ResetJumpCount()
 {
-	const bool FoundFloor = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->FloorLineDirection,
-	                                                                EntityData->FloorTraceDirection,
-	                                                                EntityData->OffsetFloorCheck,
-	                                                                EntityData->FloorTraceAmount, FloorTraceDistance,
-	                                                                EntityData->LengthFloorCheck, EntityData->Floor,
+	const bool FoundFloor = UStaticFunctionLibrary::TracesAlongLine(this, Data->FloorLineDirection,
+	                                                                Data->FloorTraceDirection,
+	                                                                Data->OffsetFloorCheck,
+	                                                                Data->FloorTraceAmount, FloorTraceDistance,
+	                                                                Data->LengthFloorCheck, Data->Floor,
 	                                                                false);
 	
-	if (FoundFloor && GetVelocity().Z < EntityData->ThresholdFallDamageVelocity)
+	if (FoundFloor && GetVelocity().Z < Data->ThresholdFallDamageVelocity)
 		TakeFallDamage();
 	
 	JumpCount = FoundFloor ? 0 : JumpCount;
@@ -191,23 +209,23 @@ void AEyeCharacter::TakeFallDamage()
 
 void AEyeCharacter::DetectWall()
 {
-	const bool RightFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->SlidingLineDirection,
-	                                                                    EntityData->SlidingTraceDirection,
-	                                                                    EntityData->SlidingTraceOffset,
-	                                                                    EntityData->SlidingTraceAmount,
+	const bool RightFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, Data->SlidingLineDirection,
+	                                                                    Data->SlidingTraceDirection,
+	                                                                    Data->SlidingTraceOffset,
+	                                                                    Data->SlidingTraceAmount,
 	                                                                    WallTraceDistance,
-	                                                                    EntityData->SlidingTraceLength,
-	                                                                    EntityData->Floor,
+	                                                                    Data->SlidingTraceLength,
+	                                                                    Data->Floor,
 	                                                                    false);
-	const bool LeftFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, EntityData->SlidingLineDirection,
-	                                                                   -EntityData->SlidingTraceDirection,
-	                                                                   FVector(EntityData->SlidingTraceOffset.X,
-	                                                                           -EntityData->SlidingTraceOffset.Y,
-	                                                                           EntityData->SlidingTraceOffset.Z),
-	                                                                   EntityData->SlidingTraceAmount,
+	const bool LeftFoundWall = UStaticFunctionLibrary::TracesAlongLine(this, Data->SlidingLineDirection,
+	                                                                   -Data->SlidingTraceDirection,
+	                                                                   FVector(Data->SlidingTraceOffset.X,
+	                                                                           -Data->SlidingTraceOffset.Y,
+	                                                                           Data->SlidingTraceOffset.Z),
+	                                                                   Data->SlidingTraceAmount,
 	                                                                   WallTraceDistance,
-	                                                                   EntityData->SlidingTraceLength,
-	                                                                   EntityData->Floor,
+	                                                                   Data->SlidingTraceLength,
+	                                                                   Data->Floor,
 	                                                                   false);
 
 	bFoundLeftWall = LeftFoundWall;
@@ -269,4 +287,5 @@ void AEyeCharacter::Tick(float DeltaTime)
 	SlideDownWall();
 	SmoothenMovementDirection(DeltaTime);
 	DecayMovementSpeed(DeltaTime);
+	SearchForSwitchableEntity();
 }
