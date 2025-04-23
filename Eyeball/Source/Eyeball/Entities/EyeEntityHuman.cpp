@@ -19,7 +19,7 @@ AEyeEntityHuman::AEyeEntityHuman()
 	Capsule->SetSimulatePhysics(true);
 }
 
-bool AEyeEntityHuman::FoundInteractableObject()
+void AEyeEntityHuman::FindInteractableObject()
 {
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
@@ -29,21 +29,22 @@ bool AEyeEntityHuman::FoundInteractableObject()
 
 	const auto Trace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, InteractableCollision, Params);
 	if (!Trace)
-		return false;
+	{
+		InteractableObject = nullptr;
+		OnInteractableFound.Broadcast(InteractableObject);
+		return;
+	}
 
 	const auto Lever = Cast<AEyeInteractableObject>(HitResult.GetActor());
-	if (!Lever)
-		return false;
-
 	InteractableObject = Lever;
-	return true;
+	OnInteractableFound.Broadcast(Lever);
 }
 
 void AEyeEntityHuman::HandleActionInput()
 {
 	Super::HandleActionInput();
 
-	if (!FoundInteractableObject())
+	if (!InteractableObject)
 		return;
 
 	InteractableObject->InteractWith();
@@ -94,4 +95,5 @@ void AEyeEntityHuman::Tick(float DeltaTime)
 		return;
 	
 	MakeMovement(DeltaTime);
+	FindInteractableObject();
 }

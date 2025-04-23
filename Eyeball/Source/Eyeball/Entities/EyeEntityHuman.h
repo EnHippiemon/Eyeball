@@ -18,7 +18,7 @@ public:
 private:
 	AEyeEntityHuman();
 
-	bool FoundInteractableObject();
+	void FindInteractableObject();
 
 	UPROPERTY()
 	AEyeInteractableObject* InteractableObject;

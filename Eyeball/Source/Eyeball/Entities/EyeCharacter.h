@@ -45,7 +45,6 @@ public:
 		void SetArtificialInput(const FVector& Direction);
 		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
 		void ResetPosition();
-		// void CanBeInteractedWith();
 	
 	/* Getters */
 		FVector GetMovementDirection() const { return MovementDirection; }

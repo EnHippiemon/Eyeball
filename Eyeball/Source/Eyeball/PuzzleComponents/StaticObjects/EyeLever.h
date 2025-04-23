@@ -46,7 +46,11 @@ private:
 
 	UFUNCTION()
 	void ResetState(EGameState NewState);
-	
+
+	UFUNCTION()
+	void EntityChanged(AEyeCharacter* NewEntity);
+	UFUNCTION()
+	void HandleCanBeInteractedWith(AActor* FoundActor);
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
@@ -54,6 +58,13 @@ private:
 	UStaticMeshComponent* LeverBase;
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* LeverHandle;
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* InteractableMaterial;
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* EmptyMaterial;
+	
 	UPROPERTY()
 	AEyeGameMode* GameMode;
+	UPROPERTY()
+	AEyeCharacter* PlayerCharacter;
 };

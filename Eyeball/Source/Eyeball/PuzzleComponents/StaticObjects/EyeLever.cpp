@@ -1,5 +1,6 @@
 #include "EyeLever.h"
 
+#include "Eyeball/Entities/EyeEntityHuman.h"
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "Eyeball/PuzzleComponents/MoveableObjects/EyeMoveableObject.h"
 #include "Kismet/GameplayStatics.h"
@@ -92,18 +93,44 @@ void AEyeLever::ResetState(EGameState NewState)
 	LeverHandle->SetRelativeRotation(BaseRotation);
 }
 
+void AEyeLever::EntityChanged(AEyeCharacter* NewEntity)
+{
+	PlayerCharacter = Cast<AEyeEntityHuman>(NewEntity);
+	if (PlayerCharacter)
+		PlayerCharacter->OnInteractableFound.AddUniqueDynamic(this, &AEyeLever::HandleCanBeInteractedWith);
+}
+
+void AEyeLever::HandleCanBeInteractedWith(AActor* FoundActor)
+{
+	if (CurrentState != Elhs_Deactivated || !PlayerCharacter)
+	{
+		LeverBase->SetOverlayMaterial(EmptyMaterial);
+		LeverHandle->SetOverlayMaterial(EmptyMaterial);
+		return;
+	}
+	
+	LeverBase->SetOverlayMaterial(FoundActor == this ? InteractableMaterial : EmptyMaterial);
+	LeverHandle->SetOverlayMaterial(FoundActor == this ? InteractableMaterial : EmptyMaterial);
+}
+
 void AEyeLever::BeginPlay()
 {
 	Super::BeginPlay();
 
+	EntityChanged(Cast<AEyeCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0)));
+	
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
+	{
 		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeLever::ResetState);
+		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeLever::EntityChanged);
+	}
 	
 	TargetRotation = BaseRotation;
 	LeverHandle->SetRelativeRotation(BaseRotation);
 	CurrentState = Elhs_Deactivated;
 	CheckShouldDeactivate();
+	HandleCanBeInteractedWith(this);
 }
 
 void AEyeLever::Tick(float DeltaTime)
