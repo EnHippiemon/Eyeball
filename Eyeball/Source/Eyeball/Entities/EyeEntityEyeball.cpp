@@ -12,6 +12,9 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	RootComponent = SphereComponent;
+	
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent->SetupAttachment(RootComponent);
 
 	SphereComponent->SetEnableGravity(false);
 
@@ -73,11 +76,19 @@ void AEyeEntityEyeball::FindOverlap()
 		EntityTraces[i] = EntityTrace;
 		if (EntityTrace)
 			FoundEntity = Cast<AEyeCharacter>(HitResult.GetActor());
+		
 	}
 
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
 	OnDangerFound.Broadcast(bIsInDanger);
+	OnInteractableFound.Broadcast(bCanChangeEntity ? FoundEntity : this);
+}
+
+void AEyeEntityEyeball::SetOverlayMaterial()
+{
+	if (MeshComponent)
+		MeshComponent->SetOverlayMaterial(EmptyMaterial);
 }
 
 void AEyeEntityEyeball::HandleActionInput()

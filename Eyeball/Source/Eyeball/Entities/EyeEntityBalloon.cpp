@@ -10,10 +10,12 @@ AEyeEntityBalloon::AEyeEntityBalloon()
 	
 	Sphere = CreateDefaultSubobject<USphereComponent>("RootSphere");
 	RootComponent = Sphere;
-	
 	Sphere->SetEnableGravity(true);
 	Sphere->SetSimulatePhysics(true);
-
+	
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent->SetupAttachment(RootComponent);
+	
 	bIsUnPossessed = true;
 }
 

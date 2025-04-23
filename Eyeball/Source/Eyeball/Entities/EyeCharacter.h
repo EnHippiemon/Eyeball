@@ -11,6 +11,7 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FOnDangerFound, bool, IsInDanger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReached);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPaused);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractableFound, AActor*, FoundActor);
 
 class UEyeCharacterDataAsset;
 class UBoxComponent;
@@ -34,6 +35,8 @@ public:
 	FOnCheckpointReached OnCheckpointReached;
 	UPROPERTY()
 	FOnPaused OnPaused;
+	UPROPERTY()
+	FOnInteractableFound OnInteractableFound;
 
 	virtual void OnSpawned();
 	virtual void TakeDamage();
@@ -42,7 +45,8 @@ public:
 		void SetArtificialInput(const FVector& Direction);
 		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
 		void ResetPosition();
-
+		// void CanBeInteractedWith();
+	
 	/* Getters */
 		FVector GetMovementDirection() const { return MovementDirection; }
 		bool GetIsPossessed() const { return !bIsUnPossessed; }
@@ -89,6 +93,9 @@ protected:
 	UFUNCTION()
 	virtual void ChangeState(EGameState NewState);
 
+	UFUNCTION()
+	virtual void HandleCanBePossessed(AActor* FoundActor);
+	
 	virtual void UnPossessed() override;
 
 	virtual void BeginPlay() override;
@@ -99,8 +106,18 @@ protected:
 	
 	UPROPERTY()
 	AEyeGameMode* GameMode;
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* MeshComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* PossessableMaterial;
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* EmptyMaterial;
 
 private:
+	UPROPERTY()
+	AEyeCharacter* PossessedCharacter;
+	
 	FVector MovementInput;
 	FVector MovementDirection;
 

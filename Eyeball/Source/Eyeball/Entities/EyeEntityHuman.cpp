@@ -12,6 +12,9 @@ AEyeEntityHuman::AEyeEntityHuman()
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>("Capsule");
 	RootComponent = Capsule;
 
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent->SetupAttachment(RootComponent);
+
 	Capsule->SetEnableGravity(true);
 	Capsule->SetSimulatePhysics(true);
 }

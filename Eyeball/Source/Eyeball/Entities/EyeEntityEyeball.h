@@ -40,6 +40,7 @@ private:
 	AEyeCharacter* FoundEntity;
 
 	void FindOverlap();
+	void SetOverlayMaterial();
 	
 	virtual void HandleActionInput() override;
 	virtual void HandleEjectInput() override {}
@@ -51,6 +52,8 @@ private:
 	virtual void DetectWall() override {}
 
 	virtual void MakeMovement(const float DeltaTime) override;
+
+	virtual void HandleCanBePossessed(AActor* Actor) override {}
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

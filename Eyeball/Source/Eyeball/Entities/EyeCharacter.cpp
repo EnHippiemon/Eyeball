@@ -88,6 +88,9 @@ void AEyeCharacter::UnPossessed()
 
 	bIsUnPossessed = true;
 	SetActorLocation(FVector(EntityData->OffsetUnpossessedActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
+	PossessedCharacter = Cast<AEyeCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	if (PossessedCharacter)
+		PossessedCharacter->OnInteractableFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -106,11 +109,21 @@ void AEyeCharacter::ChangeState(EGameState NewState)
 	bInputIsAllowed = NewState == Egs_Playing;
 }
 
+void AEyeCharacter::HandleCanBePossessed(AActor* FoundActor)
+{
+	if (!MeshComponent)
+		return;
+	
+	MeshComponent->SetOverlayMaterial(FoundActor == this ? PossessableMaterial : EmptyMaterial);
+}
+
 void AEyeCharacter::OnSpawned()
 {
 	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
 		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
+	if (MeshComponent)
+		MeshComponent->SetOverlayMaterial(EmptyMaterial);
 	
 	bIsUnPossessed = false;
 	CalculateTraceDistances();
