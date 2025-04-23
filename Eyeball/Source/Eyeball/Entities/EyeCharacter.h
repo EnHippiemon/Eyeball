@@ -70,7 +70,7 @@ protected:
 	virtual void Force2DMovement();
 	
 	FVector ArtificialInput;
-	void MakeArtificialInput(float const DeltaTime);
+	void DecayMovementSpeed(float const DeltaTime);
 
 	virtual void MakeJump();
 	virtual void MakeReleaseJump() {}

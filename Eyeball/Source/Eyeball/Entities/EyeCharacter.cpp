@@ -138,7 +138,7 @@ void AEyeCharacter::ResetPosition()
 	SetActorLocation(StartPosition);
 }
 
-void AEyeCharacter::MakeArtificialInput(float const DeltaTime)
+void AEyeCharacter::DecayMovementSpeed(float const DeltaTime)
 {
 	if (ArtificialInput.Size() <= 0)
 		return;
@@ -255,5 +255,5 @@ void AEyeCharacter::Tick(float DeltaTime)
 	DetectWall();
 	SlideDownWall();
 	SmoothenMovementDirection(DeltaTime);
-	MakeArtificialInput(DeltaTime);
+	DecayMovementSpeed(DeltaTime);
 }
