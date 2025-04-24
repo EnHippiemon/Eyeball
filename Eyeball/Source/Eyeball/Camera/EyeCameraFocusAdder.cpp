@@ -13,7 +13,6 @@ AEyeCameraFocusAdder::AEyeCameraFocusAdder()
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>("OverlapBox");
 	BoxComponent->SetupAttachment(GetRootComponent());
 	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AEyeCameraFocusAdder::HandleBeginOverlap);
-	// BoxComponent->OnComponentEndOverlap.AddDynamic(this, &AEyeCameraFocusAdder::HandleEndOverlap);
 
 	UnfocusBoxComponent = CreateDefaultSubobject<UBoxComponent>("EndOverlapBox");
 	UnfocusBoxComponent->SetupAttachment(BoxComponent);
