@@ -21,8 +21,6 @@ private:
 	
 	float PlayerRadius;
 	
-	bool bCanChangeEntity = false;
-	
 	bool bIsInDanger = false;
 	float TimeInDanger = 0.f;
 	float MaxTimeInDanger = 2.f;
@@ -42,8 +40,8 @@ private:
 	void FindOverlap();
 	void SetOverlayMaterial();
 	
-	virtual void HandleActionInput() override;
-	virtual void HandleEjectInput() override {}
+	virtual void HandleActionInput() override {}
+	virtual void HandleEjectInput() override;
 
 	virtual void MakeJump() override;
 	virtual void MakeReleaseJump() override;

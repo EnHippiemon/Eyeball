@@ -117,9 +117,9 @@ void AEyeCharacter::SearchForSwitchableEntity()
 	// if (Trace)
 	// 	FoundEntity = Cast<AEyeCharacter>(HitResult.GetActor());
 	//
-	const auto SwitchableEntity = Hit.GetActor();
-
+	SwitchableEntity = Cast<AEyeCharacter>(Hit.GetActor());
 	OnInteractableFound.Broadcast(SwitchableEntity);
+	bCanChangeEntity = SwitchableEntity ? 1 : 0;
 }
 
 void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
@@ -246,7 +246,10 @@ void AEyeCharacter::HandleEjectInput()
 	if (!bInputIsAllowed)
 		return;
 	
-	OnEject.Broadcast();
+	if (bCanChangeEntity && SwitchableEntity)
+		PossessNewEntity(SwitchableEntity);
+	else
+		OnEject.Broadcast();
 }
 
 void AEyeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

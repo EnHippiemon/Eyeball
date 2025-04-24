@@ -91,16 +91,26 @@ void AEyeEntityEyeball::SetOverlayMaterial()
 		MeshComponent->SetOverlayMaterial(EmptyMaterial);
 }
 
-void AEyeEntityEyeball::HandleActionInput()
-{
-	Super::HandleActionInput();
+// void AEyeEntityEyeball::HandleActionInput()
+// {
+// 	Super::HandleActionInput();
+//
+// 	if (!bCanChangeEntity || !IsValid(FoundEntity))
+// 		return;
+//
+// 	bIsDashing = false;
+// 	PossessNewEntity(FoundEntity);
+// 	ArtificialInput = FVector(0, 0, 0);
+// }
 
+void AEyeEntityEyeball::HandleEjectInput()
+{
 	if (!bCanChangeEntity || !IsValid(FoundEntity))
 		return;
 
 	bIsDashing = false;
 	PossessNewEntity(FoundEntity);
-	ArtificialInput = FVector(0, 0, 0);
+	ArtificialInput = FVector(0, 0, 0);	
 }
 
 void AEyeEntityEyeball::MakeJump()

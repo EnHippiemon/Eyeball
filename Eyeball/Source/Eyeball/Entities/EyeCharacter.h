@@ -68,6 +68,8 @@ protected:
 
 	float CurrentMovementSpeed;
 	bool bIsUnPossessed = true;
+
+	bool bCanChangeEntity = false;
 	
 	virtual void MakeMovement(const float DeltaTime) {}
 	virtual void Force2DMovement();
@@ -120,6 +122,8 @@ protected:
 private:
 	UPROPERTY()
 	AEyeCharacter* PossessedCharacter;
+	UPROPERTY()
+	AEyeCharacter* SwitchableEntity;
 	
 	FVector MovementInput;
 	FVector MovementDirection;
