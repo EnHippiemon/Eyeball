@@ -114,8 +114,6 @@ void AEyeCharacter::SearchForSwitchableEntity()
 	const FVector TraceEnd = TraceStart + FVector(0, Data->SwitchEntityTraceLength, 0);
 	
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, Data->EntityBody, Params, FCollisionResponseParams());
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue, false);
-
 	SwitchableEntity = Cast<AEyeCharacter>(Hit.GetActor());
 	OnEntityFound.Broadcast(SwitchableEntity);
 	bCanChangeEntity = SwitchableEntity ? 1 : 0;
