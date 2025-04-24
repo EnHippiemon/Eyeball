@@ -94,6 +94,9 @@ void AEyeEntityGrasshopper::HandleEjectInput()
 		JumpWidgetRef->RemoveFromParent();
 		JumpWidgetRef = nullptr;
 	}
+	
+	JumpHeight = 0.f;
+	SetJumpDepressed(false);
 }
 
 void AEyeEntityGrasshopper::OnSpawned()
