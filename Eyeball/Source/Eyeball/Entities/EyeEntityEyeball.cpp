@@ -82,7 +82,7 @@ void AEyeEntityEyeball::FindOverlap()
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
 	OnDangerFound.Broadcast(bIsInDanger);
-	OnInteractableFound.Broadcast(bCanChangeEntity ? FoundEntity : this);
+	OnEntityFound.Broadcast(bCanChangeEntity ? FoundEntity : this);
 }
 
 void AEyeEntityEyeball::SetOverlayMaterial()
@@ -90,18 +90,6 @@ void AEyeEntityEyeball::SetOverlayMaterial()
 	if (MeshComponent)
 		MeshComponent->SetOverlayMaterial(EmptyMaterial);
 }
-
-// void AEyeEntityEyeball::HandleActionInput()
-// {
-// 	Super::HandleActionInput();
-//
-// 	if (!bCanChangeEntity || !IsValid(FoundEntity))
-// 		return;
-//
-// 	bIsDashing = false;
-// 	PossessNewEntity(FoundEntity);
-// 	ArtificialInput = FVector(0, 0, 0);
-// }
 
 void AEyeEntityEyeball::HandleEjectInput()
 {

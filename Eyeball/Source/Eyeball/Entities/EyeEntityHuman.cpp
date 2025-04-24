@@ -19,37 +19,6 @@ AEyeEntityHuman::AEyeEntityHuman()
 	Capsule->SetSimulatePhysics(true);
 }
 
-void AEyeEntityHuman::FindInteractableObject()
-{
-	// FHitResult HitResult;
-	// FCollisionQueryParams Params;
-	//
-	// const auto TraceStart = GetActorLocation() + FVector(0, 20, 0);
-	// const auto TraceEnd = TraceStart - FVector(0, 40, 0);
-	//
-	// const auto Trace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, InteractableCollision, Params);
-	// if (!Trace)
-	// {
-	// 	InteractableObject = nullptr;
-	// 	OnInteractableFound.Broadcast(InteractableObject);
-	// 	return;
-	// }
-	//
-	// const auto Lever = Cast<AEyeInteractableObject>(HitResult.GetActor());
-	// InteractableObject = Lever;
-	// OnInteractableFound.Broadcast(Lever);
-}
-
-void AEyeEntityHuman::HandleActionInput()
-{
-	Super::HandleActionInput();
-
-	if (!InteractableObject)
-		return;
-
-	InteractableObject->InteractWith();
-}
-
 void AEyeEntityHuman::MakeMovement(const float DeltaTime)
 {
 	Super::MakeMovement(DeltaTime);

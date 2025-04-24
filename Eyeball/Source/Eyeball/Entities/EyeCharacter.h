@@ -5,12 +5,14 @@
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "EyeCharacter.generated.h"
 
+class AEyeInteractableObject;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FOnDangerFound, bool, IsInDanger);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckpointReached);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPaused);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEntityFound, AActor*, FoundActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractableFound, AActor*, FoundActor);
 
 class UEyeCharacterDataAsset;
@@ -36,6 +38,8 @@ public:
 	UPROPERTY()
 	FOnPaused OnPaused;
 	UPROPERTY()
+	FOnEntityFound OnEntityFound;
+	UPROPERTY()
 	FOnInteractableFound OnInteractableFound;
 
 	virtual void OnSpawned();
@@ -55,7 +59,7 @@ protected:
 
 	/* Setters */
 		void AddJumpCount(const int Value) { JumpCount += Value; }
-
+		void SetJumpDepressed(const bool Value) { bJumpDepressed = Value; }
 	/* Getters */
 		FVector GetMovementInput() const { return MovementInput; }
 		bool GetJumpDepressed() const { return bJumpDepressed; }
@@ -92,6 +96,8 @@ protected:
 	virtual void SearchForSwitchableEntity();
 	virtual void PossessNewEntity(AEyeCharacter* EntityToPossess);
 
+	virtual void FindInteractableObject();
+	
 	UFUNCTION()
 	virtual void ChangeState(EGameState NewState);
 
@@ -118,12 +124,15 @@ protected:
 	UMaterialInstance* PossessableMaterial;
 	UPROPERTY(EditDefaultsOnly)
 	UMaterialInstance* EmptyMaterial;
-
+	
 private:
 	UPROPERTY()
 	AEyeCharacter* PossessedCharacter;
 	UPROPERTY()
 	AEyeCharacter* SwitchableEntity;
+	
+	UPROPERTY()
+	AEyeInteractableObject* InteractableObject;
 	
 	FVector MovementInput;
 	FVector MovementDirection;

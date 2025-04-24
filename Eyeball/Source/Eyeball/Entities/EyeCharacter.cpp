@@ -5,6 +5,7 @@
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Eyeball/StaticFunctionLibrary.h"
+#include "Eyeball/PuzzleComponents/StaticObjects/EyeInteractableObject.h"
 #include "Kismet/KismetMathLibrary.h"
 
 AEyeCharacter::AEyeCharacter()
@@ -96,7 +97,7 @@ void AEyeCharacter::HandleEntityChanged(AEyeCharacter* NewEntity)
 	if (NewEntity == this)
 		return;
 
-	PossessedCharacter->OnInteractableFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
+	PossessedCharacter->OnEntityFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -110,15 +111,13 @@ void AEyeCharacter::SearchForSwitchableEntity()
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	const FVector TraceStart = GetActorLocation() + Data->SwitchEntityTraceOffset;
-	const FVector TraceEnd = TraceStart + FVector(Data->SwitchEntityTraceLength, 0, 0);
+	const FVector TraceEnd = TraceStart + FVector(0, Data->SwitchEntityTraceLength, 0);
 	
-	auto Trace = GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, Data->EntityBody, Params, FCollisionResponseParams());
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, Data->EntityBody, Params, FCollisionResponseParams());
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Blue, false);
-	// if (Trace)
-	// 	FoundEntity = Cast<AEyeCharacter>(HitResult.GetActor());
-	//
+
 	SwitchableEntity = Cast<AEyeCharacter>(Hit.GetActor());
-	OnInteractableFound.Broadcast(SwitchableEntity);
+	OnEntityFound.Broadcast(SwitchableEntity);
 	bCanChangeEntity = SwitchableEntity ? 1 : 0;
 }
 
@@ -126,6 +125,31 @@ void AEyeCharacter::PossessNewEntity(AEyeCharacter* EntityToPossess)
 {
 	OnCharacterChanged.Broadcast(EntityToPossess);
 	MovementDirection = FVector(0, 0, 0);
+}
+
+void AEyeCharacter::FindInteractableObject()
+{
+	if (!Data->bCanInteract)
+		return;
+	
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	
+	const auto TraceStart = GetActorLocation() + FVector(0, 20, 0);
+	const auto TraceEnd = TraceStart - FVector(0, 40, 0);
+	
+	const auto Trace = GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, Data->InteractableCollision, Params);
+	if (!Trace)
+	{
+		InteractableObject = nullptr;
+		OnInteractableFound.Broadcast(InteractableObject);
+		return;
+	}
+	
+	const auto Lever = Cast<AEyeInteractableObject>(HitResult.GetActor());
+	InteractableObject = Lever;
+	OnInteractableFound.Broadcast(Lever);
 }
 
 void AEyeCharacter::ChangeState(EGameState NewState)
@@ -239,6 +263,10 @@ void AEyeCharacter::DetectWall()
 
 void AEyeCharacter::HandleActionInput()
 {
+	if (!InteractableObject || !Data->bCanInteract)
+		return;
+
+	InteractableObject->InteractWith();
 }
 
 void AEyeCharacter::HandleEjectInput()

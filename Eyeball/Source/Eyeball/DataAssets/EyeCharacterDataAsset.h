@@ -10,6 +10,10 @@ class EYEBALL_API UEyeCharacterDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
+	/* Interactions */
+		UPROPERTY(EditDefaultsOnly, Category="Interaction")
+		bool bCanInteract = false;
+	
 	/* Movement */
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float NormalMovementSpeed = 10.f;
@@ -93,4 +97,6 @@ public:
 		TEnumAsByte<ECollisionChannel> EntityBody;
 		UPROPERTY(EditDefaultsOnly, Category="Collision")
 		TEnumAsByte<ECollisionChannel> Floor;
+		UPROPERTY(EditDefaultsOnly, Category="Collision")
+		TEnumAsByte<ECollisionChannel> InteractableCollision;
 };
