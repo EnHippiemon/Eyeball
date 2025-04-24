@@ -88,9 +88,15 @@ void AEyeCharacter::UnPossessed()
 
 	bIsUnPossessed = true;
 	SetActorLocation(FVector(Data->OffsetUnpossessedActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
-	PossessedCharacter = Cast<AEyeCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	if (PossessedCharacter)
-		PossessedCharacter->OnInteractableFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
+}
+
+void AEyeCharacter::HandleEntityChanged(AEyeCharacter* NewEntity)
+{
+	PossessedCharacter = NewEntity;
+	if (NewEntity == this)
+		return;
+
+	PossessedCharacter->OnInteractableFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
 }
 
 bool AEyeCharacter::CheckIsJumpHeld(const float Threshold)
@@ -137,7 +143,6 @@ void AEyeCharacter::HandleCanBePossessed(AActor* FoundActor)
 
 void AEyeCharacter::OnSpawned()
 {
-	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (GameMode)
 		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCharacter::ChangeState);
 	if (MeshComponent)
@@ -265,6 +270,12 @@ void AEyeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (GameMode)
+		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeCharacter::HandleEntityChanged);
+
+	HandleEntityChanged(Cast<AEyeCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0)));
+	
 	if (bIsUnPossessed)
 		UnPossessed();
 	else

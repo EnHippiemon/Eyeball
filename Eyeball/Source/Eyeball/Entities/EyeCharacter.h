@@ -98,6 +98,9 @@ protected:
 	
 	virtual void UnPossessed() override;
 
+	UFUNCTION()
+	void HandleEntityChanged(AEyeCharacter* NewEntity);
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	
