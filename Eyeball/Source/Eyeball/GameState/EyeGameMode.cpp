@@ -10,7 +10,6 @@
 #include "Eyeball/Widgets/EyeRestartWidget.h"
 #include "Eyeball/Widgets/EyeDeathCountWidget.h"
 #include "Eyeball/Widgets/EyeDangerWidget.h"
-#include "Eyeball/Widgets/EyeControlsWidget.h"
 #include "Eyeball/Widgets/EyeWonWidget.h"
 #include "Eyeball/Widgets/EyePauseWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -353,10 +352,6 @@ void AEyeGameMode::BeginPlay()
 	DangerWidgetRef = CreateWidget<UEyeDangerWidget>(GetWorld(), DangerWidget);
 	if (DangerWidgetRef)
 		DangerWidgetRef->AddToViewport();
-	
-	ControlsWidgetRef = CreateWidget<UEyeControlsWidget>(GetWorld(), ControlsWidget);
-	if (ControlsWidgetRef)
-		ControlsWidgetRef->AddToViewport();
 
 	PauseWidgetRef = CreateWidget<UEyePauseWidget>(GetWorld(), PauseWidget);
 	if (PauseWidgetRef)

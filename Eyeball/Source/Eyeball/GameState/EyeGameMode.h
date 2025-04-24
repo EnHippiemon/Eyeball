@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/Button.h"
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
@@ -11,7 +10,6 @@ class UEyeDeathCountWidget;
 class UNiagaraSystem;
 class AEyeEnemy;
 class AEyeProjectile;
-class UEyeControlsWidget;
 class AEyeMoveableDanger;
 class AEyeMoveableObject;
 class AEyeCamera;
@@ -109,11 +107,6 @@ private:
 			UPROPERTY(EditDefaultsOnly)
 			TSubclassOf<UEyeDangerWidget> DangerWidget;
 			TObjectPtr<UEyeDangerWidget> DangerWidgetRef;
-
-		/* Controls */
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<UEyeControlsWidget> ControlsWidget;
-			TObjectPtr<UEyeControlsWidget> ControlsWidgetRef;
 
 		/* Pause */
 			UPROPERTY(EditDefaultsOnly)
