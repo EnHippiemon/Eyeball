@@ -16,13 +16,15 @@ private:
 	bool bRightOverlapping = false;
 	
 	AEyeEntityCollector();
-	virtual void BeginPlay() override;
 
-	UFUNCTION()
 	virtual void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	UFUNCTION()
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	void CheckOverlaps();
+	
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* MeshComponent;
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* CollisionBox2;
 	UPROPERTY(EditAnywhere)
