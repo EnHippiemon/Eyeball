@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Camera/CameraActor.h"
+#include "Eyeball/GameState/EyeGameMode.h"
 #include "EyeCamera.generated.h"
 
 class USpotLightComponent;
@@ -22,7 +23,6 @@ private:
 	float CameraFOVCompensation = 1.f;
 	
 #pragma endregion 
-
 #pragma region -- REFERENCES --
 	
 	UPROPERTY()
@@ -48,11 +48,16 @@ public:
 private:
 	FTimerHandle TimerHandle;
 
+	void SetCameraOnStart();
+	void RemoveAllFocus();
+
 	void MoveTowardsTarget(float const DeltaTime);
 	float FindDistanceBetweenActors();
 	UFUNCTION()
 	void GetNewPlayerReference(AEyeCharacter* NewCharacter);
-
+	UFUNCTION()
+	void OnNewGameState(EGameState NewState);
+	
 	void SetRotation();
 	void CameraOffsetCompensationForFOV();
 	

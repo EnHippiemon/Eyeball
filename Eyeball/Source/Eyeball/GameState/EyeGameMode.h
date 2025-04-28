@@ -50,7 +50,6 @@ public:
 	// Getters
 		int GetDeathCount() const { return DeathCount; }
 		EGameState GetGameState() const { return CurrentGameState;}
-		// FName GetMainLevelPath() const { return MainLevelPath; }
 	
 private:
 	AEyeGameMode();

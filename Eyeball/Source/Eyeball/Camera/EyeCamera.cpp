@@ -15,6 +15,63 @@ AEyeCamera::AEyeCamera()
 	SpotLight->SetupAttachment(GetRootComponent());
 }
 
+void AEyeCamera::OnSpawned()
+{
+	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!GameMode)
+		{ UE_LOG(LogTemp, Error, TEXT("AEyeCamera.cpp: GameMode is null")); }
+	else
+	{
+		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeCamera::GetNewPlayerReference);
+		GameMode->OnChangedState.AddUniqueDynamic(this, &AEyeCamera::OnNewGameState);
+	}
+
+	SetRotation();
+	CameraOffsetCompensationForFOV();
+}
+
+void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
+{
+	for (int i = 0; i < FocusedActors.Num(); ++i)
+	{
+		if (FocusedActors[i]->GetName() == ActorToAdd->GetName())
+			FocusedActors.RemoveAt(i);
+	}
+	FocusedActors.Add(ActorToAdd);
+
+	if (TimerDelay <= 0)
+		return;
+
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AEyeCamera::RemoveAllFocus, TimerDelay, false, TimerDelay);
+}
+
+void AEyeCamera::RemoveActorFromFocus(AActor* ActorToRemove)
+{
+	FocusedActors.Remove(ActorToRemove);
+}
+
+void AEyeCamera::SetCameraOnStart()
+{
+	FVector NewLocation = FVector(GetActorLocation().X, FocusedActors[0]->GetActorLocation().Y,
+	                              FocusedActors[0]->GetActorLocation().Z);
+	SetActorLocation(NewLocation);
+}
+
+void AEyeCamera::RemoveAllFocus()
+{
+	// Remove all focused actors except player (which is at index 0)
+	int NumberOfActors = FocusedActors.Num();
+	for (int i = 1; i < NumberOfActors; ++i)
+	{
+		if (!FocusedActors.IsValidIndex(i))
+			continue;
+
+		FocusedActors.RemoveAt(i);
+		--i;
+		--NumberOfActors;
+	}
+}
+
 void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 {
 	// Calculate the mean value of all focused actors
@@ -55,7 +112,7 @@ float AEyeCamera::FindDistanceBetweenActors()
 			FurthestUpRight.Y = ActorLocation.Y;
 		if (ActorLocation.Z > FurthestUpRight.Z)
 			FurthestUpRight.Z = ActorLocation.Z;
-		
+
 		// Finding down left vectors
 		if (ActorLocation.Y < FurthestLeftDown.Y)
 			FurthestLeftDown.Y = ActorLocation.Y;
@@ -86,6 +143,14 @@ void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)
 	FocusedActors[0] = NewCharacter;
 }
 
+void AEyeCamera::OnNewGameState(EGameState NewState)
+{
+	if (NewState == Egs_GameOver)
+		RemoveAllFocus();
+	else if (NewState == Egs_StartingGame)
+		SetCameraOnStart();
+}
+
 void AEyeCamera::SetRotation()
 {
 	SetActorRotation(FRotator(0, 0, 0));
@@ -94,55 +159,7 @@ void AEyeCamera::SetRotation()
 void AEyeCamera::CameraOffsetCompensationForFOV()
 {
 	// 90 is original FOV. This makes sure that any FOV used, all actors in focus will still be visible.
-	CameraFOVCompensation = 90 / GetCameraComponent()->FieldOfView; 
-}
-
-void AEyeCamera::OnSpawned()
-{
-	GameMode = Cast<AEyeGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (!GameMode)
-		{ UE_LOG(LogTemp, Error, TEXT("AEyeCamera.cpp: GameMode is null")); }
-	else
-		GameMode->OnEntityChanged.AddUniqueDynamic(this, &AEyeCamera::GetNewPlayerReference);
-
-	SetRotation();
-	CameraOffsetCompensationForFOV();
-}
-
-void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
-{
-	for (int i = 0; i < FocusedActors.Num(); ++i)
-	{
-		if (FocusedActors[i]->GetName() == ActorToAdd->GetName())
-			FocusedActors.RemoveAt(i);
-	}
-	FocusedActors.Add(ActorToAdd);
-
-	// Remove all focused actors except player (which is at index 0)
-	FTimerDelegate Delegate;
-	Delegate.BindLambda([&]()
-	{
-		int NumberOfActors = FocusedActors.Num();
-		for (int i = 1; i < NumberOfActors; ++i)
-		{
-			if (!FocusedActors.IsValidIndex(i))
-				continue;
-			
-			FocusedActors.RemoveAt(i);
-			--i;
-			--NumberOfActors;
-		}
-	});
-
-	if (TimerDelay <= 0)
-		return;
-	
-	GetWorldTimerManager().SetTimer(TimerHandle, Delegate, TimerDelay, false, TimerDelay);
-}
-
-void AEyeCamera::RemoveActorFromFocus(AActor* ActorToRemove)
-{
-	FocusedActors.Remove(ActorToRemove);
+	CameraFOVCompensation = 90 / GetCameraComponent()->FieldOfView;
 }
 
 void AEyeCamera::BeginPlay()
