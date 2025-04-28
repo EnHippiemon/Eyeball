@@ -1,6 +1,4 @@
 #include "EyeCharacter.h"
-
-#include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"

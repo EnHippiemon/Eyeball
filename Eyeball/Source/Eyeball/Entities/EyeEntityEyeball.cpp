@@ -15,7 +15,6 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 	
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(RootComponent);
-	MeshComponent->SetVisibility(false);
 
 	SoulPart1 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart1");
 	SoulPart1->SetupAttachment(MeshComponent);
