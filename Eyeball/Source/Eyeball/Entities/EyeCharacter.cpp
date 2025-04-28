@@ -1,5 +1,7 @@
 #include "EyeCharacter.h"
 
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
 #include "Eyeball/GameState/EyeGameMode.h"
@@ -179,6 +181,9 @@ void AEyeCharacter::TakeDamage()
 	OnDeath.Broadcast();
 	SetArtificialInput(FVector(0, 0, 0));
 	SetMoveDirection(FVector(0, 0, 0));
+	UNiagaraFunctionLibrary::SpawnSystemAttached(NiagaraLightning, MeshComponent, NAME_None,
+	                                             GetActorLocation(), FRotator(0, 0, 0),
+	                                             EAttachLocation::Type::KeepRelativeOffset, true);
 }
 
 void AEyeCharacter::Force2DMovement()

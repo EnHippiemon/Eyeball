@@ -5,6 +5,7 @@
 #include "Eyeball/GameState/EyeGameMode.h"
 #include "EyeCharacter.generated.h"
 
+class UNiagaraComponent;
 class AEyeInteractableObject;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterChanged, AEyeCharacter*, Character);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEject);
@@ -133,6 +134,9 @@ private:
 	
 	UPROPERTY()
 	AEyeInteractableObject* InteractableObject;
+
+	UPROPERTY(EditDefaultsOnly)
+	UNiagaraSystem* NiagaraLightning;
 	
 	FVector MovementInput;
 	FVector MovementDirection;
