@@ -144,7 +144,13 @@ float AEyeCamera::FindDistanceBetweenActors()
 		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
 
 	// Return the greatest distance of Y and Z
-	return DistanceY > DistanceZ ? DistanceY * CameraFOVCompensation : DistanceZ * CameraFOVCompensation;
+	const float Y = DistanceY * CameraFOVCompensation * Data->YDistanceMultiplier;
+	const float Z = DistanceZ * CameraFOVCompensation * Data->ZDistanceMultiplier;
+
+	// Aspect ratio is 16:9 (9/16)
+	constexpr float AspectRatio = 0.5625;
+	const float AspectRatioY = DistanceY * AspectRatio;
+	return AspectRatioY > DistanceZ ? Y : Z;
 }
 
 void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)

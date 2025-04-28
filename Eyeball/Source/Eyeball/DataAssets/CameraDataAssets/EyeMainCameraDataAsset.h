@@ -22,4 +22,8 @@ public:
 	// How the camera should be placed in relation to the player character
 	UPROPERTY(EditDefaultsOnly)
 	FVector CameraOffset = FVector(-200, 0, 0);
+	UPROPERTY(EditDefaultsOnly)
+	float YDistanceMultiplier = 1.5f;
+	UPROPERTY(EditDefaultsOnly)
+	float ZDistanceMultiplier = 1.5f;
 };
