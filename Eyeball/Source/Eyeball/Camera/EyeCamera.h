@@ -21,6 +21,8 @@ private:
 #pragma region -- Variables --
 
 	float CameraFOVCompensation = 1.f;
+	bool RetractingCamera = false;
+	FVector TargetLocation;
 	
 #pragma endregion 
 #pragma region -- REFERENCES --
@@ -44,12 +46,14 @@ public:
 	// If TimerDelay is 0 or less, focus will stay until RemoveActorFromFocus is called. 
 	void AddActorToFocus(AActor* ActorToAdd, float const TimerDelay);
 	void RemoveActorFromFocus(AActor* ActorToRemove);
+	void SetCameraMode(const bool ShouldRetract) { RetractingCamera = ShouldRetract; }
 	
 private:
 	FTimerHandle TimerHandle;
 
 	void SetCameraOnStart();
 	void RemoveAllFocus();
+	void CheckIfRetractingCameraReachedTarget();
 
 	void MoveTowardsTarget(float const DeltaTime);
 	float FindDistanceBetweenActors();

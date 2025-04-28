@@ -28,6 +28,7 @@ void AEyeCamera::OnSpawned()
 
 	SetRotation();
 	CameraOffsetCompensationForFOV();
+	RetractingCamera = false;
 }
 
 void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
@@ -47,14 +48,16 @@ void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 
 void AEyeCamera::RemoveActorFromFocus(AActor* ActorToRemove)
 {
+	RetractingCamera = true;
 	FocusedActors.Remove(ActorToRemove);
 }
 
 void AEyeCamera::SetCameraOnStart()
 {
-	FVector NewLocation = FVector(GetActorLocation().X, FocusedActors[0]->GetActorLocation().Y,
+	const FVector NewLocation = FVector(GetActorLocation().X, FocusedActors[0]->GetActorLocation().Y,
 	                              FocusedActors[0]->GetActorLocation().Z);
 	SetActorLocation(NewLocation);
+	RetractingCamera = false;
 }
 
 void AEyeCamera::RemoveAllFocus()
@@ -70,6 +73,15 @@ void AEyeCamera::RemoveAllFocus()
 		--i;
 		--NumberOfActors;
 	}
+}
+
+void AEyeCamera::CheckIfRetractingCameraReachedTarget()
+{
+	if (!RetractingCamera)
+		return;
+
+	if (FMath::IsNearlyEqual(GetActorLocation().X, TargetLocation.X, Data->ResetCameraRetractionTolerance))
+		RetractingCamera = false;
 }
 
 void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
@@ -88,10 +100,12 @@ void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 	MiddleLocation /= ValidActors;
 
 	// Move towards the mean value 
+	TargetLocation = FVector(-FindDistanceBetweenActors(), MiddleLocation.Y, MiddleLocation.Z);
 	auto NewLocation = GetActorLocation();
-	NewLocation = UKismetMathLibrary::VLerp(NewLocation,
-	                                        FVector(-FindDistanceBetweenActors(), MiddleLocation.Y, MiddleLocation.Z),
-	                                        Data->MoveSpeed * DeltaTime);
+	NewLocation = UKismetMathLibrary::VLerp(NewLocation, TargetLocation,
+	                                        RetractingCamera
+		                                        ? Data->RetractCameraSpeed * DeltaTime
+		                                        : Data->NormalMoveSpeed * DeltaTime);
 	SetActorLocation(NewLocation);
 }
 
@@ -174,4 +188,5 @@ void AEyeCamera::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	MoveTowardsTarget(DeltaTime);
+	CheckIfRetractingCameraReachedTarget();
 }

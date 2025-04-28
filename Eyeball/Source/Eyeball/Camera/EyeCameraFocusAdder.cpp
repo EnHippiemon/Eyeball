@@ -52,6 +52,7 @@ void AEyeCameraFocusAdder::HandleEndOverlap(UPrimitiveComponent* OverlappedCompo
 	if (!CameraRef)
 		return;
 
+	
 	for (int i = 0; i < ObjectsToFocusOn.Num(); ++i)
 	{
 		CameraRef->RemoveActorFromFocus(ObjectsToFocusOn[i]);
