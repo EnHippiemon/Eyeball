@@ -18,6 +18,9 @@ public:
 
 private:
 	AEyeEntityEyeball();
+
+	UPROPERTY(EditDefaultsOnly)
+	FRotator MeshRotationRate;
 	
 	float PlayerRadius;
 	
@@ -39,6 +42,8 @@ private:
 
 	void FindOverlap();
 	void SetOverlayMaterial();
+
+	void RotateMesh(float const DeltaTime);
 	
 	virtual void HandleActionInput() override {}
 	virtual void HandleEjectInput() override;
@@ -59,4 +64,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* SphereComponent;
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* SoulPart1;
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* SoulPart2;
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* EyeballMaterialNormal;
+	UPROPERTY(EditDefaultsOnly)
+	UMaterialInstance* EyeballMaterialDanger;
 };

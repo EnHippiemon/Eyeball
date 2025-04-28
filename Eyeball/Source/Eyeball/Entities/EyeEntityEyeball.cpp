@@ -15,6 +15,12 @@ AEyeEntityEyeball::AEyeEntityEyeball()
 	
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(RootComponent);
+	MeshComponent->SetVisibility(false);
+
+	SoulPart1 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart1");
+	SoulPart1->SetupAttachment(MeshComponent);
+	SoulPart2 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart2");
+	SoulPart2->SetupAttachment(MeshComponent);
 
 	SphereComponent->SetEnableGravity(false);
 
@@ -81,6 +87,8 @@ void AEyeEntityEyeball::FindOverlap()
 
 	bIsInDanger = SafetyTraces.Contains(false);
 	bCanChangeEntity = EntityTraces.Contains(true);
+	SoulPart1->SetMaterial(0, bIsInDanger ? EyeballMaterialDanger : EyeballMaterialNormal);
+	SoulPart2->SetMaterial(0, bIsInDanger ? EyeballMaterialDanger : EyeballMaterialNormal);
 	OnDangerFound.Broadcast(bIsInDanger);
 	OnEntityFound.Broadcast(bCanChangeEntity ? FoundEntity : this);
 }
@@ -89,6 +97,11 @@ void AEyeEntityEyeball::SetOverlayMaterial()
 {
 	if (MeshComponent)
 		MeshComponent->SetOverlayMaterial(EmptyMaterial);
+}
+
+void AEyeEntityEyeball::RotateMesh(float const DeltaTime)
+{
+	MeshComponent->AddLocalRotation(DeltaTime * MeshRotationRate);
 }
 
 void AEyeEntityEyeball::HandleEjectInput()
@@ -173,4 +186,5 @@ void AEyeEntityEyeball::Tick(float DeltaTime)
 	FindOverlap();
 	MakeMovement(DeltaTime);
 	ResetJumpCount();
+	RotateMesh(DeltaTime);
 }
