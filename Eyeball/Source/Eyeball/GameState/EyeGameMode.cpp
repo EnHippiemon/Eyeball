@@ -334,6 +334,14 @@ void AEyeGameMode::HandleMenuButtonPressed(FString ButtonName)
 		FGenericPlatformMisc::RequestExit(false);
 }
 
+void AEyeGameMode::DebugWidgetAmount()
+{
+	// // Debugging widget count
+	// TArray<UUserWidget*> FoundWidgets;
+	// UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), FoundWidgets, UUserWidget::StaticClass());
+	// UE_LOG(LogTemp, Display, TEXT("Amount of widgets: %i"), FoundWidgets.Num());
+}
+
 void AEyeGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -380,4 +388,6 @@ void AEyeGameMode::Tick(float DeltaTime)
 
 	CountTimeInDanger(DeltaTime);
 	SetTimeDilation(DeltaTime);
+	
+	DebugWidgetAmount();
 }

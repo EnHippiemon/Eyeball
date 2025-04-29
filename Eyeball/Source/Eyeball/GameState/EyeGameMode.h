@@ -194,6 +194,9 @@ private:
 
 	UFUNCTION()
 	void HandleMenuButtonPressed(FString ButtonName);
+
+	void DebugWidgetAmount();
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };
