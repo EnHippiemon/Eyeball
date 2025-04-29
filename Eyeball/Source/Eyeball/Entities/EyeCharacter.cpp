@@ -15,16 +15,20 @@ AEyeCharacter::AEyeCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	bIsUnPossessed = true;
 
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("MeshComponent");
 	MeshComponent->SetupAttachment(RootComponent);
 	
-	RotatingSoulMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RotatingSoulMesh"));
+	RotatingSoulMesh = CreateDefaultSubobject<UStaticMeshComponent>("RotatingSoulMesh");
 	RotatingSoulMesh->SetupAttachment(RootComponent);
+	RotatingSoulMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	
 	SoulPart1 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart1");
 	SoulPart1->SetupAttachment(RotatingSoulMesh);
+	SoulPart1->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	
 	SoulPart2 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart2");
 	SoulPart2->SetupAttachment(RotatingSoulMesh);
+	SoulPart2->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 
 	SoulNiagara1 = CreateDefaultSubobject<UNiagaraComponent>("NiagaraComponent1");
 	SoulNiagara1->SetupAttachment(SoulPart1);

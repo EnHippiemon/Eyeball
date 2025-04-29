@@ -28,7 +28,7 @@ public:
 		float DecaySpeed = 1.f;
 
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Rotation")
-		FRotator MeshRotationRate = FRotator(200, 0, 0);
+		FRotator MeshRotationRate = FRotator(0, 0, 200);
 
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")
