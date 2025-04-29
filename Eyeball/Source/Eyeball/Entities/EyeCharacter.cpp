@@ -211,9 +211,6 @@ void AEyeCharacter::OnSpawned()
 	
 	bIsUnPossessed = false;
 	CalculateTraceDistances();
-
-	// SoulPart1->SetMaterial(0, EyeballMaterialNormal);
-	// SoulPart2->SetMaterial(0, EyeballMaterialNormal);
 }
 
 void AEyeCharacter::TakeDamage()
