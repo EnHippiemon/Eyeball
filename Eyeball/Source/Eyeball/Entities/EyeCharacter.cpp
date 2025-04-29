@@ -59,7 +59,7 @@ void AEyeCharacter::SmoothenMovementDirection(const float DeltaTime)
 
 void AEyeCharacter::HandleJumpInput()
 {
-	if (!bInputIsAllowed)
+	if (!bInputIsAllowed || GameMode->GetGameState() == Egs_GameWon)
 		return;
 	
 	bJumpDepressed = true;
@@ -306,7 +306,7 @@ void AEyeCharacter::DetectWall()
 
 void AEyeCharacter::HandleActionInput()
 {
-	if (!InteractableObject || !Data->bCanInteract)
+	if (!InteractableObject || !Data->bCanInteract || GameMode->GetGameState() == Egs_GameWon)
 		return;
 
 	InteractableObject->InteractWith();
@@ -314,7 +314,7 @@ void AEyeCharacter::HandleActionInput()
 
 void AEyeCharacter::HandleEjectInput()
 {
-	if (!bInputIsAllowed)
+	if (!bInputIsAllowed || GameMode->GetGameState() == Egs_GameWon)
 		return;
 	
 	if (bCanChangeEntity && SwitchableEntity)
@@ -362,7 +362,12 @@ void AEyeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsUnPossessed || GameMode->GetGameState() == Egs_GameWon)
+	if (bIsUnPossessed)
+		return;
+	
+	RotateMesh(DeltaTime);
+	
+	if (GameMode->GetGameState() == Egs_GameWon)
 		return;
 	
 	JumpHeldTimer(DeltaTime);
@@ -373,5 +378,4 @@ void AEyeCharacter::Tick(float DeltaTime)
 	SmoothenMovementDirection(DeltaTime);
 	DecayMovementSpeed(DeltaTime);
 	SearchForSwitchableEntity();
-	RotateMesh(DeltaTime);
 }
