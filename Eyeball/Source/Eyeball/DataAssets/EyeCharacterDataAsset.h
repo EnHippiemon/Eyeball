@@ -27,6 +27,9 @@ public:
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
 		float DecaySpeed = 1.f;
 
+		UPROPERTY(EditDefaultsOnly, Category="Movement|Rotation")
+		FRotator MeshRotationRate = FRotator(200, 0, 0);
+
 	/* Danger */
 		UPROPERTY(EditDefaultsOnly, Category="Danger")
 		float ThresholdFallDamageVelocity = -90.f;

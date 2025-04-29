@@ -1,4 +1,6 @@
 #include "EyeCharacter.h"
+
+#include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
@@ -12,6 +14,22 @@ AEyeCharacter::AEyeCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bIsUnPossessed = true;
+
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent->SetupAttachment(RootComponent);
+	
+	RotatingSoulMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RotatingSoulMesh"));
+	RotatingSoulMesh->SetupAttachment(RootComponent);
+	
+	SoulPart1 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart1");
+	SoulPart1->SetupAttachment(RotatingSoulMesh);
+	SoulPart2 = CreateDefaultSubobject<UStaticMeshComponent>("SoulPart2");
+	SoulPart2->SetupAttachment(RotatingSoulMesh);
+
+	SoulNiagara1 = CreateDefaultSubobject<UNiagaraComponent>("NiagaraComponent1");
+	SoulNiagara1->SetupAttachment(SoulPart1);
+	SoulNiagara2 = CreateDefaultSubobject<UNiagaraComponent>("NiagaraComponent2");
+	SoulNiagara2->SetupAttachment(SoulPart2);
 }
 
 void AEyeCharacter::HandleUpwardsInput(const float Value)
@@ -83,6 +101,11 @@ void AEyeCharacter::HandlePauseInput()
 	OnPaused.Broadcast();
 }
 
+void AEyeCharacter::RotateMesh(float const DeltaTime)
+{
+	RotatingSoulMesh->AddLocalRotation(DeltaTime * Data->MeshRotationRate);
+}
+
 void AEyeCharacter::UnPossessed()
 {
 	Super::UnPossessed();
@@ -91,12 +114,24 @@ void AEyeCharacter::UnPossessed()
 	SetActorLocation(FVector(Data->OffsetUnpossessedActorPlacement.X, GetActorLocation().Y, GetActorLocation().Z));
 }
 
+void AEyeCharacter::SetSoulVisibility(bool Value)
+{
+	SoulPart1->SetVisibility(Value);
+	SoulPart2->SetVisibility(Value);
+	SoulNiagara1->SetVisibility(Value);
+	SoulNiagara2->SetVisibility(Value);
+}
+
 void AEyeCharacter::HandleEntityChanged(AEyeCharacter* NewEntity)
 {
 	PossessedCharacter = NewEntity;
 	if (NewEntity == this)
+	{
+		SetSoulVisibility(true);
 		return;
+	}
 
+	SetSoulVisibility(false);
 	PossessedCharacter->OnEntityFound.AddUniqueDynamic(this, &AEyeCharacter::HandleCanBePossessed);
 }
 
@@ -172,6 +207,9 @@ void AEyeCharacter::OnSpawned()
 	
 	bIsUnPossessed = false;
 	CalculateTraceDistances();
+
+	// SoulPart1->SetMaterial(0, EyeballMaterialNormal);
+	// SoulPart2->SetMaterial(0, EyeballMaterialNormal);
 }
 
 void AEyeCharacter::TakeDamage()
@@ -331,4 +369,5 @@ void AEyeCharacter::Tick(float DeltaTime)
 	SmoothenMovementDirection(DeltaTime);
 	DecayMovementSpeed(DeltaTime);
 	SearchForSwitchableEntity();
+	RotateMesh(DeltaTime);
 }

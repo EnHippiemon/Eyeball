@@ -106,6 +106,7 @@ protected:
 	virtual void HandleCanBePossessed(AActor* FoundActor);
 	
 	virtual void UnPossessed() override;
+	virtual void SetSoulVisibility(bool Value);
 
 	UFUNCTION()
 	void HandleEntityChanged(AEyeCharacter* NewEntity);
@@ -120,6 +121,21 @@ protected:
 	AEyeGameMode* GameMode;
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* MeshComponent;
+
+	// Soul components 
+		UPROPERTY(EditDefaultsOnly)
+		UStaticMeshComponent* RotatingSoulMesh;
+		UPROPERTY(EditDefaultsOnly)
+		UStaticMeshComponent* SoulPart1;
+		UPROPERTY(EditDefaultsOnly)
+		UStaticMeshComponent* SoulPart2;
+		UPROPERTY(EditDefaultsOnly)
+		UMaterialInstance* EyeballMaterialNormal;
+		UPROPERTY(EditDefaultsOnly)
+		UNiagaraComponent* SoulNiagara1;
+		UPROPERTY(EditDefaultsOnly)
+		UNiagaraComponent* SoulNiagara2;
+		
 	
 	UPROPERTY(EditDefaultsOnly)
 	UMaterialInstance* PossessableMaterial;
@@ -170,6 +186,8 @@ private:
 	void CalculateTraceDistances();
 
 	void HandlePauseInput();
+
+	void RotateMesh(float const DeltaTime);
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };
