@@ -12,6 +12,9 @@ AEyeEntityBalloon::AEyeEntityBalloon()
 	RootComponent = Sphere;
 	Sphere->SetEnableGravity(true);
 	Sphere->SetSimulatePhysics(true);
+
+	MeshComponent->SetupAttachment(Sphere);
+	RotatingSoulMesh->SetupAttachment(Sphere);
 	
 	bIsUnPossessed = true;
 }

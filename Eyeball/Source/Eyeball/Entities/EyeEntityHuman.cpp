@@ -11,9 +11,13 @@ AEyeEntityHuman::AEyeEntityHuman()
 
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>("Capsule");
 	RootComponent = Capsule;
-
 	Capsule->SetEnableGravity(true);
 	Capsule->SetSimulatePhysics(true);
+
+	MeshComponent->SetupAttachment(Capsule);
+	RotatingSoulMesh->SetupAttachment(Capsule);
+
+	bIsUnPossessed = true;
 }
 
 void AEyeEntityHuman::MakeMovement(const float DeltaTime)

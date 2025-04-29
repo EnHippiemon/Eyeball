@@ -15,6 +15,9 @@ AEyeEntityGrasshopper::AEyeEntityGrasshopper()
 	RootComponent = Box;
 	Box->SetEnableGravity(true);
 	Box->SetSimulatePhysics(true);
+	
+	MeshComponent->SetupAttachment(Box);
+	RotatingSoulMesh->SetupAttachment(Box);
 
 	bIsUnPossessed = true;
 }
