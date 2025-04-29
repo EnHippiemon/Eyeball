@@ -59,7 +59,7 @@ void AEyeCamera::SetCameraOnStart()
 	const FVector NewLocation = FVector(GetActorLocation().X, FocusedActors[0]->GetActorLocation().Y,
 	                              FocusedActors[0]->GetActorLocation().Z);
 	SetActorLocation(NewLocation);
-	RetractingCamera = false;
+	StopRetractingCamera();
 }
 
 void AEyeCamera::RemoveAllFocus()

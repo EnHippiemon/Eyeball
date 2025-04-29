@@ -45,8 +45,8 @@ void AEyeCameraFocusAdder::HandleEndOverlap(UPrimitiveComponent* OverlappedCompo
 	const AEyeCharacter* EyeCharacter = Cast<AEyeCharacter>(OtherActor);
 	if (!EyeCharacter)
 		return;
-	if (!EyeCharacter->GetIsPossessed())
-		return;
+	// if (!EyeCharacter->GetIsPossessed())
+	// 	return;
 
 	const auto CameraRef = Cast<AEyeCamera>(UGameplayStatics::GetActorOfClass(GetWorld(), CameraClass));
 	if (!CameraRef)
