@@ -28,11 +28,13 @@ void AEyeCamera::OnSpawned()
 
 	SetRotation();
 	CameraOffsetCompensationForFOV();
-	RetractingCamera = false;
+	StopRetractingCamera();
 }
 
 void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 {
+	RetractingCamera = false;
+	
 	for (int i = 0; i < FocusedActors.Num(); ++i)
 	{
 		if (FocusedActors[i]->GetName() == ActorToAdd->GetName())
@@ -48,7 +50,7 @@ void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 
 void AEyeCamera::RemoveActorFromFocus(AActor* ActorToRemove)
 {
-	RetractingCamera = true;
+	StartRetractingCamera();
 	FocusedActors.Remove(ActorToRemove);
 }
 
@@ -62,6 +64,8 @@ void AEyeCamera::SetCameraOnStart()
 
 void AEyeCamera::RemoveAllFocus()
 {
+	StartRetractingCamera();
+	
 	// Remove all focused actors except player (which is at index 0)
 	int NumberOfActors = FocusedActors.Num();
 	for (int i = 1; i < NumberOfActors; ++i)
@@ -75,13 +79,41 @@ void AEyeCamera::RemoveAllFocus()
 	}
 }
 
-void AEyeCamera::CheckIfRetractingCameraReachedTarget()
+void AEyeCamera::IncrementCameraSpeed(float const DeltaTime)
 {
 	if (!RetractingCamera)
 		return;
 
-	if (FMath::IsNearlyEqual(GetActorLocation().X, TargetLocation.X, Data->ResetCameraRetractionTolerance))
-		RetractingCamera = false;
+	CurrentSpeed += DeltaTime * Data->SpeedIncrementationMultiplier;
+	if (CurrentSpeed >= Data->NormalMoveSpeed)
+		StopRetractingCamera();
+}
+
+void AEyeCamera::StartRetractingCamera()
+{
+	CurrentSpeed = Data->RetractCameraSpeed;
+	RetractingCamera = true;
+}
+
+void AEyeCamera::StopRetractingCamera()
+{
+	CurrentSpeed = Data->NormalMoveSpeed;
+	RetractingCamera = false;
+}
+
+void AEyeCamera::GetBackToTarget()
+{
+	if (FocusedActors.Num() > 1)
+		return;
+	if (Data->LimitDistanceToPlayerSpeed < CurrentSpeed)
+		return;
+
+	const FVector CameraPosition = FVector(0, GetActorLocation().Y, GetActorLocation().Z);
+	const FVector PlayerPosition = FVector(0, FocusedActors[0]->GetActorLocation().Y, FocusedActors[0]->GetActorLocation().Z);
+
+	const float CurrentDistance = (CameraPosition - PlayerPosition).Length();
+	if (CurrentDistance > Data->AllowedDistanceToPlayer)
+		CurrentSpeed = Data->LimitDistanceToPlayerSpeed;
 }
 
 void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
@@ -102,10 +134,8 @@ void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 	// Move towards the mean value 
 	TargetLocation = FVector(-FindDistanceBetweenActors(), MiddleLocation.Y, MiddleLocation.Z);
 	auto NewLocation = GetActorLocation();
-	NewLocation = UKismetMathLibrary::VLerp(NewLocation, TargetLocation,
-	                                        RetractingCamera
-		                                        ? Data->RetractCameraSpeed * DeltaTime
-		                                        : Data->NormalMoveSpeed * DeltaTime);
+	NewLocation = UKismetMathLibrary::VLerp(NewLocation, TargetLocation, CurrentSpeed * DeltaTime);
+
 	SetActorLocation(NewLocation);
 }
 
@@ -143,10 +173,11 @@ float AEyeCamera::FindDistanceBetweenActors()
 		&& DistanceZ < GetActorLocation().X + Data->CameraOffset.X)
 		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
 
-	// Return the greatest distance of Y and Z
+	// Calculate the camera's final position on Y and Z
 	const float Y = DistanceY * CameraFOVCompensation * Data->YDistanceMultiplier;
 	const float Z = DistanceZ * CameraFOVCompensation * Data->ZDistanceMultiplier;
 
+	// Return the greatest distance of Y and Z
 	// Aspect ratio is 16:9 (9/16)
 	constexpr float AspectRatio = 0.5625;
 	const float AspectRatioY = DistanceY * AspectRatio;
@@ -194,5 +225,6 @@ void AEyeCamera::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	MoveTowardsTarget(DeltaTime);
-	CheckIfRetractingCameraReachedTarget();
+	IncrementCameraSpeed(DeltaTime);
+	GetBackToTarget();
 }

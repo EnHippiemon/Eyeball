@@ -13,17 +13,30 @@ public:
 	// The normal movement speed of the camera
 	UPROPERTY(EditDefaultsOnly)
 	float NormalMoveSpeed = 15.f;
+	
 	// The movement speed of the camera after losing focus on more actors than the player. 
 	UPROPERTY(EditDefaultsOnly)
 	float RetractCameraSpeed = 1.f;
-	// How close to target the camera must be before the normal move speed kicks in. 
+	
+	// How fast the retraction speed should increase to reach normal speed
 	UPROPERTY(EditDefaultsOnly)
-	float ResetCameraRetractionTolerance;
+	float SpeedIncrementationMultiplier = 1.f;
+	
 	// How the camera should be placed in relation to the player character
 	UPROPERTY(EditDefaultsOnly)
 	FVector CameraOffset = FVector(-200, 0, 0);
+	
+	// Allowed distance between center of camera and possessed entity
+	UPROPERTY(EditDefaultsOnly)
+	float AllowedDistanceToPlayer = 100.f;
+
+	// Set speed if distance to player is too far
+	UPROPERTY(EditDefaultsOnly)
+	float LimitDistanceToPlayerSpeed = 2.f;
+	
 	UPROPERTY(EditDefaultsOnly)
 	float YDistanceMultiplier = 1.5f;
+	
 	UPROPERTY(EditDefaultsOnly)
 	float ZDistanceMultiplier = 1.5f;
 };

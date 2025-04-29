@@ -20,6 +20,7 @@ private:
 
 #pragma region -- Variables --
 
+	float CurrentSpeed;
 	float CameraFOVCompensation = 1.f;
 	bool RetractingCamera = false;
 	FVector TargetLocation;
@@ -29,8 +30,6 @@ private:
 	
 	UPROPERTY()
 	TArray<AActor*> FocusedActors;
-	UPROPERTY()
-	AEyeCharacter* PlayerCharacter;
 	UPROPERTY()
 	AEyeGameMode* GameMode;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = DataAsset, meta = (AllowPrivateAccess = "true"))
@@ -53,8 +52,12 @@ private:
 
 	void SetCameraOnStart();
 	void RemoveAllFocus();
-	void CheckIfRetractingCameraReachedTarget();
+	void IncrementCameraSpeed(float const DeltaTime);
+	void StartRetractingCamera();
+	void StopRetractingCamera();
 
+	void GetBackToTarget();
+	
 	void MoveTowardsTarget(float const DeltaTime);
 	float FindDistanceBetweenActors();
 	UFUNCTION()
