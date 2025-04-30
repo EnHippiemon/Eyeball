@@ -1,9 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Eyeball/DataAssets/EyeGameModeDataAsset.h"
 #include "GameFramework/GameModeBase.h"
 #include "EyeGameMode.generated.h"
 
+class UEyeGameModeDataAsset;
 class UEyePauseWidget;
 class UEyeWonWidget;
 class UEyeDeathCountWidget;
@@ -50,8 +52,8 @@ public:
 	// Getters
 		int GetDeathCount() const { return DeathCount; }
 		int GetDeathCountSinceCheckpoint() const { return DeathCountSinceCheckpoint; }
-		int GetDeathCountForDecreasedDifficulty() const { return DeathCountForDecreasedDifficulty; }
-		float GetLeewayForBeingHit() const { return LeewayForBeingHit; }
+		int GetDeathCountForDecreasedDifficulty() const { return Data->DeathCountForDecreasedDifficulty; }
+		float GetLeewayForBeingHit() const { return Data->LeewayForBeingHit; }
 		EGameState GetGameState() const { return CurrentGameState;}
 	
 private:
@@ -60,19 +62,7 @@ private:
 	EGameState CurrentGameState;
 	EGameState SavedState;
 	
-	UPROPERTY(EditDefaultsOnly)
-	float TimeDilationDanger = 0.2f;
-	UPROPERTY(EditDefaultsOnly)
-	float MaxTimeInDanger = 0.6f;
-	UPROPERTY(EditDefaultsOnly)
-	float ExtendedMaxTimeInDanger = 1.2f;
-	UPROPERTY(EditDefaultsOnly)
-	float TimeDilationTransitionSpeed = 25.f;
 	float SavedTimeDilation;
-
-	// Amount of time allowed to be hit by danger when difficulty is decreased.
-	UPROPERTY(EditDefaultsOnly)
-	float LeewayForBeingHit = 0.3f;
 	
 	bool bIsInDanger = true;
 	float TimeInDanger = 0.f;
@@ -81,47 +71,27 @@ private:
 
 	int DeathCount = 0;
 	int DeathCountSinceCheckpoint = 0;
+
 	UPROPERTY(EditDefaultsOnly)
-	int DeathCountForDecreasedDifficulty = 10;
+	UEyeGameModeDataAsset* Data;
 	
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<APawn> EntityEyeball;
 	UPROPERTY()
 	AEyeCharacter* PlayerCharacter;
 	UPROPERTY()
 	AController* Controller;
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AEyeCamera> MainCamera;
 
-	UPROPERTY(EditDefaultsOnly)
-	UNiagaraSystem* SmokeEffect;
-
-	UPROPERTY(EditDefaultsOnly)
-	FName MainLevelPath;
 	
 #pragma region --- Widgets ---
 	/* Widgets */
 		/* Game over */
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<UEyeRestartWidget> RestartWidget;
 			TObjectPtr<UEyeRestartWidget> RestartWidgetRef;
-
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<UEyeDeathCountWidget> DeathCountWidget;
 			TObjectPtr<UEyeDeathCountWidget> DeathCountWidgetRef;
-
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<UEyeWonWidget> WonWidget;
 			TObjectPtr<UEyeWonWidget> WonWidgetRef;
 	
 		/* Danger */
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<UEyeDangerWidget> DangerWidget;
 			TObjectPtr<UEyeDangerWidget> DangerWidgetRef;
 
 		/* Pause */
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<UEyePauseWidget> PauseWidget;
 			TObjectPtr<UEyePauseWidget> PauseWidgetRef;
 	
 #pragma endregion
@@ -129,8 +99,6 @@ private:
 #pragma region --- Checkpoint ---
 	/* Checkpoint */
 		/* Player characters */
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AEyeCharacter> EyeCharacter;
 			UPROPERTY()
 			AEyeEntityEyeball* Eyeball;
 			UPROPERTY()
@@ -140,8 +108,6 @@ private:
 			TArray<FVector> CharacterLocations;
 
 		/* Enemy characters */
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AActor> EnemyCharacter;
 			UPROPERTY()
 			TArray<AActor*> EnemyArray;
 			TArray<FVector> EnemyLocations;
@@ -153,10 +119,6 @@ private:
 			TArray<FVector> MoveableObjectLocations;
 			TArray<bool> MoveableObjectsActivated;
 			TArray<bool> MoveableObjectsReachedTarget;
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AEyeMoveableObject> MoveableObject;
-			UPROPERTY(EditDefaultsOnly)
-			TSubclassOf<AActor> Projectile;
 	
 		bool bEyeballHiddenAtCheckpoint = false;
 

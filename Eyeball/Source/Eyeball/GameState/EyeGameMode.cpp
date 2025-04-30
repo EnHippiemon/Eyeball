@@ -21,7 +21,7 @@ void AEyeGameMode::SetGameWon(const bool HasWon)
 	if (!HasWon)
 		return;
 	
-	WonWidgetRef = CreateWidget<UEyeWonWidget>(GetWorld(), WonWidget);
+	WonWidgetRef = CreateWidget<UEyeWonWidget>(GetWorld(), Data->WonWidget);
 	if (WonWidgetRef)
 		WonWidgetRef->AddToViewport();
 }
@@ -39,7 +39,7 @@ void AEyeGameMode::HandleEasyMode(bool const ShouldBeEasy)
 		if (CurrentCharacter)
 			CurrentCharacter->SetEasyModeMesh(ShouldBeEasy);
 
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SmokeEffect,
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Data->SmokeEffect,
 											   FVector(50, CharacterArray[i]->GetActorLocation().Y,
 													   CharacterArray[i]->GetActorLocation().Z),
 											   FRotator::ZeroRotator, FVector(1, 1, 1), true,
@@ -54,26 +54,26 @@ void AEyeGameMode::HandleCheckpointReached()
 
 	FindAllReferences();
 
-	const bool bIsEasyMode = DeathCountSinceCheckpoint >= DeathCountForDecreasedDifficulty;
+	const bool bIsEasyMode = DeathCountSinceCheckpoint >= Data->DeathCountForDecreasedDifficulty;
 	if (bIsEasyMode)
 		HandleEasyMode(false);
 	
 	DeathCountSinceCheckpoint = 0;
-	CurrentMaxTimeInDanger = MaxTimeInDanger;
+	CurrentMaxTimeInDanger = Data->MaxTimeInDanger;
 }
 
 void AEyeGameMode::FindAllReferences()
 {
 	if (!Eyeball)
-		Eyeball = Cast<AEyeEntityEyeball>(UGameplayStatics::GetActorOfClass(GetWorld(), EntityEyeball));
+		Eyeball = Cast<AEyeEntityEyeball>(UGameplayStatics::GetActorOfClass(GetWorld(), Data->EntityEyeball));
 	
 	bEyeballHiddenAtCheckpoint = Eyeball->IsHidden();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EyeCharacter, CharacterArray);
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), EnemyCharacter, EnemyArray);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), Data->EyeCharacter, CharacterArray);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), Data->EnemyCharacter, EnemyArray);
 
 	// Find all MoveableObjects in the scene 
 	TArray<AActor*> Objects;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), MoveableObject, Objects);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), Data->MoveableObject, Objects);
 	for (int i = 0; i < Objects.Num(); ++i)
 	{
 		if (!MoveableObjectArray.IsValidIndex(i))
@@ -120,9 +120,9 @@ void AEyeGameMode::ResetStates()
 	ResetEnemyHealth(EnemyArray, EnemyHealths);
 	
 	// Delete objects 
-	RemoveObjects(Projectile);
+	RemoveObjects(Data->Projectile);
 
-	const bool bIsEasyMode = DeathCountSinceCheckpoint >= DeathCountForDecreasedDifficulty;
+	const bool bIsEasyMode = DeathCountSinceCheckpoint >= Data->DeathCountForDecreasedDifficulty;
 	if (bIsEasyMode)
 		HandleEasyMode(true);
 	
@@ -246,8 +246,8 @@ void AEyeGameMode::HandlePlayerDeath()
 	
 	++DeathCount;
 	++DeathCountSinceCheckpoint;
-	if (DeathCountSinceCheckpoint >= DeathCountForDecreasedDifficulty)
-		CurrentMaxTimeInDanger = ExtendedMaxTimeInDanger;
+	if (DeathCountSinceCheckpoint >= Data->DeathCountForDecreasedDifficulty)
+		CurrentMaxTimeInDanger = Data->ExtendedMaxTimeInDanger;
 	
 	CurrentGameState = Egs_GameOver;
 	OnChangedState.Broadcast(CurrentGameState);
@@ -259,7 +259,7 @@ void AEyeGameMode::HandleDangerFound(bool IsInDanger)
 		return;
 	
 	bIsInDanger = IsInDanger;
-	TargetTimeDilation = IsInDanger ? TimeDilationDanger : 1;
+	TargetTimeDilation = IsInDanger ? Data->TimeDilationDanger : 1;
 	OnDangerChanged.Broadcast(IsInDanger);
 }
 
@@ -280,7 +280,7 @@ void AEyeGameMode::CountTimeInDanger(float const DeltaTime)
 void AEyeGameMode::SetTimeDilation(float DeltaTime)
 {
 	float CurrentTimeDilation = UGameplayStatics::GetGlobalTimeDilation(GetWorld());
-	CurrentTimeDilation = FMath::Lerp(CurrentTimeDilation, TargetTimeDilation, TimeDilationTransitionSpeed * DeltaTime);
+	CurrentTimeDilation = FMath::Lerp(CurrentTimeDilation, TargetTimeDilation, Data->TimeDilationTransitionSpeed * DeltaTime);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), CurrentTimeDilation);
 }
 
@@ -302,7 +302,7 @@ void AEyeGameMode::GetNewPlayerReference()
 	PlayerCharacter->OnSpawned();
 	OnEntityChanged.Broadcast(PlayerCharacter);
 
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SmokeEffect,
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Data->SmokeEffect,
 	                                               FVector(50, PlayerCharacter->GetActorLocation().Y,
 	                                                       PlayerCharacter->GetActorLocation().Z),
 	                                               FRotator::ZeroRotator, FVector(1, 1, 1), true,
@@ -311,7 +311,7 @@ void AEyeGameMode::GetNewPlayerReference()
 
 void AEyeGameMode::SpawnCamera() const
 {
-	const auto Camera = GetWorld()->SpawnActor<AEyeCamera>(MainCamera, PlayerCharacter->GetTransform());
+	const auto Camera = GetWorld()->SpawnActor<AEyeCamera>(Data->MainCamera, PlayerCharacter->GetTransform());
 	Camera->OnSpawned();
 	OnEntityChanged.Broadcast(PlayerCharacter);
 }
@@ -362,7 +362,7 @@ void AEyeGameMode::HandleMenuButtonPressed(FString ButtonName)
 	{
 		APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
-		UGameplayStatics::OpenLevel(this, MainLevelPath, true);
+		UGameplayStatics::OpenLevel(this, Data->MainLevelPath, true);
 	}
 	else if (ButtonName == "Quit")
 		FGenericPlatformMisc::RequestExit(false);
@@ -384,18 +384,18 @@ void AEyeGameMode::BeginPlay()
 	if (!IsValid(Controller))
 		UE_LOG(LogTemp, Error, TEXT("EyeGameMode.cpp: No valid player controller."));
 
-	RestartWidgetRef = CreateWidget<UEyeRestartWidget>(GetWorld(), RestartWidget);
+	RestartWidgetRef = CreateWidget<UEyeRestartWidget>(GetWorld(), Data->RestartWidget);
 	if (RestartWidgetRef)
 	{
 		RestartWidgetRef->AddToViewport();
 		RestartWidgetRef->OnTransitionCompleted.AddUniqueDynamic(this, &AEyeGameMode::SetNewState);
 	}
 	
-	DangerWidgetRef = CreateWidget<UEyeDangerWidget>(GetWorld(), DangerWidget);
+	DangerWidgetRef = CreateWidget<UEyeDangerWidget>(GetWorld(), Data->DangerWidget);
 	if (DangerWidgetRef)
 		DangerWidgetRef->AddToViewport();
 
-	PauseWidgetRef = CreateWidget<UEyePauseWidget>(GetWorld(), PauseWidget);
+	PauseWidgetRef = CreateWidget<UEyePauseWidget>(GetWorld(), Data->PauseWidget);
 	if (PauseWidgetRef)
 	{
 		PauseWidgetRef->AddToViewport();
@@ -403,7 +403,7 @@ void AEyeGameMode::BeginPlay()
 	}
 
 	// Create last, so it's above other widgets in the hierarchy and always visible. 
-	DeathCountWidgetRef = CreateWidget<UEyeDeathCountWidget>(GetWorld(), DeathCountWidget);
+	DeathCountWidgetRef = CreateWidget<UEyeDeathCountWidget>(GetWorld(), Data->DeathCountWidget);
 	if (DeathCountWidgetRef)
 		DeathCountWidgetRef->AddToViewport();
 	
