@@ -50,6 +50,7 @@ public:
 		void SetArtificialInput(const FVector& Direction);
 		void SetMoveDirection(const FVector& NewDirection) { MovementDirection = NewDirection; }
 		void ResetPosition();
+		void SetEasyModeMesh(bool bIsEasyMode) const { MeshComponent->SetMaterial(0, bIsEasyMode ? EasyModeMeshMaterial : DefaultMeshMaterial); }
 	
 	/* Getters */
 		FVector GetMovementDirection() const { return MovementDirection; }
@@ -153,6 +154,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	UNiagaraSystem* NiagaraLightning;
+
+	UPROPERTY(EditDefaultsOnly)
+	UMaterial* DefaultMeshMaterial;
+	UPROPERTY(EditDefaultsOnly)
+	UMaterial* EasyModeMeshMaterial;
 	
 	FVector MovementInput;
 	FVector MovementDirection;
