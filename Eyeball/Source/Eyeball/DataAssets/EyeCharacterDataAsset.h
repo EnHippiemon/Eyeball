@@ -11,26 +11,37 @@ class EYEBALL_API UEyeCharacterDataAsset : public UDataAsset
 
 public:
 	/* Interactions */
+		// Decides if the character can interact with interactable objects. 
 		UPROPERTY(EditDefaultsOnly, Category="Interaction")
 		bool bCanInteract = false;
 	
 	/* Movement */
+		// The movement speed the character is usually trying to maintain 
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float NormalMovementSpeed = 10.f;
+	
+		// Used in special cases when the character should have different movement speeds at different times
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float HighMovementSpeed = 200.f;
+
+		// How fast the movement speed should increase or decay
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Speed")
 		float MovementAcceleration = 0.5f;
 
+		// How much each artificial input instantiation should be multiplied with. 
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
 		float InputMultiplier = 1.f;
+	
+		// How fast the artificial input should decay 
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Artificial")
 		float DecaySpeed = 1.f;
 
+		// The rotation speed of the souls
 		UPROPERTY(EditDefaultsOnly, Category="Movement|Rotation")
 		FRotator MeshRotationRate = FRotator(0, 0, 200);
 
 	/* Danger */
+		// The velocity of the player in order to take fall damage
 		UPROPERTY(EditDefaultsOnly, Category="Danger")
 		float ThresholdFallDamageVelocity = -90.f;
 

@@ -1,7 +1,6 @@
 #include "EyeEntityHuman.h"
 #include "Components/CapsuleComponent.h"
 #include "Eyeball/DataAssets/EyeCharacterDataAsset.h"
-#include "../PuzzleComponents/StaticObjects/EyeInteractableObject.h"
 
 AEyeEntityHuman::AEyeEntityHuman()
 {
