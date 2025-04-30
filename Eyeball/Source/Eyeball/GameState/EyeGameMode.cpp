@@ -31,12 +31,32 @@ AEyeGameMode::AEyeGameMode()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void AEyeGameMode::HandleEasyMode(bool const ShouldBeEasy)
+{
+	for (int i = 0; i < CharacterArray.Num(); ++i)
+	{
+		const AEyeCharacter* CurrentCharacter = Cast<AEyeCharacter>(CharacterArray[i]);
+		if (CurrentCharacter)
+			CurrentCharacter->SetEasyModeMesh(ShouldBeEasy);
+
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), SmokeEffect,
+											   FVector(50, CharacterArray[i]->GetActorLocation().Y,
+													   CharacterArray[i]->GetActorLocation().Z),
+											   FRotator::ZeroRotator, FVector(1, 1, 1), true,
+											   true);
+	}
+}
+
 void AEyeGameMode::HandleCheckpointReached()
 {
 	if (CurrentGameState != Egs_Playing)
 		return;
 
 	FindAllReferences();
+
+	const bool bIsEasyMode = DeathCountSinceCheckpoint >= DeathCountForDecreasedDifficulty;
+	if (bIsEasyMode)
+		HandleEasyMode(false);
 	
 	DeathCountSinceCheckpoint = 0;
 	CurrentMaxTimeInDanger = MaxTimeInDanger;
@@ -101,6 +121,10 @@ void AEyeGameMode::ResetStates()
 	
 	// Delete objects 
 	RemoveObjects(Projectile);
+
+	const bool bIsEasyMode = DeathCountSinceCheckpoint >= DeathCountForDecreasedDifficulty;
+	if (bIsEasyMode)
+		HandleEasyMode(true);
 	
 	CurrentGameState = Egs_StartingGame;
 }

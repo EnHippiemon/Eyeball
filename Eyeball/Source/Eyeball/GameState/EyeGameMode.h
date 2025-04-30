@@ -159,6 +159,8 @@ private:
 			TSubclassOf<AActor> Projectile;
 	
 		bool bEyeballHiddenAtCheckpoint = false;
+
+		void HandleEasyMode(bool const ShouldBeEasy);
 	
 		UFUNCTION()
 		void HandleCheckpointReached();
