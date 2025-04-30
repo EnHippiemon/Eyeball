@@ -49,6 +49,8 @@ public:
 	
 	// Getters
 		int GetDeathCount() const { return DeathCount; }
+		int GetDeathCountForDecreasedDifficulty() const { return DeathCountForDecreasedDifficulty; }
+		float GetLeewayForBeingHit() const { return LeewayForBeingHit; }
 		EGameState GetGameState() const { return CurrentGameState;}
 	
 private:
@@ -60,17 +62,26 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float TimeDilationDanger = 0.2f;
 	UPROPERTY(EditDefaultsOnly)
-	float MaxDangerTime = 2.f;
+	float MaxTimeInDanger = 0.6f;
+	UPROPERTY(EditDefaultsOnly)
+	float ExtendedMaxTimeInDanger = 1.2f;
 	UPROPERTY(EditDefaultsOnly)
 	float TimeDilationTransitionSpeed = 25.f;
 	float SavedTimeDilation;
+
+	// Amount of time allowed to be hit by danger when difficulty is decreased.
+	UPROPERTY(EditDefaultsOnly)
+	float LeewayForBeingHit = 0.3f;
 	
 	bool bIsInDanger = true;
 	float TimeInDanger = 0.f;
-	float MaxTimeInDanger = 2.f;
+	float CurrentMaxTimeInDanger = 0.6f;
 	float TargetTimeDilation = 1.f;
 
 	int DeathCount = 0;
+	int DeathCountSinceCheckpoint = 0;
+	UPROPERTY(EditDefaultsOnly)
+	int DeathCountForDecreasedDifficulty = 10;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APawn> EntityEyeball;

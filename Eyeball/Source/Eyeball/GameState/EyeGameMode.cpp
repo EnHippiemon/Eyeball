@@ -34,6 +34,8 @@ AEyeGameMode::AEyeGameMode()
 void AEyeGameMode::HandleCheckpointReached()
 {
 	FindAllReferences();
+	DeathCountSinceCheckpoint = 0;
+	CurrentMaxTimeInDanger = MaxTimeInDanger;
 }
 
 void AEyeGameMode::FindAllReferences()
@@ -214,8 +216,12 @@ void AEyeGameMode::HandlePlayerDeath()
 	if (CurrentGameState != Egs_Playing)
 		return;
 	
-	CurrentGameState = Egs_GameOver;
 	++DeathCount;
+	++DeathCountSinceCheckpoint;
+	if (DeathCountSinceCheckpoint >= DeathCountForDecreasedDifficulty)
+		CurrentMaxTimeInDanger = ExtendedMaxTimeInDanger;
+	
+	CurrentGameState = Egs_GameOver;
 	OnChangedState.Broadcast(CurrentGameState);
 }
 
@@ -239,7 +245,7 @@ void AEyeGameMode::CountTimeInDanger(float const DeltaTime)
 
 	TimeInDanger += DeltaTime;
 	
-	if (TimeInDanger > MaxDangerTime)
+	if (TimeInDanger > CurrentMaxTimeInDanger)
 		HandlePlayerDeath();
 }
 
