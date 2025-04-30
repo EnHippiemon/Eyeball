@@ -33,7 +33,11 @@ AEyeGameMode::AEyeGameMode()
 
 void AEyeGameMode::HandleCheckpointReached()
 {
+	if (CurrentGameState != Egs_Playing)
+		return;
+
 	FindAllReferences();
+	
 	DeathCountSinceCheckpoint = 0;
 	CurrentMaxTimeInDanger = MaxTimeInDanger;
 }

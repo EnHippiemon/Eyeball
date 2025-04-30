@@ -49,6 +49,7 @@ public:
 	
 	// Getters
 		int GetDeathCount() const { return DeathCount; }
+		int GetDeathCountSinceCheckpoint() const { return DeathCountSinceCheckpoint; }
 		int GetDeathCountForDecreasedDifficulty() const { return DeathCountForDecreasedDifficulty; }
 		float GetLeewayForBeingHit() const { return LeewayForBeingHit; }
 		EGameState GetGameState() const { return CurrentGameState;}

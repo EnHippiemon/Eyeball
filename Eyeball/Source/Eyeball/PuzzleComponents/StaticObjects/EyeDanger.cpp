@@ -22,7 +22,7 @@ void AEyeDanger::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	{
 		if (FoundActor->GetIsPossessed())
 		{
-			if (GameMode && GameMode->GetDeathCount() >= GameMode->GetDeathCountForDecreasedDifficulty())
+			if (GameMode && GameMode->GetDeathCountSinceCheckpoint() >= GameMode->GetDeathCountForDecreasedDifficulty())
 			{
 				GetWorldTimerManager().SetTimer(DangerTimer, this, &AEyeDanger::CheckOverlaps,
 												GameMode->GetLeewayForBeingHit(), false,
@@ -45,7 +45,7 @@ void AEyeDanger::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	}
 }
 
-void AEyeDanger::CheckOverlaps()
+void AEyeDanger::CheckOverlaps() const
 {
 	TArray<AActor*> OverlappingActors;
 	DangerBox->GetOverlappingActors(OverlappingActors, AEyeCharacter::StaticClass());
