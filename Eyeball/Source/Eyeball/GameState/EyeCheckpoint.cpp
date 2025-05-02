@@ -19,10 +19,14 @@ void AEyeCheckpoint::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	const auto FoundActor = Cast<AEyeCharacter>(OtherActor);
 	if (!FoundActor)
 		return;
-
 	if (!FoundActor->GetIsPossessed())
 		return;
-
+	for (int i = 0; i < IgnoredCharacters.Num(); ++i)
+	{
+		if (IgnoredCharacters[i] == FoundActor->GetClass())
+			return;
+	}
+	
 	OnOverlapSuccess(FoundActor);
 }
 

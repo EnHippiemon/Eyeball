@@ -22,4 +22,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* BoxComponent;
+	UPROPERTY(EditInstanceOnly)
+	TArray<TSubclassOf<AEyeCharacter>> IgnoredCharacters;
+	
 };
