@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "EyeCameraFocusAdder.generated.h"
 
+class AEyeCharacter;
 class AEyeCamera;
 class UBoxComponent;
 
@@ -15,10 +16,14 @@ class EYEBALL_API AEyeCameraFocusAdder : public AActor
 private:
 	AEyeCameraFocusAdder();
 
+	bool bHasAddedFocus = false;
+
 	UPROPERTY(EditInstanceOnly)
 	TArray<TObjectPtr<AActor>> ObjectsToFocusOn;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AEyeCamera> CameraClass;
+	UPROPERTY(EditInstanceOnly)
+	TArray<TSubclassOf<AEyeCharacter>> IgnoredCharacters;
 	
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* BoxComponent;
