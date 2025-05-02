@@ -113,7 +113,6 @@ void AEyeCamera::GetBackToTarget()
 	const FVector PlayerPosition = FVector(0, FocusedActors[0]->GetActorLocation().Y, FocusedActors[0]->GetActorLocation().Z);
 
 	const float CurrentDistance = (CameraPosition - PlayerPosition).Length();
-	UE_LOG(LogTemp, Log, TEXT("Distance: %f"), CurrentDistance);
 	if (CurrentDistance > Data->AllowedDistanceToPlayer)
 		CurrentSpeed = Data->LimitDistanceToPlayerSpeed;
 }
@@ -153,7 +152,7 @@ float AEyeCamera::FindDistanceBetweenActors()
 		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
 
 	// Find the smallest and largest values of Y and Z among the actor locations 
-	FVector FurthestUpRight = FVector(0, FLT_MIN, FLT_MIN);
+	FVector FurthestUpRight = FVector(0, -FLT_MAX, -FLT_MAX);
 	FVector FurthestLeftDown = FVector(0, FLT_MAX, FLT_MAX);
 	for (int i = 0; i < FocusedActors.Num(); ++i)
 	{
