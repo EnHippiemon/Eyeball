@@ -55,6 +55,7 @@ private:
 	void StartRetractingCamera();
 	void StopRetractingCamera();
 
+	// Used if the player character is too far out on the screen as a safety measure to not lose it. 
 	void GetBackToTarget();
 	
 	void MoveTowardsTarget(float const DeltaTime);

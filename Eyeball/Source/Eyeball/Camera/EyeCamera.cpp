@@ -33,6 +33,7 @@ void AEyeCamera::OnSpawned()
 
 void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 {
+	CurrentSpeed = Data->SeveralFocusesCameraSpeed;
 	RetractingCamera = false;
 	
 	for (int i = 0; i < FocusedActors.Num(); ++i)
@@ -84,14 +85,14 @@ void AEyeCamera::IncrementCameraSpeed(float const DeltaTime)
 	if (!RetractingCamera)
 		return;
 
-	CurrentSpeed += DeltaTime * Data->SpeedIncrementationMultiplier;
+	CurrentSpeed += DeltaTime * Data->RetractCameraSpeedXIncrementation;
 	if (CurrentSpeed >= Data->NormalMoveSpeed)
 		StopRetractingCamera();
 }
 
 void AEyeCamera::StartRetractingCamera()
 {
-	CurrentSpeed = Data->RetractCameraSpeed;
+	CurrentSpeed = Data->RetractCameraStartSpeedX;
 	RetractingCamera = true;
 }
 
@@ -107,11 +108,12 @@ void AEyeCamera::GetBackToTarget()
 		return;
 	if (Data->LimitDistanceToPlayerSpeed < CurrentSpeed)
 		return;
-
+	
 	const FVector CameraPosition = FVector(0, GetActorLocation().Y, GetActorLocation().Z);
 	const FVector PlayerPosition = FVector(0, FocusedActors[0]->GetActorLocation().Y, FocusedActors[0]->GetActorLocation().Z);
 
 	const float CurrentDistance = (CameraPosition - PlayerPosition).Length();
+	UE_LOG(LogTemp, Log, TEXT("Distance: %f"), CurrentDistance);
 	if (CurrentDistance > Data->AllowedDistanceToPlayer)
 		CurrentSpeed = Data->LimitDistanceToPlayerSpeed;
 }
@@ -130,11 +132,16 @@ void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 		++ValidActors;
 	}
 	MiddleLocation /= ValidActors;
-
+	
 	// Move towards the mean value 
 	TargetLocation = FVector(-FindDistanceBetweenActors(), MiddleLocation.Y, MiddleLocation.Z);
 	auto NewLocation = GetActorLocation();
 	NewLocation = UKismetMathLibrary::VLerp(NewLocation, TargetLocation, CurrentSpeed * DeltaTime);
+	if (RetractingCamera)
+	{
+		const FVector FasterPositionYZ = FVector(GetActorLocation().X, TargetLocation.Y, TargetLocation.Z);
+		NewLocation = UKismetMathLibrary::VLerp(NewLocation, FasterPositionYZ, Data->RetractCameraSpeedYZ * DeltaTime);
+	}
 
 	SetActorLocation(NewLocation);
 }

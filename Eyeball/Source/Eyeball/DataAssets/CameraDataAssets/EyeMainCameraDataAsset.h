@@ -14,13 +14,21 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float NormalMoveSpeed = 15.f;
 	
+	// The movement speed of the camera on the X-axis after losing focus on more actors than the player. 
+	UPROPERTY(EditDefaultsOnly)
+	float RetractCameraStartSpeedX = 0.f;
+	
+	// How fast the retraction speed should increase to reach normal speed on the X-axis
+	UPROPERTY(EditDefaultsOnly)
+	float RetractCameraSpeedXIncrementation = 1.f;
+	
 	// The movement speed of the camera after losing focus on more actors than the player. 
 	UPROPERTY(EditDefaultsOnly)
-	float RetractCameraSpeed = 1.f;
-	
-	// How fast the retraction speed should increase to reach normal speed
+	float RetractCameraSpeedYZ = 1.f;
+
+	// The movement speed of the camera when focusing on more actors than the player.
 	UPROPERTY(EditDefaultsOnly)
-	float SpeedIncrementationMultiplier = 1.f;
+	float SeveralFocusesCameraSpeed = 3.f;
 	
 	// How the camera should be placed in relation to the player character
 	UPROPERTY(EditDefaultsOnly)
