@@ -35,12 +35,8 @@ void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 {
 	CurrentSpeed = Data->SeveralFocusesCameraSpeed;
 	RetractingCamera = false;
-	
-	for (int i = 0; i < FocusedActors.Num(); ++i)
-	{
-		if (FocusedActors[i]->GetName() == ActorToAdd->GetName())
-			FocusedActors.RemoveAt(i);
-	}
+
+	RemoveAllFocus();
 	FocusedActors.Add(ActorToAdd);
 
 	if (TimerDelay <= 0)
