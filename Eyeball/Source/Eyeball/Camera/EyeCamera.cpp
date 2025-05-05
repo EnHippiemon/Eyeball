@@ -147,9 +147,12 @@ void AEyeCamera::MoveTowardsTarget(float const DeltaTime)
 
 float AEyeCamera::FindDistanceBetweenActors()
 {
+	// Calculate standard camera offset
+	const float StandardOffset = Data->CameraOffset.X * CameraFOVCompensation;
+	
 	// If player character is the only actor in focus, return
 	if (FocusedActors.Num() <= 1)
-		return Data->CameraOffset.X * CameraFOVCompensation;
+		return StandardOffset;
 
 	// Find the smallest and largest values of Y and Z among the actor locations 
 	FVector FurthestUpRight = FVector(0, -FLT_MAX, -FLT_MAX);
@@ -176,14 +179,14 @@ float AEyeCamera::FindDistanceBetweenActors()
 	
 	// If the actor distance is too small, return the regular offset
 	if (DistanceY < Data->CameraOffset.X && DistanceZ  < Data->CameraOffset.X)
-		return Data->CameraOffset.X * CameraFOVCompensation;
+		return StandardOffset;
 	
 	// Calculate the camera's final position on Y and Z
-	const float Y = DistanceY * CameraFOVCompensation;
-	const float Z = DistanceZ * CameraFOVCompensation;
+	const float OffsetY = DistanceY * CameraFOVCompensation;
+	const float OffsetZ = DistanceZ * CameraFOVCompensation;
 	
 	// Return the greatest distance of Y and Z
-	return DistanceY > DistanceZ ? Y : Z;
+	return DistanceY > DistanceZ ? OffsetY : OffsetZ;
 }
 
 void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)
