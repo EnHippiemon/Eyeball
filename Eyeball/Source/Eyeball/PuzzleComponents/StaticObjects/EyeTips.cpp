@@ -1,35 +1,39 @@
 #include "EyeTips.h"
 
 #include "Blueprint/UserWidget.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Eyeball/Entities/EyeCharacter.h"
 #include "Eyeball/Widgets/EyeTipsWidget.h"
-#include "Kismet/GameplayStatics.h"
 
 
 void AEyeTips::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA<AEyeCharacter>())
-	{
-		bPlayerHasEntered = true;
-		bPlayerHasLeft = false;
-	}
+	const auto CurrentActor = Cast<AEyeCharacter>(OtherActor);
+	if (!CurrentActor)
+		return;
+	if (!CurrentActor->GetIsPossessed())
+		return;
+
+	bPlayerHasEntered = true;
+	bPlayerHasLeft = false;
 }
 
 void AEyeTips::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor->IsA<AEyeCharacter>())
-	{
-		bPlayerHasEntered = false;
-		bPlayerHasLeft = true;
-		TimeSincePlayerEntered = 0;
+	const auto CurrentActor = Cast<AEyeCharacter>(OtherActor);
+	if (!CurrentActor)
+		return;
+	if (!CurrentActor->GetIsPossessed())
+		return;
 
-		if (EyeTipsWidgetRef)
-			EyeTipsWidgetRef->ShouldFadeOut(true);
-	}
+	bPlayerHasEntered = false;
+	bPlayerHasLeft = true;
+	TimeSincePlayerEntered = 0;
+
+	if (EyeTipsWidgetRef)
+		EyeTipsWidgetRef->ShouldFadeOut(true);
 }
 
 void AEyeTips::CountTimeSincePlayerEntered(float const DeltaTime)
@@ -83,7 +87,7 @@ AEyeTips::AEyeTips()
 void AEyeTips::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 }
 
 void AEyeTips::Tick(float DeltaTime)

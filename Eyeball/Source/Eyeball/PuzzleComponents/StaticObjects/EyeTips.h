@@ -12,7 +12,7 @@ class EYEBALL_API AEyeTips : public AActor
 {
 	GENERATED_BODY()
 
-private:
+protected:
 	UPROPERTY(EditAnywhere)
 	int TimeBeforeTips = 2;
 	
