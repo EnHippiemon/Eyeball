@@ -149,7 +149,7 @@ float AEyeCamera::FindDistanceBetweenActors()
 {
 	// If player character is the only actor in focus, return
 	if (FocusedActors.Num() <= 1)
-		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
+		return Data->CameraOffset.X * CameraFOVCompensation;
 
 	// Find the smallest and largest values of Y and Z among the actor locations 
 	FVector FurthestUpRight = FVector(0, -FLT_MAX, -FLT_MAX);
@@ -171,23 +171,19 @@ float AEyeCamera::FindDistanceBetweenActors()
 	}
 
 	// Make sure the distance is a positive number
-	const float DistanceY = abs(FurthestUpRight.Y - FurthestLeftDown.Y);
-	const float DistanceZ = abs(FurthestUpRight.Z - FurthestLeftDown.Z);
-
+	const float DistanceY = abs(FurthestUpRight.Y - FurthestLeftDown.Y) * Data->YDistanceMultiplier;
+	const float DistanceZ = abs(FurthestUpRight.Z - FurthestLeftDown.Z) * Data->ZDistanceMultiplier;
+	
 	// If the actor distance is too small, return the regular offset
-	if (DistanceY < GetActorLocation().X + Data->CameraOffset.X
-		&& DistanceZ < GetActorLocation().X + Data->CameraOffset.X)
-		return (GetActorLocation().X + Data->CameraOffset.X) * CameraFOVCompensation;
-
+	if (DistanceY < Data->CameraOffset.X && DistanceZ  < Data->CameraOffset.X)
+		return Data->CameraOffset.X * CameraFOVCompensation;
+	
 	// Calculate the camera's final position on Y and Z
-	const float Y = DistanceY * CameraFOVCompensation * Data->YDistanceMultiplier;
-	const float Z = DistanceZ * CameraFOVCompensation * Data->ZDistanceMultiplier;
-
+	const float Y = DistanceY * CameraFOVCompensation;
+	const float Z = DistanceZ * CameraFOVCompensation;
+	
 	// Return the greatest distance of Y and Z
-	// Aspect ratio is 16:9 (9/16)
-	constexpr float AspectRatio = 0.5625;
-	const float AspectRatioY = DistanceY * AspectRatio;
-	return AspectRatioY > DistanceZ ? Y : Z;
+	return DistanceY > DistanceZ ? Y : Z;
 }
 
 void AEyeCamera::GetNewPlayerReference(AEyeCharacter* NewCharacter)
