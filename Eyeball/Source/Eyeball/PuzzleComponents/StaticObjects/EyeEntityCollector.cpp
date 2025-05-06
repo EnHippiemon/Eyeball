@@ -5,20 +5,25 @@
 
 AEyeEntityCollector::AEyeEntityCollector()
 {
+	PrimaryActorTick.bCanEverTick = false;
+	
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
-	MeshComponent->SetupAttachment(CollisionBox);
+	RootComponent = MeshComponent;
 
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>("CollisionBox");
+	CollisionBox->SetupAttachment(RootComponent);
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AEyeEntityCollector::HandleBeginOverlap);
 	CollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &AEyeEntityCollector::HandleEndOverlap);
 	
 	CollisionBox2 = CreateDefaultSubobject<UBoxComponent>("CollisionBox2");
-	CollisionBox2->SetupAttachment(CollisionBox);
+	CollisionBox2->SetupAttachment(RootComponent);
+	CollisionBox2->OnComponentBeginOverlap.AddUniqueDynamic(this, &AEyeEntityCollector::HandleBeginOverlap);
+	CollisionBox2->OnComponentEndOverlap.AddUniqueDynamic(this, &AEyeEntityCollector::HandleEndOverlap);
 }
 
 void AEyeEntityCollector::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	CheckOverlaps();
-	
 	if (OverlappedComponent == CollisionBox)
 	{
 		if (OtherActor->GetClass() == WantedEntity)
@@ -29,6 +34,7 @@ void AEyeEntityCollector::HandleBeginOverlap(UPrimitiveComponent* OverlappedComp
 		if (OtherActor->GetClass() == WantedEntity)
 			bRightOverlapping = true;
 	}
+	CheckOverlaps();
 }
 
 void AEyeEntityCollector::HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -73,7 +79,7 @@ void AEyeEntityCollector::CheckOverlaps()
 		if (i == RightOverlappingActors.Num())
 			bRightOverlapping = false;
 	}
-
+	
 	if (bLeftOverlapping && bRightOverlapping)
 		InteractWith();
 }

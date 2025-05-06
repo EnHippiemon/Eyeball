@@ -7,7 +7,7 @@
 class AEyeCharacter;
 
 UCLASS()
-class EYEBALL_API AEyeEntityCollector : public AEyeCollisionDetector
+class EYEBALL_API AEyeEntityCollector : public AEyeInteractableObject
 {
 	GENERATED_BODY()
 
@@ -17,7 +17,8 @@ private:
 	
 	AEyeEntityCollector();
 
-	virtual void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+	UFUNCTION()
+	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void HandleEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
@@ -25,6 +26,8 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
+	UPROPERTY(EditAnywhere)
+	UBoxComponent* CollisionBox;
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* CollisionBox2;
 	UPROPERTY(EditAnywhere)
