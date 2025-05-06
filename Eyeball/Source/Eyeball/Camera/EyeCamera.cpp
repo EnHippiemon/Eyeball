@@ -33,16 +33,16 @@ void AEyeCamera::OnSpawned()
 
 void AEyeCamera::AddActorToFocus(AActor* ActorToAdd, float const TimerDelay)
 {
-	CurrentSpeed = Data->SeveralFocusesCameraSpeed;
-	RetractingCamera = false;
-
 	RemoveAllFocus();
 	FocusedActors.Add(ActorToAdd);
+
+	CurrentSpeed = Data->SeveralFocusesCameraSpeed;
+	RetractingCamera = false;
 
 	if (TimerDelay <= 0)
 		return;
 
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &AEyeCamera::RemoveAllFocus, TimerDelay, false, TimerDelay);
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AEyeCamera::StartRetractingCamera, TimerDelay, false, TimerDelay);
 }
 
 void AEyeCamera::RemoveActorFromFocus(AActor* ActorToRemove)
@@ -61,8 +61,6 @@ void AEyeCamera::SetCameraOnStart()
 
 void AEyeCamera::RemoveAllFocus()
 {
-	StartRetractingCamera();
-	
 	// Remove all focused actors except player (which is at index 0)
 	int NumberOfActors = FocusedActors.Num();
 	for (int i = 1; i < NumberOfActors; ++i)
@@ -90,6 +88,7 @@ void AEyeCamera::StartRetractingCamera()
 {
 	CurrentSpeed = Data->RetractCameraStartSpeedX;
 	RetractingCamera = true;
+	RemoveAllFocus();
 }
 
 void AEyeCamera::StopRetractingCamera()
