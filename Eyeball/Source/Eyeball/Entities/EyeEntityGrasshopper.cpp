@@ -117,11 +117,6 @@ void AEyeEntityGrasshopper::OnSpawned()
 	}
 }
 
-void AEyeEntityGrasshopper::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void AEyeEntityGrasshopper::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

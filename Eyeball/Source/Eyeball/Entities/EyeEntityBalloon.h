@@ -21,8 +21,6 @@ private:
 	virtual void MakeJump() override;
 	virtual void TakeFallDamage() override {}
 	
-	virtual void OnSpawned() override;
-	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere)

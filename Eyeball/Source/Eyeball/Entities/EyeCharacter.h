@@ -166,7 +166,6 @@ private:
 	bool bInputIsAllowed = true;
 	
 	bool bJumpDepressed = false;
-	bool bJumpHeld = false;
 	float JumpHeldTime = 0.f;
 	int JumpCount = 0;
 	bool bIsOnFloor = false;

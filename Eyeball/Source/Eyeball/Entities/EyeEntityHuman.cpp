@@ -46,16 +46,6 @@ void AEyeEntityHuman::MakeJump()
 	Capsule->AddImpulse(Data->JumpDirection * Data->JumpForce);
 }
 
-void AEyeEntityHuman::OnSpawned()
-{
-	Super::OnSpawned();
-}
-
-void AEyeEntityHuman::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void AEyeEntityHuman::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

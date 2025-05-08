@@ -38,7 +38,6 @@ public:
 	virtual void OnSpawned() override;
 
 private:
-	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere)

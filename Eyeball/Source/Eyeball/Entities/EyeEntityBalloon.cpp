@@ -31,7 +31,7 @@ void AEyeEntityBalloon::MakeMovement(const float DeltaTime)
 	OutputMovement *= FVector(0, FMath::Abs(GetMovementDirection().Y), 0);
 
 	// Movement speed and set location
-	auto NewLocation = GetActorLocation() + OutputMovement * Data->NormalMovementSpeed * DeltaTime;
+	const auto NewLocation = GetActorLocation() + OutputMovement * Data->NormalMovementSpeed * DeltaTime;
 	RootComponent->SetRelativeLocation(NewLocation);
 }
 
@@ -44,17 +44,6 @@ void AEyeEntityBalloon::MakeJump()
 
 	AddJumpCount(1);
 	Sphere->AddImpulse(Data->JumpDirection * Data->JumpForce);
-}
-
-void AEyeEntityBalloon::OnSpawned()
-{
-	Super::OnSpawned();
-}
-
-void AEyeEntityBalloon::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 void AEyeEntityBalloon::Tick(float DeltaTime)
